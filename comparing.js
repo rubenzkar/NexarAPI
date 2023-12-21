@@ -73,6 +73,9 @@ function displayComparison(response, type, url) {
     // Create a new table for each response
     var responseTable = document.createElement('table');
 
+    // Set an id for the table
+    responseTable.id = 'responseTable'; 
+    
     // Set a fixed width for the table
     responseTable.style.width = '600px';
     
