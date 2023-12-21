@@ -100,7 +100,36 @@ function displayResponse(response) {
                 attributeCell.textContent = headers[attribute] || attribute;
 
                 // Check if the attribute is an array (e.g., 'specs')
-                if (Array.isArray(partDetails[attribute])) {
+                if (attribute === 'specs') {
+                    // Create a cell for the collapsible section
+                    var collapsibleCell = responseTable.insertCell(0);
+                    collapsibleCell.colSpan = 2;
+
+                    // Create a button to toggle the collapsible section
+                    var toggleButton = document.createElement('button');
+                    toggleButton.textContent = 'Toggle Specifications';
+                    toggleButton.classList.add('collapsible');
+                    collapsibleCell.appendChild(toggleButton);
+
+                    // Create a div to hold the collapsible content
+                    var collapsibleContent = document.createElement('div');
+                    collapsibleContent.classList.add('content');
+
+                    // Add the content of the 'specs' attribute to the collapsible div
+                    partDetails[attribute].forEach(function (spec) {
+                        var specRow = document.createElement('div');
+                        specRow.textContent = `${spec.attribute.name}: ${spec.displayValue}`;
+                        collapsibleContent.appendChild(specRow);
+                    });
+
+                    // Append the collapsible div to the table
+                    collapsibleCell.appendChild(collapsibleContent);
+
+                    // Add an event listener to toggle the collapsible content
+                    toggleButton.addEventListener('click', function () {
+                        collapsibleContent.style.display = (collapsibleContent.style.display === 'block') ? 'none' : 'block';
+                    });
+                } else if (Array.isArray(partDetails[attribute])) {
                     partDetails[attribute].forEach(function (spec) {
                         // Create a row for each spec attribute and value
                         var specRow = responseTable.insertRow();
