@@ -124,8 +124,20 @@ function displayResponse(response) {
                 specValueCell.textContent = spec.displayValue;
             });
 
+            // Create a single row for 'Datasheet' header with merged cells
+            var datasheetHeaderRow = responseTable.insertRow();
+            var datasheetHeaderCell = datasheetHeaderRow.insertCell(0);
+            datasheetHeaderCell.colSpan = 2;
+
+            // Create an h3 element for 'Datasheet' header
+            var datasheetHeaderElement = document.createElement('h3');
+            datasheetHeaderElement.textContent = 'Datasheet';
+
+            // Append the h3 element to the datasheetHeaderCell
+            datasheetHeaderCell.appendChild(datasheetHeaderElement);
+
             // Check if 'bestDatasheet' property is present
-            if (partDetails.bestDatasheet) {
+            if (partDetails.bestDatasheet && partDetails.bestDatasheet.url) {
                 // Create a row for the datasheet URL
                 var datasheetRow = responseTable.insertRow();
                 var datasheetAttributeCell = datasheetRow.insertCell(0);
@@ -141,7 +153,7 @@ function displayResponse(response) {
 
                 datasheetValueCell.appendChild(datasheetLink);
             } else {
-                // If 'bestDatasheet' is not present, display a message
+                // If 'bestDatasheet' is not present or doesn't have a URL, display a message
                 var noDatasheetRow = responseTable.insertRow();
                 var noDatasheetCell = noDatasheetRow.insertCell(0);
                 noDatasheetCell.colSpan = 2;
