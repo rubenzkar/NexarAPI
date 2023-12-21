@@ -70,9 +70,9 @@ function displayComparison(response, type, url) {
     var responseTable = document.createElement('table');
     
     if (type == 'reference') {
-        responseTable.innerHTML = '<caption>Reference MPN</caption>';
+        responseTable.innerHTML = '<h3>Reference MPN</h3>';
     } else if (type == 'alternate'){
-        responseTable.innerHTML = '<caption>Alternate MPN</caption>';
+        responseTable.innerHTML = '<h3>Alternate MPN</h3>';
     }
     responseTableContainer.style.display = 'block';
 
@@ -121,7 +121,7 @@ function displayComparison(response, type, url) {
             specsHeaderCell.colSpan = 2;
 
             // Create an h3 element for 'Specifications' header
-            var specsHeaderElement = document.createElement('h3');
+            var specsHeaderElement = document.createElement('h4');
             specsHeaderElement.textContent = headers.specs;
 
             // Append the h3 element to the specsHeaderCell
