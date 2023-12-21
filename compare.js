@@ -84,6 +84,8 @@ function getCleanedValue(attribute, partDetails) {
 
 // Function to display GraphQL response for comparison
 function displayComparison(response, type, url) {
+    console.log('displayComparison start'); // Add this line for debugging
+
     var responseTableContainer = document.getElementById('responseTableContainer');
 
     // Check if the response contains valid data
