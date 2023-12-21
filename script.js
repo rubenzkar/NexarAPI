@@ -4,26 +4,29 @@ function sendQuery() {
     var query = `
       query specAttributes($inputQ: String!) {
         supSearchMpn(q: $inputQ, limit: 1) {
-          results {
-            part {
-              mpn
-              manufacturer {
-                name
-              }
-              bestImage {
-                url
-              }
-              shortDescription
-              specs {
-                attribute {
-                  name
-                }
-                displayValue
-              }
-            }
+          esults {
+      part {
+        mpn
+        manufacturer {
+          name
+        }
+        bestImage {
+          url
+        }
+        shortDescription
+        specs {
+          attribute {
+            name
           }
+          displayValue
+        }
+        bestDatasheet {
+          url
         }
       }
+    }
+  }
+}
     `;
 
     var accessToken = credentials.accessToken;
