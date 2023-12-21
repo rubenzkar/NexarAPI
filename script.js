@@ -37,7 +37,7 @@ function displayError(message) {
     errorContainer.style.display = 'block';
 }
 
-// Function to display the JSON response in a table
+// Function to display the JSON response in an HTML table
 function displayResponse(response) {
     var responseTableContainer = document.getElementById('responseTableContainer');
     var responseTable = document.getElementById('responseTable');
