@@ -1,13 +1,10 @@
 // script.js
 
-import axios from 'axios';
-import credentials from './credentials.js';
-
 function sendQuery() {
-    const query = document.getElementById('query').value;
+    var query = document.getElementById('query').value;
 
     // Destructure credentials
-    const { accessToken } = credentials;
+    var accessToken = credentials.accessToken;
 
     // Make GraphQL Request using the static access token
     makeGraphQLRequest(query, accessToken);
@@ -15,18 +12,18 @@ function sendQuery() {
 
 // Function to make GraphQL request using the provided access token
 function makeGraphQLRequest(query, accessToken) {
-    const graphqlEndpoint = 'https://api.nexar.com/graphql/';
+    var graphqlEndpoint = 'https://api.nexar.com/graphql/';
 
     axios.post(graphqlEndpoint, { query: query }, {
         headers: {
-            Authorization: `Bearer ${accessToken}`,
+            Authorization: 'Bearer ' + accessToken,
         },
     })
-    .then(apiResponse => {
+    .then(function(apiResponse) {
         // Handle the GraphQL API response
         displayResponse(apiResponse.data);
     })
-    .catch(error => {
+    .catch(function(error) {
         // Handle errors in GraphQL request
         console.error('GraphQL Request Error:', error);
         displayError('Error making GraphQL request. Check console for details.');
@@ -35,15 +32,15 @@ function makeGraphQLRequest(query, accessToken) {
 
 // Function to display error message to the user
 function displayError(message) {
-    const errorContainer = document.getElementById('errorContainer');
+    var errorContainer = document.getElementById('errorContainer');
     errorContainer.textContent = message;
     errorContainer.style.display = 'block';
 }
 
 // Function to display the JSON response in a table
 function displayResponse(response) {
-    const responseTableContainer = document.getElementById('responseTableContainer');
-    const responseTable = document.getElementById('responseTable');
+    var responseTableContainer = document.getElementById('responseTableContainer');
+    var responseTable = document.getElementById('responseTable');
 
     // Clear previous table content
     responseTable.innerHTML = '';
@@ -52,17 +49,17 @@ function displayResponse(response) {
     responseTableContainer.style.display = 'block';
 
     // Create table header
-    const headerRow = responseTable.insertRow();
-    Object.keys(response.data).forEach(key => {
-        const th = document.createElement('th');
+    var headerRow = responseTable.insertRow();
+    Object.keys(response.data).forEach(function(key) {
+        var th = document.createElement('th');
         th.textContent = key;
         headerRow.appendChild(th);
     });
 
     // Create table rows
-    const dataRow = responseTable.insertRow();
-    Object.values(response.data).forEach(value => {
-        const td = document.createElement('td');
+    var dataRow = responseTable.insertRow();
+    Object.values(response.data).forEach(function(value) {
+        var td = document.createElement('td');
         td.textContent = JSON.stringify(value);
         dataRow.appendChild(td);
     });
