@@ -1,3 +1,69 @@
+// Function to send GraphQL query
+function sendGraphQLQuery(query, url, type, accessToken) {
+    var graphqlEndpoint = 'https://api.nexar.com/graphql/';
+
+    axios.post(graphqlEndpoint, { query: query, variables: { inputQ: url } }, {
+        headers: {
+            Authorization: 'Bearer ' + accessToken,
+        },
+    })
+    .then(function(apiResponse) {
+        console.log('GraphQL Response for ' + type + ':', apiResponse.data);
+        displayComparison(apiResponse.data, type, url);
+    })
+    .catch(function(error) {
+        console.error('GraphQL Request Error:', error);
+        displayError('Error making GraphQL request for ' + type + '. Check console for details.');
+    });
+}
+
+// Function to compare GraphQL responses
+function compareResponses() {
+    var referenceInput = document.getElementById('reference').value.trim();
+    var alternateInput = document.getElementById('alternate').value.trim();
+    // Clear the responseTableContainer
+    responseTableContainer.innerHTML = '';
+    
+    if (!referenceInput || !alternateInput) {
+        alert('Please provide both reference and alternate URLs.');
+        return;
+    }
+
+    var query = `
+        query specAttributes($inputQ: String!) {
+            supSearchMpn(q: $inputQ, limit: 1) {
+                results {
+                    part {
+                        mpn
+                        manufacturer {
+                            name
+                        }
+                        bestImage {
+                            url
+                        }
+                        shortDescription
+                        specs {
+                            attribute {
+                                name
+                            }
+                            displayValue
+                        }
+                        bestDatasheet {
+                            url
+                        }
+                    }
+                }
+            }
+        }
+    `;
+
+    var accessToken = credentials.accessToken;
+
+    // Send GraphQL queries and display responses
+    sendGraphQLQuery(query, referenceInput, 'reference', accessToken);
+    sendGraphQLQuery(query, alternateInput, 'alternate', accessToken);
+}
+
 // Function to display GraphQL response for comparison
 function displayComparison(response, type, url) {
     var responseTableContainer = document.getElementById('responseTableContainer');
