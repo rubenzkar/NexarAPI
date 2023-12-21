@@ -82,6 +82,13 @@ function getCleanedValue(attribute, partDetails) {
     return cleanUpFunctions[attribute] ? cleanUpFunctions[attribute](partDetails[attribute]) : partDetails[attribute];
 }
 
+// Function to format specs for display
+function formatSpecs(specs) {
+    return specs.map(function (spec) {
+        return spec.attribute.name + ': ' + spec.displayValue;
+    }).join('<br>');
+}
+
 // Function to display GraphQL response for comparison
 function displayComparison(response, type, url) {
     var responseTableContainer = document.getElementById('responseTableContainer');
