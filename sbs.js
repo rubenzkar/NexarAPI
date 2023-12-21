@@ -119,16 +119,12 @@ function displayComparison(response, type, url) {
                     var valueCell1 = row.insertCell(1);
                     var cleanedValue1 = cleanUpFunctions[attribute] ? cleanUpFunctions[attribute](partDetails[attribute]) : partDetails[attribute];
                     valueCell1.innerHTML = cleanedValue1;
-
-                    // Values for the second object (empty for now)
-                    var valueCell2 = row.insertCell(2);
-                    valueCell2.innerHTML = '';
                 }
             });
 
             // Create a single row for 'Specifications' header with merged cells
             var specsHeaderRow = responseTable.insertRow();
-            specsHeaderRow.insertCell(0).colSpan = 3;
+            specsHeaderRow.insertCell(0).colSpan = 2;
 
             // Create an h3 element for 'Specifications' header
             var specsHeaderElement = document.createElement('h4');
