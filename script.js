@@ -87,12 +87,27 @@ function displayResponse(response) {
                 }
             };
 
+            // Create rows for 'MPN,' 'Manufacturer,' 'Description,' and 'Image'
+            Object.keys(partDetails).forEach(function (attribute) {
+                if (attribute !== 'specs') {
+                    var tr = responseTable.insertRow();
+                    var attributeCell = tr.insertCell(0);
+                    var valueCell = tr.insertCell(1);
+
+                    attributeCell.textContent = headers[attribute] || attribute;
+
+                    // Clean up the value if a clean-up function is provided
+                    var cleanedValue = cleanUpFunctions[attribute] ? cleanUpFunctions[attribute](partDetails[attribute]) : partDetails[attribute];
+                    valueCell.innerHTML = cleanedValue;
+                }
+            });
+
             // Create a row for 'Specifications' header
             var specsHeaderRow = responseTable.insertRow();
             var specsHeaderCell = specsHeaderRow.insertCell(0);
             specsHeaderCell.textContent = headers.specs;
 
-            // Create a row for each spec attribute and value
+            // Create rows for each spec attribute and value
             partDetails.specs.forEach(function (spec) {
                 var specRow = responseTable.insertRow();
                 var specAttributeCell = specRow.insertCell(0);
@@ -100,26 +115,6 @@ function displayResponse(response) {
 
                 specAttributeCell.textContent = spec.attribute.name;
                 specValueCell.textContent = spec.displayValue;
-            });
-
-            // Create a table row for each attribute and value
-            Object.keys(partDetails).forEach(function (attribute) {
-                // Skip 'specs' as we have already processed it
-                if (attribute !== 'specs') {
-                    // Create a row for each attribute and value
-                    var tr = responseTable.insertRow();
-
-                    // Create cells for attribute and value
-                    var attributeCell = tr.insertCell(0);
-                    var valueCell = tr.insertCell(1);
-
-                    // Set the content of the cells
-                    attributeCell.textContent = headers[attribute] || attribute;
-
-                    // Clean up the value if a clean-up function is provided
-                    var cleanedValue = cleanUpFunctions[attribute] ? cleanUpFunctions[attribute](partDetails[attribute]) : partDetails[attribute];
-                    valueCell.innerHTML = cleanedValue;
-                }
             });
         } else {
             console.error('Invalid response format: "part" property is missing or empty.');
