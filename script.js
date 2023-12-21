@@ -89,6 +89,15 @@ function displayResponse(response) {
 
             // Create a table row for each attribute and value
             Object.keys(partDetails).forEach(function (attribute) {
+                // Check if the attribute is 'specs'
+                if (attribute === 'specs') {
+                    // Create a row for 'Specifications' header
+                    var specsHeaderRow = responseTable.insertRow();
+                    var specsHeaderCell = specsHeaderRow.insertCell(0);
+
+                    specsHeaderCell.textContent = headers[attribute] || attribute;
+                }
+
                 // Create a row for each attribute and value
                 var tr = responseTable.insertRow();
 
@@ -104,22 +113,15 @@ function displayResponse(response) {
                     // Use colspan to merge cells for the 'Specifications' header
                     attributeCell.colSpan = 2;
 
-                    // Create a single cell for the 'Specifications' content
-                    var specsCell = tr.insertCell(2);
-
-                    // Create a div to hold the collapsible content
-                    var collapsibleContent = document.createElement('div');
-                    collapsibleContent.classList.add('content');
-
-                    // Add the content of the 'specs' attribute to the collapsible div
+                    // Create a row for each spec attribute and value
                     partDetails[attribute].forEach(function (spec) {
-                        var specRow = document.createElement('div');
-                        specRow.textContent = `${spec.attribute.name}: ${spec.displayValue}`;
-                        collapsibleContent.appendChild(specRow);
-                    });
+                        var specRow = responseTable.insertRow();
+                        var specAttributeCell = specRow.insertCell(0);
+                        var specValueCell = specRow.insertCell(1);
 
-                    // Append the collapsible div to the cell
-                    specsCell.appendChild(collapsibleContent);
+                        specAttributeCell.textContent = spec.attribute.name;
+                        specValueCell.textContent = spec.displayValue;
+                    });
                 } else {
                     // Clean up the value if a clean-up function is provided
                     var cleanedValue = cleanUpFunctions[attribute] ? cleanUpFunctions[attribute](partDetails[attribute]) : partDetails[attribute];
@@ -135,3 +137,4 @@ function displayResponse(response) {
         displayError('Invalid response format. Check console for details.');
     }
 }
+
