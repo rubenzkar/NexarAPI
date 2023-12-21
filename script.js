@@ -64,7 +64,8 @@ function displayResponse(response) {
                 mpn: 'MPN',
                 manufacturer: 'Manufacturer',
                 shortDescription: 'Description',
-                bestImage: 'Image'
+                bestImage: 'Image',
+                specs: 'Specifications' // Updated header for 'specs'
             };
 
             var cleanUpFunctions = {
