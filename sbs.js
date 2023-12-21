@@ -156,7 +156,7 @@ function displayComparison(response, type, url) {
             if (partDetails.bestDatasheet && partDetails.bestDatasheet.url) {
                 // Create a single row for 'Datasheet' header with merged cells
                 var datasheetHeaderRow = responseTable.insertRow();
-                datasheetHeaderRow.insertCell(0).colSpan = 3;
+                datasheetHeaderRow.insertCell(0).colSpan = 2;
 
                 // Create an h3 element for 'Datasheet' header
                 var datasheetHeaderElement = document.createElement('h3');
@@ -179,13 +179,25 @@ function displayComparison(response, type, url) {
                 var datasheetValueCell1 = datasheetRow.insertCell(1);
                 datasheetValueCell1.appendChild(datasheetLink);
 
-                // Values for the second object (empty for now)
-                var datasheetValueCell2 = datasheetRow.insertCell(2);
-                datasheetValueCell2.textContent = '';
             } else {
+                // Create a single row for 'Datasheet' header with merged cells
+                var datasheetHeaderRow = responseTable.insertRow();
+                datasheetHeaderRow.insertCell(0).colSpan = 2;
+
+                // Create an h3 element for 'Datasheet' header
+                var datasheetHeaderElement = document.createElement('h3');
+                datasheetHeaderElement.textContent = 'Datasheet';
+
+                // Append the h3 element to the datasheetHeaderCell
+                datasheetHeaderRow.appendChild(datasheetHeaderElement);
+
+                // Create a row for the datasheet URL
+                var datasheetRow = responseTable.insertRow();
+                datasheetRow.insertCell(0).textContent = 'PDF';
+                
                 // If 'bestDatasheet' is not present or doesn't have a URL, display a message
                 var noDatasheetRow = responseTable.insertRow();
-                noDatasheetRow.insertCell(0).colSpan = 3;
+                noDatasheetRow.insertCell(0).colSpan = 2;
                 noDatasheetRow.innerHTML = 'Datasheet not available';
             }
         } else {
