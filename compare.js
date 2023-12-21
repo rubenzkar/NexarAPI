@@ -68,8 +68,12 @@ function displayComparison(response, type, url) {
     
     // Create a new table for each response
     var responseTable = document.createElement('table');
-    responseTable.innerHTML = '<caption>' + type + ' URL: ' + url + '</caption>';
-
+    
+    if (type == 'reference') {
+        responseTable.innerHTML = '<caption>Reference MPN</caption>';
+    } else if (type == 'alternate'){
+        responseTable.innerHTML = '<caption>Alternate MPN</caption>';
+    }
     responseTableContainer.style.display = 'block';
 
     if (response.data && response.data.supSearchMpn && response.data.supSearchMpn.results) {
