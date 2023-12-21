@@ -8,7 +8,7 @@ function sendGraphQLQuery(query, url, type, accessToken) {
         },
     })
     .then(function(apiResponse) {
-        console.log('GraphQL Response:', apiResponse.data);
+        console.log('GraphQL Response for ' + type + ':', apiResponse.data);
         displayComparison(apiResponse.data, type, url);
     })
     .catch(function(error) {
@@ -61,8 +61,6 @@ function compareResponses() {
     sendGraphQLQuery(query, referenceInput, 'reference', accessToken);
     sendGraphQLQuery(query, alternateInput, 'alternate', accessToken);
     
-    console.log('compareResponses executed'); // Add this line for debugging
-
 }
 // Function to clean up values based on attribute
 function getCleanedValue(attribute, partDetails) {
