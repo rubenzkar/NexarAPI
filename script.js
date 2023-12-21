@@ -112,7 +112,6 @@ function displayResponse(response) {
                     var toggleButton = document.createElement('button');
                     toggleButton.textContent = 'Toggle Specifications';
                     toggleButton.classList.add('collapsible');
-                    addRow('', toggleButton); // Add a row for the button
 
                     // Create a div to hold the collapsible content
                     var collapsibleContent = document.createElement('div');
@@ -126,6 +125,7 @@ function displayResponse(response) {
                     });
 
                     // Append the collapsible div to the table
+                    addRow('', toggleButton);
                     addRow('', collapsibleContent);
                     
                     // Add an event listener to toggle the collapsible content
@@ -147,4 +147,3 @@ function displayResponse(response) {
         displayError('Invalid response format. Check console for details.');
     }
 }
-
