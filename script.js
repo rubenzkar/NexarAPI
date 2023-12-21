@@ -107,10 +107,10 @@ function displayResponse(response) {
             specsHeaderCell.textContent = headers.specs;
 
             // Create an h3 element for 'Specifications' header
-            var specsHeader = document.createElement('h3');
+            var specsHeaderCell = document.createElement('h3');
 
             // Append the h3 element to the responseTableContainer
-            responseTableContainer.appendChild(specsHeader);
+            responseTableContainer.appendChild(specsHeaderCell);
 
             partDetails.specs.forEach(function (spec) {
                 var specRow = responseTable.insertRow();
