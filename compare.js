@@ -3,7 +3,7 @@ function compareResponses() {
     var referenceInput = document.getElementById('reference').value.trim();
     var alternateInput = document.getElementById('alternate').value.trim();
 
-    if (!referenceUrl || !alternateUrl) {
+    if (!referenceInput || !alternateInput) {
         alert('Please provide both reference and alternate URLs.');
         return;
     }
@@ -47,7 +47,7 @@ function sendGraphQLQuery(url, query, type) {
 
     axios.post(graphqlEndpoint, { query: query, variables: { inputQ: url } }, {
         headers: {
-            Authorization: 'Bearer ' + credentials.accessToken;,
+            Authorization: 'Bearer ' + credentials.accessToken,
         },
     })
     .then(function(apiResponse) {
