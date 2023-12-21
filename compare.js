@@ -84,14 +84,13 @@ function getCleanedValue(attribute, partDetails) {
 
 // Function to display GraphQL response for comparison
 function displayComparison(response, type, url) {
-    console.log('displayComparison start for ' + type + ': ' + url +'.'); // Add this line for debugging
-
     var responseTableContainer = document.getElementById('responseTableContainer');
+    var responseTable = document.getElementById('responseTable');
 
     // Check if the response contains valid data
     if (response.data && response.data.supSearchMpn && response.data.supSearchMpn.results) {
         var partDetails = response.data.supSearchMpn.results[0]?.part;
-        
+
         // Check if partDetails is valid
         if (partDetails) {
             var headers = {
@@ -102,20 +101,18 @@ function displayComparison(response, type, url) {
                 specs: 'Specifications'
             };
 
-            // Create a table for each response
-            var table = document.createElement('table');
-            table.innerHTML = '<caption>' + type + '.: ' + url + '</caption>';
-            console.log('Teble created for : ' + type +'.'); // Add this line for debugging
-        
-            // Create header row
-            var headerRow = table.insertRow();
-            Object.values(headers).forEach(function (header) {
-                var headerCell = headerRow.insertCell();
-                headerCell.textContent = header;
-            });
+            // Create header row if it doesn't exist
+            if (!responseTable.tHead) {
+                var header = responseTable.createTHead();
+                var headerRow = header.insertRow();
+                Object.values(headers).forEach(function (headerText) {
+                    var headerCell = headerRow.insertCell();
+                    headerCell.textContent = headerText;
+                });
+            }
 
             // Create data row
-            var dataRow = table.insertRow();
+            var dataRow = responseTable.insertRow();
             Object.keys(headers).forEach(function (key) {
                 var dataCell = dataRow.insertCell();
                 var cleanedValue = getCleanedValue(key, partDetails);
@@ -123,7 +120,7 @@ function displayComparison(response, type, url) {
             });
 
             // Display the table
-            responseTableContainer.appendChild(table);
+            responseTableContainer.style.display = 'block';
         } else {
             console.error('Invalid response format: "part" property is missing or empty.');
             displayError('Invalid response format for ' + type + '. Check console for details.');
@@ -133,4 +130,3 @@ function displayComparison(response, type, url) {
         displayError('Invalid response format for ' + type + '. Check console for details.');
     }
 }
-
