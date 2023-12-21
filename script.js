@@ -99,17 +99,27 @@ function displayResponse(response) {
                 // Set the content of the cells
                 attributeCell.textContent = headers[attribute] || attribute;
 
-                // Check if the attribute is an array (e.g., 'specs')
-                if (Array.isArray(partDetails[attribute])) {
-                    partDetails[attribute].forEach(function (spec) {
-                        // Create a row for each spec attribute and value
-                        var specRow = responseTable.insertRow();
-                        var specAttributeCell = specRow.insertCell(0);
-                        var specValueCell = specRow.insertCell(1);
+                // Check if the attribute is 'specs'
+                if (attribute === 'specs') {
+                    // Use colspan to merge cells for the 'Specifications' header
+                    attributeCell.colSpan = 2;
 
-                        specAttributeCell.textContent = spec.attribute.name;
-                        specValueCell.textContent = spec.displayValue;
+                    // Create a single cell for the 'Specifications' content
+                    var specsCell = tr.insertCell(2);
+
+                    // Create a div to hold the collapsible content
+                    var collapsibleContent = document.createElement('div');
+                    collapsibleContent.classList.add('content');
+
+                    // Add the content of the 'specs' attribute to the collapsible div
+                    partDetails[attribute].forEach(function (spec) {
+                        var specRow = document.createElement('div');
+                        specRow.textContent = `${spec.attribute.name}: ${spec.displayValue}`;
+                        collapsibleContent.appendChild(specRow);
                     });
+
+                    // Append the collapsible div to the cell
+                    specsCell.appendChild(collapsibleContent);
                 } else {
                     // Clean up the value if a clean-up function is provided
                     var cleanedValue = cleanUpFunctions[attribute] ? cleanUpFunctions[attribute](partDetails[attribute]) : partDetails[attribute];
