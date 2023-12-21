@@ -104,7 +104,8 @@ function displayComparison(response, type, url) {
                     var valueCell = tr.insertCell(1);
 
                     attributeCell.textContent = headers[attribute] || attribute;
-
+                    var cleanedValue = cleanUpFunctions[attribute] ? cleanUpFunctions[attribute](partDetails[attribute]) : partDetails[attribute];
+                    valueCell.innerHTML = cleanedValue;
                 }
             });
 
