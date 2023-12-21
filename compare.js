@@ -60,6 +60,8 @@ function compareResponses() {
     // Send GraphQL queries and display responses
     sendGraphQLQuery(query, referenceInput, 'reference', accessToken);
     sendGraphQLQuery(query, alternateInput, 'alternate', accessToken);
+    
+    console.log('compareResponses executed'); // Add this line for debugging
 
 }
 
