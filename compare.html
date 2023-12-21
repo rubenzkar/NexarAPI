@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GraphQL Comparison</title>
+    <!-- Include Axios library -->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<body>
+    <h1>GraphQL Comparison</h1>
+
+    <form id="comparisonForm">
+        <label for="reference">Reference URL:</label>
+        <input type="text" id="reference" name="reference" placeholder="Enter reference URL" required>
+
+        <label for="alternate">Alternate URL:</label>
+        <input type="text" id="alternate" name="alternate" placeholder="Enter alternate URL" required>
+
+        <button type="button" onclick="compareResponses()">Compare</button>
+    </form>
+
+    <div id="responseTableContainer"></div>
+    
+    <!-- Include script.js -->
+    <script src="script.js"></script>
+    <!-- Include compare.js -->
+    <script src="compare.js"></script>
+</body>
+</html>
