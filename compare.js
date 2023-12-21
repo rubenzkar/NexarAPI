@@ -67,9 +67,15 @@ function compareResponses() {
 function displayComparison(response, type, url) {
     var responseTableContainer = document.getElementById('responseTableContainer');
 
-    // Create a table for each response
-    var table = document.createElement('table');
-    table.innerHTML = '<caption>' + type + ' URL: ' + url + '</caption>';
+    // Check if the table already exists, if not, create one
+    var table = responseTableContainer.querySelector('table');
+    if (!table) {
+        table = document.createElement('table');
+        responseTableContainer.appendChild(table);
+    }
+
+    // Create a row for each response
+    var row = table.insertRow();
 
     if (response.data && response.data.supSearchMpn && response.data.supSearchMpn.results) {
         var partDetails = response.data.supSearchMpn.results[0]?.part;
@@ -98,23 +104,18 @@ function displayComparison(response, type, url) {
                 }
             };
 
-            // Create header row
-            var headerRow = table.insertRow();
-            Object.values(headers).forEach(function (header) {
-                var headerCell = headerRow.insertCell();
-                headerCell.textContent = header;
-            });
-
-            // Create data rows
-            var dataRow = table.insertRow();
+            // Add cells for each header
             Object.keys(headers).forEach(function (key) {
-                var dataCell = dataRow.insertCell();
-                var cleanedValue = cleanUpFunctions[key] ? cleanUpFunctions[key](partDetails[key]) : partDetails[key];
-                dataCell.innerHTML = cleanedValue;
+                var cell = row.insertCell();
+                cell.textContent = headers[key];
             });
 
-            // Display the table
-            responseTableContainer.appendChild(table);
+            // Add cells for each data item
+            Object.keys(headers).forEach(function (key) {
+                var cell = row.insertCell();
+                var cleanedValue = cleanUpFunctions[key] ? cleanUpFunctions[key](partDetails[key]) : partDetails[key];
+                cell.innerHTML = cleanedValue;
+            });
         } else {
             console.error('Invalid response format: "part" property is missing or empty.');
             displayError('Invalid response format for ' + type + '. Check console for details.');
