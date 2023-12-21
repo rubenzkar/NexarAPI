@@ -65,8 +65,10 @@ function compareResponses() {
 // Function to display GraphQL response for comparison
 function displayComparison(response, type, url) {
     var responseTableContainer = document.getElementById('responseTableContainer');
-    var responseTable = document.getElementById('responseTable');
-    responseTable.innerHTML = '';
+    
+    // Create a new table for each response
+    var responseTable = document.createElement('table');
+    responseTable.innerHTML = '<caption>' + type + ' URL: ' + url + '</caption>';
 
     responseTableContainer.style.display = 'block';
 
@@ -97,19 +99,16 @@ function displayComparison(response, type, url) {
                 }
             };
 
-            // Create header row
-            var headerRow = responseTable.insertRow();
-            Object.values(headers).forEach(function (header) {
-                var headerCell = headerRow.insertCell();
-                headerCell.textContent = header;
-            });
+            Object.keys(partDetails).forEach(function (attribute) {
+                if (attribute !== 'specs' && attribute !== 'bestDatasheet') {
+                    var tr = responseTable.insertRow();
+                    var attributeCell = tr.insertCell(0);
+                    var valueCell = tr.insertCell(1);
 
-            // Create data rows
-            var dataRow = responseTable.insertRow();
-            Object.keys(headers).forEach(function (key) {
-                var dataCell = dataRow.insertCell();
-                var cleanedValue = cleanUpFunctions[key] ? cleanUpFunctions[key](partDetails[key]) : partDetails[key];
-                dataCell.innerHTML = cleanedValue;
+                    attributeCell.textContent = headers[attribute] || attribute;
+                    var cleanedValue = cleanUpFunctions[attribute] ? cleanUpFunctions[attribute](partDetails[attribute]) : partDetails[attribute];
+                    valueCell.innerHTML = cleanedValue;
+                }
             });
 
             // Create a single row for 'Specifications' header with merged cells
@@ -176,4 +175,7 @@ function displayComparison(response, type, url) {
         console.error('Invalid response format: "supSearchMpn.results" property is missing.');
         displayError('Invalid response format. Check console for details.');
     }
+
+    // Append the table to the responseTableContainer
+    responseTableContainer.appendChild(responseTable);
 }
