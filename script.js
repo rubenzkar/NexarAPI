@@ -149,7 +149,7 @@ function displayResponse(response) {
                 var datasheetLink = document.createElement('a');
                 datasheetLink.href = partDetails.bestDatasheet.url;
                 datasheetLink.target = '_blank'; // Open the link in a new tab
-                datasheetLink.textContent = 'Open PDF';
+                datasheetLink.textContent = 'Open datasheet in new window';
 
                 datasheetValueCell.appendChild(datasheetLink);
             } else {
