@@ -51,10 +51,10 @@ function displayResponse(response) {
     // Log the entire response object to the console for troubleshooting
     console.log('GraphQL Response:', response);
 
-    // Check if 'data' property exists in the response
-    if (response.data) {
+    // Check if 'supSearchMpn.results' property exists in the response
+    if (response.data && response.data.supSearchMpn && response.data.supSearchMpn.results) {
         // Extract the part details from the JSON response
-        var partDetails = response.data.results?.[0]?.part;
+        var partDetails = response.data.supSearchMpn.results[0]?.part;
 
         // Check if 'part' property exists
         if (partDetails) {
@@ -75,7 +75,7 @@ function displayResponse(response) {
             displayError('Invalid response format. Check console for details.');
         }
     } else {
-        console.error('Invalid response format: "data" property is missing.');
+        console.error('Invalid response format: "supSearchMpn.results" property is missing.');
         displayError('Invalid response format. Check console for details.');
     }
 }
