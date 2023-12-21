@@ -19,10 +19,9 @@ function sendGraphQLQuery(query, url, type, accessToken) {
 
 // Function to compare GraphQL responses
 function compareResponses() {
-    var referenceInput = document.getElementById('reference').value.trim();
-    var alternateInput = document.getElementById('alternate').value.trim();
-    // Clear the responseTableContainer
-    responseTableContainer.innerHTML = '';
+    var urlParams = new URLSearchParams(window.location.search);
+    var referenceInput = urlParams.get('reference');
+    var alternateInput = urlParams.get('alternate');
     
     if (!referenceInput || !alternateInput) {
         alert('Please provide both reference and alternate URLs.');
