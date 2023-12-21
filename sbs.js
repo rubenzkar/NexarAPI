@@ -141,10 +141,6 @@ function displayComparison(response, type, url) {
                     // Values for the first object
                     var specValueCell1 = specRow.insertCell(1);
                     specValueCell1.textContent = spec.displayValue;
-    
-                    // Values for the second object (empty for now)
-                    var specValueCell2 = specRow.insertCell(2);
-                    specValueCell2.textContent = '';
                 }
             });
 
