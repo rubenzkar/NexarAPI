@@ -37,7 +37,7 @@ function displayError(message) {
     errorContainer.style.display = 'block';
 }
 
-// Function to display the JSON response in an HTML table
+// Function to display the JSON response attributes and values in an HTML table
 function displayResponse(response) {
     var responseTableContainer = document.getElementById('responseTableContainer');
     var responseTable = document.getElementById('responseTable');
@@ -48,19 +48,19 @@ function displayResponse(response) {
     // Display the table container
     responseTableContainer.style.display = 'block';
 
-    // Create table header
-    var headerRow = responseTable.insertRow();
-    Object.keys(response.data).forEach(function(key) {
-        var th = document.createElement('th');
-        th.textContent = key;
-        headerRow.appendChild(th);
-    });
+    // Extract the part details from the JSON response
+    var partDetails = response.results[0].part;
 
-    // Create table rows
-    var dataRow = responseTable.insertRow();
-    Object.values(response.data).forEach(function(value) {
-        var td = document.createElement('td');
-        td.textContent = JSON.stringify(value);
-        dataRow.appendChild(td);
+    // Create a table row for each attribute and value
+    Object.keys(partDetails).forEach(function (attribute) {
+        var tr = responseTable.insertRow();
+
+        // Create cells for attribute and value
+        var attributeCell = tr.insertCell(0);
+        var valueCell = tr.insertCell(1);
+
+        // Set the content of the cells
+        attributeCell.textContent = attribute;
+        valueCell.textContent = JSON.stringify(partDetails[attribute]);
     });
 }
