@@ -69,9 +69,9 @@ function displayComparison(response, type, url) {
     // Create a new table for each response
     var responseTable = document.createElement('table');
     
-    if (type = 'alternate') {
+    if (type == 'alternate') {
         responseTable.innerHTML = '<caption>Alternate Part</caption>';
-    } else if (type = 'reference') {
+    } else if (type == 'reference') {
         responseTable.innerHTML = '<caption>Reference Part</caption>';
     }
     responseTableContainer.style.display = 'block';
