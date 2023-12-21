@@ -147,20 +147,19 @@ function displayComparison(response, type, url) {
 
             // Check if 'bestDatasheet' property is present
             if (partDetails.bestDatasheet && partDetails.bestDatasheet.url) {
-                // Create a single row for 'Datasheet' header with merged cells
-                var datasheetHeaderRow = responseTable.insertRow();
-                datasheetHeaderRow.insertCell(0).colSpan = 2;
-
                 // Create an h3 element for 'Datasheet' header
                 var datasheetHeaderElement = document.createElement('h3');
                 datasheetHeaderElement.textContent = 'Datasheet';
 
                 // Append the h3 element to the datasheetHeaderCell
-                datasheetHeaderRow.appendChild(datasheetHeaderElement);
+                datasheetHeaderCell.appendChild(datasheetHeaderElement);
 
                 // Create a row for the datasheet URL
                 var datasheetRow = responseTable.insertRow();
-                datasheetRow.insertCell(0).textContent = 'PDF';
+                var datasheetAttributeCell = datasheetRow.insertCell(0);
+                var datasheetValueCell = datasheetRow.insertCell(1);
+
+                datasheetAttributeCell.textContent = 'PDF';
 
                 // Create a link element for the datasheet URL
                 var datasheetLink = document.createElement('a');
@@ -173,20 +172,19 @@ function displayComparison(response, type, url) {
                 datasheetValueCell1.appendChild(datasheetLink);
 
             } else {
-                // Create a single row for 'Datasheet' header with merged cells
-                var datasheetHeaderRow = responseTable.insertRow();
-                datasheetHeaderRow.insertCell(0).colSpan = 2;
-
                 // Create an h3 element for 'Datasheet' header
                 var datasheetHeaderElement = document.createElement('h3');
                 datasheetHeaderElement.textContent = 'Datasheet';
 
                 // Append the h3 element to the datasheetHeaderCell
-                datasheetHeaderRow.appendChild(datasheetHeaderElement);
+                datasheetHeaderCell.appendChild(datasheetHeaderElement);
 
                 // Create a row for the datasheet URL
                 var datasheetRow = responseTable.insertRow();
-                datasheetRow.insertCell(0).textContent = 'PDF';
+                var datasheetAttributeCell = datasheetRow.insertCell(0);
+                var datasheetValueCell = datasheetRow.insertCell(1);
+
+                datasheetAttributeCell.textContent = 'PDF';
                 
                 // If 'bestDatasheet' is not present or doesn't have a URL, display a message
                 datasheetRow.insertCell(1).textContent = 'Datasheet not available';
