@@ -87,42 +87,35 @@ function displayResponse(response) {
                 }
             };
 
+            // Create a row for 'Specifications' header
+            var specsHeaderRow = responseTable.insertRow();
+            var specsHeaderCell = specsHeaderRow.insertCell(0);
+            specsHeaderCell.textContent = headers.specs;
+
+            // Create a row for each spec attribute and value
+            partDetails.specs.forEach(function (spec) {
+                var specRow = responseTable.insertRow();
+                var specAttributeCell = specRow.insertCell(0);
+                var specValueCell = specRow.insertCell(1);
+
+                specAttributeCell.textContent = spec.attribute.name;
+                specValueCell.textContent = spec.displayValue;
+            });
+
             // Create a table row for each attribute and value
             Object.keys(partDetails).forEach(function (attribute) {
-                // Check if the attribute is 'specs'
-                if (attribute === 'specs') {
-                    // Create a row for 'Specifications' header
-                    var specsHeaderRow = responseTable.insertRow();
-                    var specsHeaderCell = specsHeaderRow.insertCell(0);
+                // Skip 'specs' as we have already processed it
+                if (attribute !== 'specs') {
+                    // Create a row for each attribute and value
+                    var tr = responseTable.insertRow();
 
-                    specsHeaderCell.textContent = headers[attribute] || attribute;
-                }
+                    // Create cells for attribute and value
+                    var attributeCell = tr.insertCell(0);
+                    var valueCell = tr.insertCell(1);
 
-                // Create a row for each attribute and value
-                var tr = responseTable.insertRow();
+                    // Set the content of the cells
+                    attributeCell.textContent = headers[attribute] || attribute;
 
-                // Create cells for attribute and value
-                var attributeCell = tr.insertCell(0);
-                var valueCell = tr.insertCell(1);
-
-                // Set the content of the cells
-                attributeCell.textContent = headers[attribute] || attribute;
-
-                // Check if the attribute is 'specs'
-                if (attribute === 'specs') {
-                    // Use colspan to merge cells for the 'Specifications' header
-                    attributeCell.colSpan = 2;
-
-                    // Create a row for each spec attribute and value
-                    partDetails[attribute].forEach(function (spec) {
-                        var specRow = responseTable.insertRow();
-                        var specAttributeCell = specRow.insertCell(0);
-                        var specValueCell = specRow.insertCell(1);
-
-                        specAttributeCell.textContent = spec.attribute.name;
-                        specValueCell.textContent = spec.displayValue;
-                    });
-                } else {
                     // Clean up the value if a clean-up function is provided
                     var cleanedValue = cleanUpFunctions[attribute] ? cleanUpFunctions[attribute](partDetails[attribute]) : partDetails[attribute];
                     valueCell.innerHTML = cleanedValue;
@@ -137,4 +130,3 @@ function displayResponse(response) {
         displayError('Invalid response format. Check console for details.');
     }
 }
-
