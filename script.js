@@ -1,4 +1,4 @@
-/ Function to send GraphQL query
+// Function to send GraphQL query
 function sendQuery() {
     var userInput = document.getElementById('userInput').value.trim();
     var query = `
