@@ -69,7 +69,7 @@ function displayResponse(response) {
                 manufacturer: 'Manufacturer',
                 shortDescription: 'Description',
                 bestImage: 'Image',
-                specs: 'Specifications<'
+                specs: 'Specifications'
             };
 
             var cleanUpFunctions = {
