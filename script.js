@@ -31,8 +31,9 @@ function displayResponse(response) {
 
         // Check if 'part' property exists
         if (partDetails) {
-            // Create a table row for each attribute and value
+            // Iterate over each attribute in 'partDetails'
             Object.keys(partDetails).forEach(function (attribute) {
+                // Create a table row for each attribute and value
                 var tr = responseTable.insertRow();
 
                 // Create cells for attribute and value
@@ -42,9 +43,10 @@ function displayResponse(response) {
                 // Set the content of the cells
                 attributeCell.textContent = attribute;
 
-                // Check if the attribute is 'specs'
-                if (attribute === 'specs') {
+                // Check if the attribute is an array (e.g., 'specs')
+                if (Array.isArray(partDetails[attribute])) {
                     partDetails[attribute].forEach(function (spec) {
+                        // Create a row for each spec attribute and value
                         var specRow = responseTable.insertRow();
                         var specAttributeCell = specRow.insertCell(0);
                         var specValueCell = specRow.insertCell(1);
