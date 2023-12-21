@@ -111,7 +111,7 @@ function displayComparison(response, type, url) {
             };
 
             Object.keys(partDetails).forEach(function (attribute) {
-                if (attribute !== 'specs' && attribute !== 'bestDatasheet' && attribute !== 'Schedule B') {
+                if (attribute !== 'specs' && attribute !== 'bestDatasheet') {
                     var row = responseTable.insertRow();
                     row.insertCell(0).textContent = headers[attribute] || attribute;
 
@@ -138,16 +138,18 @@ function displayComparison(response, type, url) {
             specsHeaderRow.appendChild(specsHeaderElement);
 
             partDetails.specs.forEach(function (spec) {
-                var specRow = responseTable.insertRow();
-                specRow.insertCell(0).textContent = spec.attribute.name;
-
-                // Values for the first object
-                var specValueCell1 = specRow.insertCell(1);
-                specValueCell1.textContent = spec.displayValue;
-
-                // Values for the second object (empty for now)
-                var specValueCell2 = specRow.insertCell(2);
-                specValueCell2.textContent = '';
+                if (spec.attribute.name !== 'Schedule B'){
+                    var specRow = responseTable.insertRow();
+                    specRow.insertCell(0).textContent = spec.attribute.name;
+    
+                    // Values for the first object
+                    var specValueCell1 = specRow.insertCell(1);
+                    specValueCell1.textContent = spec.displayValue;
+    
+                    // Values for the second object (empty for now)
+                    var specValueCell2 = specRow.insertCell(2);
+                    specValueCell2.textContent = '';
+                }
             });
 
             // Check if 'bestDatasheet' property is present
