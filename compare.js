@@ -64,24 +64,35 @@ function compareResponses() {
     console.log('compareResponses executed'); // Add this line for debugging
 
 }
+// Function to clean up values based on attribute
+function getCleanedValue(attribute, partDetails) {
+    var cleanUpFunctions = {
+        mpn: function (value) {
+            return value;
+        },
+        manufacturer: function (value) {
+            return value && value.name ? value.name : value;
+        },
+        shortDescription: function (value) {
+            return value;
+        },
+        bestImage: function (value) {
+            return value && value.url ? `<img src="${value.url}" alt="Product Image" style="max-width: 100px; max-height: 100px;">` : value;
+        }
+    };
+
+    return cleanUpFunctions[attribute] ? cleanUpFunctions[attribute](partDetails[attribute]) : partDetails[attribute];
+}
 
 // Function to display GraphQL response for comparison
 function displayComparison(response, type, url) {
     var responseTableContainer = document.getElementById('responseTableContainer');
 
-    // Check if the table already exists, if not, create one
-    var table = responseTableContainer.querySelector('table');
-    if (!table) {
-        table = document.createElement('table');
-        responseTableContainer.appendChild(table);
-    }
-
-    // Create a row for each response
-    var row = table.insertRow();
-
+    // Check if the response contains valid data
     if (response.data && response.data.supSearchMpn && response.data.supSearchMpn.results) {
         var partDetails = response.data.supSearchMpn.results[0]?.part;
 
+        // Check if partDetails is valid
         if (partDetails) {
             var headers = {
                 mpn: 'MPN',
@@ -91,33 +102,27 @@ function displayComparison(response, type, url) {
                 specs: 'Specifications'
             };
 
-            var cleanUpFunctions = {
-                mpn: function (value) {
-                    return value;
-                },
-                manufacturer: function (value) {
-                    return value && value.name ? value.name : value;
-                },
-                shortDescription: function (value) {
-                    return value;
-                },
-                bestImage: function (value) {
-                    return value && value.url ? `<img src="${value.url}" alt="Product Image" style="max-width: 100px; max-height: 100px;">` : value;
-                }
-            };
+            // Create a table for each response
+            var table = document.createElement('table');
+            table.innerHTML = '<caption>' + type + ' URL: ' + url + '</caption>';
 
-            // Add cells for each header
-            Object.keys(headers).forEach(function (key) {
-                var cell = row.insertCell();
-                cell.textContent = headers[key];
+            // Create header row
+            var headerRow = table.insertRow();
+            Object.values(headers).forEach(function (header) {
+                var headerCell = headerRow.insertCell();
+                headerCell.textContent = header;
             });
 
-            // Add cells for each data item
+            // Create data row
+            var dataRow = table.insertRow();
             Object.keys(headers).forEach(function (key) {
-                var cell = row.insertCell();
-                var cleanedValue = cleanUpFunctions[key] ? cleanUpFunctions[key](partDetails[key]) : partDetails[key];
-                cell.innerHTML = cleanedValue;
+                var dataCell = dataRow.insertCell();
+                var cleanedValue = getCleanedValue(key, partDetails);
+                dataCell.innerHTML = cleanedValue;
             });
+
+            // Display the table
+            responseTableContainer.appendChild(table);
         } else {
             console.error('Invalid response format: "part" property is missing or empty.');
             displayError('Invalid response format for ' + type + '. Check console for details.');
@@ -127,3 +132,4 @@ function displayComparison(response, type, url) {
         displayError('Invalid response format for ' + type + '. Check console for details.');
     }
 }
+
