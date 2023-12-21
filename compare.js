@@ -105,8 +105,6 @@ function displayComparison(response, type, url) {
 
                     attributeCell.textContent = headers[attribute] || attribute;
 
-                    var cleanedValue = getCleanedValue(attribute, partDetails);
-                    valueCell.innerHTML = cleanedValue;
                 }
             });
 
