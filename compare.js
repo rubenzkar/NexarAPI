@@ -37,8 +37,8 @@ function compareResponses() {
     `;
 
     // Send GraphQL queries and display responses
-    sendGraphQLQuery(referenceUrl, query, 'reference');
-    sendGraphQLQuery(alternateUrl, query, 'alternate');
+    sendGraphQLQuery(referenceInput, query, 'reference');
+    sendGraphQLQuery(alternateInput, query, 'alternate');
 }
 
 // Function to send GraphQL query
