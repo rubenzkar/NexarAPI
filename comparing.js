@@ -165,7 +165,7 @@ function displayComparison(response, type, url) {
                 var datasheetLink = document.createElement('a');
                 datasheetLink.href = partDetails.bestDatasheet.url;
                 datasheetLink.target = '_blank'; // Open the link in a new tab
-                datasheetLink.textContent = 'Open PDF';
+                datasheetLink.textContent = 'Open Datasheet in new window';
 
                 datasheetValueCell.appendChild(datasheetLink);
             } else {
