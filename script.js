@@ -4,7 +4,7 @@ function sendQuery() {
     var query = `
       query specAttributes($inputQ: String!) {
         supSearchMpn(q: $inputQ, limit: 1) {
-          esults {
+          results {
       part {
         mpn
         manufacturer {
