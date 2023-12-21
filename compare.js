@@ -23,7 +23,7 @@ function compareResponses() {
     var alternateInput = document.getElementById('alternate').value.trim();
 
     if (!referenceInput || !alternateInput) {
-        alert('Please provide both reference and alternate URLs.');
+        alert('Please provide both reference and alternate.');
         return;
     }
 
@@ -68,8 +68,12 @@ function displayComparison(response, type, url) {
     
     // Create a new table for each response
     var responseTable = document.createElement('table');
-    responseTable.innerHTML = '<caption>' + type + ' URL: ' + url + '</caption>';
-
+    
+    if (type = 'alternate') {
+        responseTable.innerHTML = '<caption>Alternate Part</caption>';
+    } else if (type = 'reference') {
+        responseTable.innerHTML = '<caption>Reference Part</caption>';
+    }
     responseTableContainer.style.display = 'block';
 
     if (response.data && response.data.supSearchMpn && response.data.supSearchMpn.results) {
