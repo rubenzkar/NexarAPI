@@ -52,8 +52,13 @@ function makeGraphQLRequest(query, userInput, accessToken) {
 
 function displayError(message) {
     var errorContainer = document.getElementById('errorContainer');
-    errorContainer.textContent = message;
-    errorContainer.style.display = 'block';
+    if (errorContainer) {
+        errorContainer.textContent = message;
+        errorContainer.style.display = 'block';
+    } else {
+        // If not available, log the error to the console
+        console.error('Error Container not found:', message);
+    }
 }
 
 function displayResponse(response) {
