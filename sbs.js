@@ -188,8 +188,7 @@ function displayComparison(response, type, url) {
                 datasheetRow.insertCell(0).textContent = 'PDF';
                 
                 // If 'bestDatasheet' is not present or doesn't have a URL, display a message
-                var noDatasheetRow = responseTable.insertRow();
-                noDatasheetRow.insertCell(0).colSpan = 2;
+                var datasheetValueCell1 = datasheetRow.insertCell(1);
                 noDatasheetRow.innerHTML = 'Datasheet not available';
             }
         } else {
