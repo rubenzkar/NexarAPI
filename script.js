@@ -48,31 +48,41 @@ function displayResponse(response) {
     // Display the table container
     responseTableContainer.style.display = 'block';
 
-    // Check if 'results' property exists and has at least one element
-    if (response.results && response.results.length > 0) {
+    // Check if 'data' property exists in the response
+    if (response.data) {
         // Extract the part details from the JSON response
-        var partDetails = response.results[0].part;
+        var results = response.data.results;
 
-        // Check if 'part' property exists
-        if (partDetails) {
-            // Create a table row for each attribute and value
-            Object.keys(partDetails).forEach(function (attribute) {
-                var tr = responseTable.insertRow();
+        // Check if 'results' property exists and has at least one element
+        if (results && results.length > 0) {
+            // Extract the part details from the JSON response
+            var partDetails = results[0].part;
 
-                // Create cells for attribute and value
-                var attributeCell = tr.insertCell(0);
-                var valueCell = tr.insertCell(1);
+            // Check if 'part' property exists
+            if (partDetails) {
+                // Create a table row for each attribute and value
+                Object.keys(partDetails).forEach(function (attribute) {
+                    var tr = responseTable.insertRow();
 
-                // Set the content of the cells
-                attributeCell.textContent = attribute;
-                valueCell.textContent = JSON.stringify(partDetails[attribute]);
-            });
+                    // Create cells for attribute and value
+                    var attributeCell = tr.insertCell(0);
+                    var valueCell = tr.insertCell(1);
+
+                    // Set the content of the cells
+                    attributeCell.textContent = attribute;
+                    valueCell.textContent = JSON.stringify(partDetails[attribute]);
+                });
+            } else {
+                console.error('Invalid response format: "part" property is missing.');
+                displayError('Invalid response format. Check console for details.');
+            }
         } else {
-            console.error('Invalid response format: "part" property is missing.');
+            console.error('Invalid response format: "results" property is missing or empty.');
             displayError('Invalid response format. Check console for details.');
         }
     } else {
-        console.error('Invalid response format: "results" property is missing or empty.');
+        console.error('Invalid response format: "data" property is missing.');
         displayError('Invalid response format. Check console for details.');
     }
 }
+
