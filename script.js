@@ -68,7 +68,17 @@ function displayResponse(response) {
 
                 // Set the content of the cells
                 attributeCell.textContent = attribute;
-                valueCell.textContent = JSON.stringify(partDetails[attribute]);
+
+                // Check if the attribute is 'specs'
+                if (attribute === 'specs') {
+                    // Display specs in separate cells
+                    var specsCell = tr.insertCell(2);
+                    partDetails[attribute].forEach(function (spec) {
+                        specsCell.innerHTML += `<strong>${spec.attribute.name}:</strong> ${spec.displayValue}<br>`;
+                    });
+                } else {
+                    valueCell.textContent = JSON.stringify(partDetails[attribute]);
+                }
             });
         } else {
             console.error('Invalid response format: "part" property is missing or empty.');
