@@ -74,9 +74,9 @@ function displayComparison(response, type, url) {
     var responseTable = document.createElement('table');
     
     if (type == 'reference') {
-        responseTable.innerHTML = '<h3>Reference MPN</h3>';
+        responseTable.innerHTML = '<h2>Reference MPN</h2>';
     } else if (type == 'alternate') {
-        responseTable.innerHTML = '<h3>Alternate MPN</h3>';
+        responseTable.innerHTML = '<h2>Alternate MPN</h2>';
     }
     responseTableContainer.style.display = 'block';
 
