@@ -60,13 +60,15 @@ function compareResponses() {
     // Send GraphQL queries and display responses
     sendGraphQLQuery(query, referenceInput, 'reference', accessToken);
     sendGraphQLQuery(query, alternateInput, 'alternate', accessToken);
-    
 }
+
 // Function to display GraphQL response for comparison
 function displayComparison(response, type, url) {
     var responseTableContainer = document.getElementById('responseTableContainer');
-    var responseTable = document.getElementById('responseTable');
-    responseTable.innerHTML = '';
+    
+    // Create a new table for each response
+    var responseTable = document.createElement('table');
+    responseTable.innerHTML = '<caption>' + type + ' URL: ' + url + '</caption>';
 
     responseTableContainer.style.display = 'block';
 
@@ -173,5 +175,7 @@ function displayComparison(response, type, url) {
         console.error('Invalid response format: "supSearchMpn.results" property is missing.');
         displayError('Invalid response format. Check console for details.');
     }
-}
 
+    // Append the table to the responseTableContainer
+    responseTableContainer.appendChild(responseTable);
+}
