@@ -1,19 +1,19 @@
+const GRAPHQL_ENDPOINT = 'https://api.nexar.com/graphql/';
+
 // Function to send GraphQL query
 function sendGraphQLQuery(query, url, type, accessToken) {
-    var graphqlEndpoint = 'https://api.nexar.com/graphql/';
-
-    axios.post(graphqlEndpoint, { query: query, variables: { inputQ: url } }, {
+    axios.post(GRAPHQL_ENDPOINT, { query: query, variables: { inputQ: url } }, {
         headers: {
             Authorization: 'Bearer ' + accessToken,
         },
     })
     .then(function(apiResponse) {
-        console.log('GraphQL Response for ' + type + ':', apiResponse.data);
+        console.log(`GraphQL Response for ${type}:`, apiResponse.data);
         displayComparison(apiResponse.data, type, url);
     })
     .catch(function(error) {
         console.error('GraphQL Request Error:', error);
-        displayError('Error making GraphQL request for ' + type + '. Check console for details.');
+        displayError(`Error making GraphQL request for ${type}. Check console for details.`);
     });
 }
 
@@ -22,7 +22,7 @@ function compareResponses() {
     var urlParams = new URLSearchParams(window.location.search);
     var referenceInput = urlParams.get('reference');
     var alternateInput = urlParams.get('alternate');
-
+    
     // Clear the responseTableContainer
     responseTableContainer.innerHTML = '';
     
@@ -73,15 +73,15 @@ function displayComparison(response, type, url) {
     // Create a new table for each response
     var responseTable = document.createElement('table');
     
-    if (type == 'reference') {
-        responseTable.innerHTML = '<h3>Reference MPN</h3>';
-    } else if (type == 'alternate'){
-        responseTable.innerHTML = '<h3>Alternate MPN</h3>';
+    if (type === 'reference') {
+        responseTable.innerHTML = '<h2>Reference MPN</h2>';
+    } else if (type === 'alternate') {
+        responseTable.innerHTML = '<h2>Alternate MPN</h2>';
     }
     responseTableContainer.style.display = 'block';
 
     if (response.data && response.data.supSearchMpn && response.data.supSearchMpn.results) {
-        var partDetails = response.data.supSearchMpn.results[0]?.part;
+        var partDetails = (response.data.supSearchMpn.results[0] || {}).part;
 
         if (partDetails) {
             var headers = {
@@ -92,30 +92,16 @@ function displayComparison(response, type, url) {
                 specs: 'Specifications'
             };
 
-            var cleanUpFunctions = {
-                mpn: function (value) {
-                    return value;
-                },
-                manufacturer: function (value) {
-                    return value && value.name ? value.name : value;
-                },
-                shortDescription: function (value) {
-                    return value;
-                },
-                bestImage: function (value) {
-                    return value && value.url ? `<img src="${value.url}" alt="Product Image" style="max-width: 100px; max-height: 100px;">` : value;
-                }
-            };
-
+            // Create headers dynamically
             Object.keys(partDetails).forEach(function (attribute) {
                 if (attribute !== 'specs' && attribute !== 'bestDatasheet') {
-                    var tr = responseTable.insertRow();
-                    var attributeCell = tr.insertCell(0);
-                    var valueCell = tr.insertCell(1);
+                    var row = responseTable.insertRow();
+                    row.insertCell(0).textContent = headers[attribute] || attribute;
 
-                    attributeCell.textContent = headers[attribute] || attribute;
-                    var cleanedValue = cleanUpFunctions[attribute] ? cleanUpFunctions[attribute](partDetails[attribute]) : partDetails[attribute];
-                    valueCell.innerHTML = cleanedValue;
+                    // Values for the first object
+                    var valueCell1 = row.insertCell(1);
+                    var cleanedValue1 = cleanUpAttributeValue(attribute, partDetails[attribute]);
+                    valueCell1.innerHTML = cleanedValue1;
                 }
             });
 
@@ -125,55 +111,53 @@ function displayComparison(response, type, url) {
             specsHeaderCell.colSpan = 2;
 
             // Create an h3 element for 'Specifications' header
-            var specsHeaderElement = document.createElement('h4');
+            var specsHeaderElement = document.createElement('h3');
             specsHeaderElement.textContent = headers.specs;
 
             // Append the h3 element to the specsHeaderCell
             specsHeaderCell.appendChild(specsHeaderElement);
 
             partDetails.specs.forEach(function (spec) {
-                var specRow = responseTable.insertRow();
-                var specAttributeCell = specRow.insertCell(0);
-                var specValueCell = specRow.insertCell(1);
-
-                specAttributeCell.textContent = spec.attribute.name;
-                specValueCell.textContent = spec.displayValue;
+                if (spec.attribute.name !== 'Schedule B'){
+                    var specRow = responseTable.insertRow();
+                    specRow.insertCell(0).textContent = spec.attribute.name;
+    
+                    // Values for the first object
+                    var specValueCell1 = specRow.insertCell(1);
+                    specValueCell1.textContent = spec.displayValue;
+                }
             });
+
+            // Reuse elements for 'Datasheet' header
+            var datasheetHeaderRow = responseTable.insertRow();
+            var datasheetHeaderCell = datasheetHeaderRow.insertCell(0);
+            datasheetHeaderCell.colSpan = 2;
+            var datasheetHeaderElement = document.createElement('h3');
+            datasheetHeaderElement.textContent = 'Datasheet';
+            datasheetHeaderCell.appendChild(datasheetHeaderElement);
+
+            // Create a row for the datasheet URL
+            var datasheetRow = responseTable.insertRow();
+            var datasheetAttributeCell = datasheetRow.insertCell(0);
+            var datasheetValueCell = datasheetRow.insertCell(1);
+
+            datasheetAttributeCell.textContent = 'PDF';
 
             // Check if 'bestDatasheet' property is present
             if (partDetails.bestDatasheet && partDetails.bestDatasheet.url) {
-                // Create a single row for 'Datasheet' header with merged cells
-                var datasheetHeaderRow = responseTable.insertRow();
-                var datasheetHeaderCell = datasheetHeaderRow.insertCell(0);
-                datasheetHeaderCell.colSpan = 2;
-
-                // Create an h3 element for 'Datasheet' header
-                var datasheetHeaderElement = document.createElement('h3');
-                datasheetHeaderElement.textContent = 'Datasheet';
-
-                // Append the h3 element to the datasheetHeaderCell
-                datasheetHeaderCell.appendChild(datasheetHeaderElement);
-
-                // Create a row for the datasheet URL
-                var datasheetRow = responseTable.insertRow();
-                var datasheetAttributeCell = datasheetRow.insertCell(0);
-                var datasheetValueCell = datasheetRow.insertCell(1);
-
-                datasheetAttributeCell.textContent = 'PDF';
-
                 // Create a link element for the datasheet URL
                 var datasheetLink = document.createElement('a');
                 datasheetLink.href = partDetails.bestDatasheet.url;
                 datasheetLink.target = '_blank'; // Open the link in a new tab
-                datasheetLink.textContent = 'Open Datasheet in new window';
+                datasheetLink.textContent = 'Open PDF';
 
-                datasheetValueCell.appendChild(datasheetLink);
+                // Values for the first object
+                var datasheetValueCell1 = datasheetRow.insertCell(1);
+                datasheetValueCell1.appendChild(datasheetLink);
+
             } else {
                 // If 'bestDatasheet' is not present or doesn't have a URL, display a message
-                var noDatasheetRow = responseTable.insertRow();
-                var noDatasheetCell = noDatasheetRow.insertCell(0);
-                noDatasheetCell.colSpan = 2;
-                noDatasheetCell.innerHTML = 'Datasheet not available';
+                datasheetRow.insertCell(1).textContent = 'Datasheet not available';
             }
         } else {
             console.error('Invalid response format: "part" property is missing or empty.');
@@ -186,4 +170,17 @@ function displayComparison(response, type, url) {
 
     // Append the table to the responseTableContainer
     responseTableContainer.appendChild(responseTable);
+}
+
+// Cleanup function for attributes
+function cleanUpAttributeValue(attribute, value) {
+    // Your cleanup logic here
+    switch (attribute) {
+        case 'manufacturer':
+            return value && value.name ? value.name : value;
+        case 'bestImage':
+            return value && value.url ? `<img src="${value.url}" alt="Product Image" style="max-width: 100px; max-height: 100px;">` : value;
+        default:
+            return value;
+    }
 }
