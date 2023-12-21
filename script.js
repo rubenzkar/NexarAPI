@@ -136,13 +136,29 @@ function displayResponse(response) {
             // Append the h3 element to the datasheetHeaderCell
             datasheetHeaderCell.appendChild(datasheetHeaderElement);
 
-            // Create a row for the datasheet URL
-            var datasheetRow = responseTable.insertRow();
-            var datasheetAttributeCell = datasheetRow.insertCell(0);
-            var datasheetValueCell = datasheetRow.insertCell(1);
+            // Check if 'bestDatasheet' property is present
+            if (partDetails.bestDatasheet) {
+                // Create a row for the datasheet URL
+                var datasheetRow = responseTable.insertRow();
+                var datasheetAttributeCell = datasheetRow.insertCell(0);
+                var datasheetValueCell = datasheetRow.insertCell(1);
 
-            datasheetAttributeCell.textContent = 'URL';
-            datasheetValueCell.innerHTML = partDetails.bestDatasheet?.url || 'Not available';
+                datasheetAttributeCell.textContent = 'Datasheet URL';
+
+                // Create a link element for the datasheet URL
+                var datasheetLink = document.createElement('a');
+                datasheetLink.href = partDetails.bestDatasheet.url;
+                datasheetLink.target = '_blank'; // Open the link in a new tab
+                datasheetLink.textContent = partDetails.bestDatasheet.url;
+
+                datasheetValueCell.appendChild(datasheetLink);
+            } else {
+                // If 'bestDatasheet' is not present, display a message
+                var noDatasheetRow = responseTable.insertRow();
+                var noDatasheetCell = noDatasheetRow.insertCell(0);
+                noDatasheetCell.colSpan = 2;
+                noDatasheetCell.innerHTML = 'Datasheet not available';
+            }
         } else {
             console.error('Invalid response format: "part" property is missing or empty.');
             displayError('Invalid response format. Check console for details.');
