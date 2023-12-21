@@ -109,11 +109,11 @@ function displayComparison(response, type, url) {
             });
         } else {
             console.error('Invalid response format: "part" property is missing or empty.');
-            displayError('Invalid response format for ' + type + ' URL. Check console for details.');
+            displayError('Invalid response format for ' + type + '. Check console for details.');
         }
     } else {
         console.error('Invalid response format: "supSearchMpn.results" property is missing.');
-        displayError('Invalid response format for ' + type + ' URL. Check console for details.');
+        displayError('Invalid response format for ' + type + '. Check console for details.');
     }
 
     responseTableContainer.appendChild(table);
