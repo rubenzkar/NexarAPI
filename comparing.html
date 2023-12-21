@@ -1,1 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <title>MPN Comparison</title>
+    <!-- Include Axios library -->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="credentials.js"></script>
+    <script src="script.js"></script>
+    <script src="compare.js"></script>
+</head>
+<body onload="javascript:compareResponses()">
+    <h1>MPN Comparison</h1>
 
+    <form id="comparisonForm">
+        <label for="reference">Reference MPN:</label>
+        <input type="text" id="reference" name="reference" placeholder="Enter reference MPN" required>
+
+        <label for="alternate">Alternate MPN:</label>
+        <input type="text" id="alternate" name="alternate" placeholder="Enter alternate MPN" required>
+
+        <button type="button" onclick="compareResponses()">Compare</button>
+    </form>
+    
+    <div id="responseTableContainer">
+        <h2>Details</h2>
+        <table id="responseTable"></table>
+    </div>
+    <div id="errorContainer" class="error-container"></div>
+</body>
+</html>
