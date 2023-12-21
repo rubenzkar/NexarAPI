@@ -91,8 +91,7 @@ function displayComparison(response, type, url) {
     // Check if the response contains valid data
     if (response.data && response.data.supSearchMpn && response.data.supSearchMpn.results) {
         var partDetails = response.data.supSearchMpn.results[0]?.part;
-        console.log('partDetails: ' + partDetails +'.'); // Add this line for debugging
-
+        
         // Check if partDetails is valid
         if (partDetails) {
             var headers = {
@@ -105,8 +104,9 @@ function displayComparison(response, type, url) {
 
             // Create a table for each response
             var table = document.createElement('table');
-            table.innerHTML = '<caption>' + type + ' URL: ' + url + '</caption>';
-
+            table.innerHTML = '<caption>' + type + '.: ' + url + '</caption>';
+            console.log('Teble created for : ' + type +'.'); // Add this line for debugging
+        
             // Create header row
             var headerRow = table.insertRow();
             Object.values(headers).forEach(function (header) {
