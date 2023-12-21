@@ -68,21 +68,21 @@ function displayResponse(response) {
             };
 
             var cleanUpFunctions = {
-                mpn: function(value) {
+                mpn: function (value) {
                     // Add any specific clean-up logic for mpn here if needed
                     return value;
                 },
-                manufacturer: function(value) {
-                    // Add any specific clean-up logic for manufacturer here if needed
-                    return value;
+                manufacturer: function (value) {
+                    // Check if 'manufacturer' is an object and extract the 'name' property
+                    return value && value.name ? value.name : value;
                 },
-                shortDescription: function(value) {
+                shortDescription: function (value) {
                     // Add any specific clean-up logic for shortDescription here if needed
                     return value;
                 },
-                bestImage: function(value) {
-                    // Add any specific clean-up logic for bestImage here if needed
-                    return `<img src="${value}" alt="Product Image" style="max-width: 100px; max-height: 100px;">`;
+                bestImage: function (value) {
+                    // Check if 'bestImage' is an object and extract the 'url' property
+                    return value && value.url ? `<img src="${value.url}" alt="Product Image" style="max-width: 100px; max-height: 100px;">` : value;
                 }
             };
 
