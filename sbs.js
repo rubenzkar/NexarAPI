@@ -189,7 +189,7 @@ function displayComparison(response, type, url) {
                 
                 // If 'bestDatasheet' is not present or doesn't have a URL, display a message
                 var datasheetValueCell1 = datasheetRow.insertCell(1);
-                noDatasheetRow.innerHTML = 'Datasheet not available';
+                datasheetValueCell1.insertCell(0).textContent = 'Datasheet not available';
             }
         } else {
             console.error('Invalid response format: "part" property is missing or empty.');
