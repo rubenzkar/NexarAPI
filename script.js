@@ -28,14 +28,23 @@ function sendQuery() {
             displayResponse(apiResponse.data);
         })
         .catch(error => {
-            // Handle errors
-            console.error(error);
+            // Handle errors in GraphQL request
+            console.error('GraphQL Request Error:', error);
+            displayError('Error making GraphQL request. Check console for details.');
         });
     })
     .catch(error => {
         // Handle errors obtaining access token
-        console.error(error);
+        console.error('Access Token Error:', error);
+        displayError('Error obtaining access token. Check console for details.');
     });
+}
+
+function displayError(message) {
+    // Display error message to the user
+    const errorContainer = document.getElementById('errorContainer');
+    errorContainer.textContent = message;
+    errorContainer.style.display = 'block';
 }
 
 function displayResponse(response) {
