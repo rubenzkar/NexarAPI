@@ -1,27 +1,44 @@
 // Function to compare GraphQL responses
 function compareResponses() {
-    var referenceUrl = document.getElementById('reference').value.trim();
-    var alternateUrl = document.getElementById('alternate').value.trim();
+    var referenceInput = document.getElementById('reference').value.trim();
+    var alternateInput = document.getElementById('alternate').value.trim();
 
     if (!referenceUrl || !alternateUrl) {
         alert('Please provide both reference and alternate URLs.');
         return;
     }
 
-    // GraphQL queries for each URL
-    var referenceQuery = `
-        // Your GraphQL query for the reference URL
-        // ...
-    `;
-
-    var alternateQuery = `
-        // Your GraphQL query for the alternate URL
-        // ...
+   var query = `
+      query specAttributes($inputQ: String!) {
+        supSearchMpn(q: $inputQ, limit: 1) {
+          results {
+      part {
+        mpn
+        manufacturer {
+          name
+        }
+        bestImage {
+          url
+        }
+        shortDescription
+        specs {
+          attribute {
+            name
+          }
+          displayValue
+        }
+        bestDatasheet {
+          url
+        }
+      }
+    }
+  }
+}
     `;
 
     // Send GraphQL queries and display responses
-    sendGraphQLQuery(referenceUrl, referenceQuery, 'reference');
-    sendGraphQLQuery(alternateUrl, alternateQuery, 'alternate');
+    sendGraphQLQuery(referenceUrl, query, 'reference');
+    sendGraphQLQuery(alternateUrl, query, 'alternate');
 }
 
 // Function to send GraphQL query
@@ -30,7 +47,7 @@ function sendGraphQLQuery(url, query, type) {
 
     axios.post(graphqlEndpoint, { query: query, variables: { inputQ: url } }, {
         headers: {
-            Authorization: 'Bearer ' + credentials.accessToken,
+            Authorization: 'Bearer ' + credentials.accessToken;,
         },
     })
     .then(function(apiResponse) {
