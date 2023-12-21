@@ -113,6 +113,9 @@ function displayResponse(response) {
                     toggleButton.textContent = 'Toggle Specifications';
                     toggleButton.classList.add('collapsible');
 
+                    // Append the button to the table
+                    addRow('', toggleButton);
+
                     // Create a div to hold the collapsible content
                     var collapsibleContent = document.createElement('div');
                     collapsibleContent.classList.add('content');
@@ -125,9 +128,8 @@ function displayResponse(response) {
                     });
 
                     // Append the collapsible div to the table
-                    addRow('', toggleButton);
                     addRow('', collapsibleContent);
-                    
+
                     // Add an event listener to toggle the collapsible content
                     toggleButton.addEventListener('click', function () {
                         collapsibleContent.style.display = (collapsibleContent.style.display === 'block') ? 'none' : 'block';
