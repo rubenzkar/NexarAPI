@@ -123,6 +123,26 @@ function displayResponse(response) {
                 specAttributeCell.textContent = spec.attribute.name;
                 specValueCell.textContent = spec.displayValue;
             });
+            
+            // Create a single row for 'Datasheet' header with merged cells
+            var datasheetHeaderRow = responseTable.insertRow();
+            var datasheetHeaderCell = datasheetHeaderRow.insertCell(0);
+            datasheetHeaderCell.colSpan = 2;
+
+            // Create an h3 element for 'Datasheet' header
+            var datasheetHeaderElement = document.createElement('h3');
+            datasheetHeaderElement.textContent = 'Datasheet';
+
+            // Append the h3 element to the datasheetHeaderCell
+            datasheetHeaderCell.appendChild(datasheetHeaderElement);
+
+            // Create a row for the datasheet URL
+            var datasheetRow = responseTable.insertRow();
+            var datasheetAttributeCell = datasheetRow.insertCell(0);
+            var datasheetValueCell = datasheetRow.insertCell(1);
+
+            datasheetAttributeCell.textContent = 'URL';
+            datasheetValueCell.innerHTML = partDetails.bestDatasheet?.url || 'Not available';
         } else {
             console.error('Invalid response format: "part" property is missing or empty.');
             displayError('Invalid response format. Check console for details.');
