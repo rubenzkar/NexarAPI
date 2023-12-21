@@ -48,6 +48,9 @@ function displayResponse(response) {
     // Display the table container
     responseTableContainer.style.display = 'block';
 
+    // Log the entire response object to the console for troubleshooting
+    console.log('GraphQL Response:', response);
+
     // Check if 'data' property exists in the response
     if (response.data) {
         // Extract the part details from the JSON response
@@ -76,4 +79,3 @@ function displayResponse(response) {
         displayError('Invalid response format. Check console for details.');
     }
 }
-
