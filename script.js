@@ -59,6 +59,33 @@ function displayResponse(response) {
 
         // Check if 'part' property exists
         if (partDetails) {
+            // Define custom headers and clean-up functions
+            var headers = {
+                mpn: 'MPN',
+                manufacturer: 'Manufacturer',
+                shortDescription: 'Description',
+                bestImage: 'Image'
+            };
+
+            var cleanUpFunctions = {
+                mpn: function(value) {
+                    // Add any specific clean-up logic for mpn here if needed
+                    return value;
+                },
+                manufacturer: function(value) {
+                    // Add any specific clean-up logic for manufacturer here if needed
+                    return value;
+                },
+                shortDescription: function(value) {
+                    // Add any specific clean-up logic for shortDescription here if needed
+                    return value;
+                },
+                bestImage: function(value) {
+                    // Add any specific clean-up logic for bestImage here if needed
+                    return `<img src="${value}" alt="Product Image" style="max-width: 100px; max-height: 100px;">`;
+                }
+            };
+
             // Create a table row for each attribute and value
             Object.keys(partDetails).forEach(function (attribute) {
                 // Create a row for each attribute and value
@@ -69,7 +96,7 @@ function displayResponse(response) {
                 var valueCell = tr.insertCell(1);
 
                 // Set the content of the cells
-                attributeCell.textContent = attribute;
+                attributeCell.textContent = headers[attribute] || attribute;
 
                 // Check if the attribute is an array (e.g., 'specs')
                 if (Array.isArray(partDetails[attribute])) {
@@ -83,7 +110,9 @@ function displayResponse(response) {
                         specValueCell.textContent = spec.displayValue;
                     });
                 } else {
-                    valueCell.textContent = JSON.stringify(partDetails[attribute]);
+                    // Clean up the value if a clean-up function is provided
+                    var cleanedValue = cleanUpFunctions[attribute] ? cleanUpFunctions[attribute](partDetails[attribute]) : partDetails[attribute];
+                    valueCell.innerHTML = cleanedValue;
                 }
             });
         } else {
