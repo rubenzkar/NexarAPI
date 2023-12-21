@@ -1,6 +1,6 @@
 // Function to send GraphQL query
 function sendQuery() {
-    var userInput = document.getElementById('userInput').value;
+    var userInput = document.getElementById('userInput').value.trim();
     var query = `
       query specAttributes($inputQ: String!) {
         supSearchMpn(q: $inputQ, limit: 1) {
@@ -100,17 +100,17 @@ function displayResponse(response) {
                 }
             });
 
-            // Create a single row for 'Specifications' header with merged cells
+           // Create a single row for 'Specifications' header with merged cells
             var specsHeaderRow = responseTable.insertRow();
             var specsHeaderCell = specsHeaderRow.insertCell(0);
             specsHeaderCell.colSpan = 2;
-            specsHeaderCell.textContent = headers.specs;
 
             // Create an h3 element for 'Specifications' header
-            var specsHeaderCell = document.createElement('h3');
-
+            var specsHeaderElement = document.createElement('h3');
+            specsHeaderElement.textContent = headers.specs;
+            
             // Append the h3 element to the responseTableContainer
-            responseTableContainer.appendChild(specsHeaderCell);
+            specsHeaderCell.appendChild(specsHeaderElement);
 
             partDetails.specs.forEach(function (spec) {
                 var specRow = responseTable.insertRow();
