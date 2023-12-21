@@ -23,6 +23,9 @@ function compareResponses() {
     var referenceInput = urlParams.get('reference');
     var alternateInput = urlParams.get('alternate');
     
+    // Clear the responseTableContainer
+    responseTableContainer.innerHTML = '';
+    
     if (!referenceInput || !alternateInput) {
         alert('Please provide both reference and alternate URLs.');
         return;
