@@ -38,7 +38,7 @@ function sendGraphQLQuery(url, query, type) {
     })
     .catch(function(error) {
         console.error('GraphQL Request Error:', error);
-        displayError('Error making GraphQL request for ' + type + ' URL. Check console for details.');
+        displayError('Error making GraphQL request for ' + type + '. Check console for details.');
     });
 }
 
