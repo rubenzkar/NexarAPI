@@ -1,9 +1,10 @@
+import credentials from './credentials.js';
+
 function sendQuery() {
     const query = document.getElementById('query').value;
 
-    // Replace with your actual credentials
-    const clientId = '2fbc50ad-4999-47b2-b523-616a509a66d0';
-    const clientSecret = 'dek_wdMgzVT9zlKHvwJw1SjvmjYYC18fOiVM';
+    // Destructure credentials
+    const { clientId, clientSecret } = credentials;
 
     // Obtain Access Token
     axios.post('https://identity.nexar.com/connect/token', {
