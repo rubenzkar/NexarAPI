@@ -143,7 +143,7 @@ function displayResponse(response) {
                 var datasheetAttributeCell = datasheetRow.insertCell(0);
                 var datasheetValueCell = datasheetRow.insertCell(1);
 
-                datasheetAttributeCell.textContent = 'Datasheet URL';
+                datasheetAttributeCell.textContent = 'PDF';
 
                 // Create a link element for the datasheet URL
                 var datasheetLink = document.createElement('a');
