@@ -108,7 +108,6 @@ function displayResponse(response) {
 
             // Create an h3 element for 'Specifications' header
             var specsHeader = document.createElement('h3');
-            specsHeader.textContent = headers.specs;
 
             // Append the h3 element to the responseTableContainer
             responseTableContainer.appendChild(specsHeader);
