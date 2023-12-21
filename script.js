@@ -87,57 +87,33 @@ function displayResponse(response) {
                 }
             };
 
-            // Create a function to add a new row to the table
-            function addRow(attribute, value) {
-                var tr = document.createElement('tr');
-                var attributeCell = document.createElement('td');
-                var valueCell = document.createElement('td');
-
-                attributeCell.textContent = attribute;
-                valueCell.innerHTML = value;
-
-                tr.appendChild(attributeCell);
-                tr.appendChild(valueCell);
-
-                responseTable.appendChild(tr);
-            }
-
             // Create a table row for each attribute and value
             Object.keys(partDetails).forEach(function (attribute) {
-                // Check if the attribute is 'specs'
-                if (attribute === 'specs') {
-                    addRow(headers[attribute] || attribute, ''); // Add a row for 'specs' with an empty value
+                // Create a row for each attribute and value
+                var tr = responseTable.insertRow();
 
-                    // Create a button to toggle the collapsible section
-                    var toggleButton = document.createElement('button');
-                    toggleButton.textContent = 'Toggle Specifications';
-                    toggleButton.classList.add('collapsible');
+                // Create cells for attribute and value
+                var attributeCell = tr.insertCell(0);
+                var valueCell = tr.insertCell(1);
 
-                    // Append the button to the table
-                    addRow('', toggleButton);
+                // Set the content of the cells
+                attributeCell.textContent = headers[attribute] || attribute;
 
-                    // Create a div to hold the collapsible content
-                    var collapsibleContent = document.createElement('div');
-                    collapsibleContent.classList.add('content');
-
-                    // Add the content of the 'specs' attribute to the collapsible div
+                // Check if the attribute is an array (e.g., 'specs')
+                if (Array.isArray(partDetails[attribute])) {
                     partDetails[attribute].forEach(function (spec) {
-                        var specRow = document.createElement('div');
-                        specRow.textContent = `${spec.attribute.name}: ${spec.displayValue}`;
-                        collapsibleContent.appendChild(specRow);
-                    });
+                        // Create a row for each spec attribute and value
+                        var specRow = responseTable.insertRow();
+                        var specAttributeCell = specRow.insertCell(0);
+                        var specValueCell = specRow.insertCell(1);
 
-                    // Append the collapsible div to the table
-                    addRow('', collapsibleContent);
-
-                    // Add an event listener to toggle the collapsible content
-                    toggleButton.addEventListener('click', function () {
-                        collapsibleContent.style.display = (collapsibleContent.style.display === 'block') ? 'none' : 'block';
+                        specAttributeCell.textContent = spec.attribute.name;
+                        specValueCell.textContent = spec.displayValue;
                     });
                 } else {
                     // Clean up the value if a clean-up function is provided
                     var cleanedValue = cleanUpFunctions[attribute] ? cleanUpFunctions[attribute](partDetails[attribute]) : partDetails[attribute];
-                    addRow(headers[attribute] || attribute, cleanedValue);
+                    valueCell.innerHTML = cleanedValue;
                 }
             });
         } else {
