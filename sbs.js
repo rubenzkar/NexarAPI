@@ -188,8 +188,7 @@ function displayComparison(response, type, url) {
                 datasheetRow.insertCell(0).textContent = 'PDF';
                 
                 // If 'bestDatasheet' is not present or doesn't have a URL, display a message
-                var datasheetValueCell1 = datasheetRow.insertCell(1);
-                datasheetValueCell1.insertCell(0).textContent = 'Datasheet not available';
+                datasheetRow.insertCell(1).textContent = 'Datasheet not available';
             }
         } else {
             console.error('Invalid response format: "part" property is missing or empty.');
