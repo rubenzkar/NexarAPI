@@ -147,6 +147,11 @@ function displayComparison(response, type, url) {
 
             // Check if 'bestDatasheet' property is present
             if (partDetails.bestDatasheet && partDetails.bestDatasheet.url) {
+                // Create a single row for 'Datasheet' header with merged cells
+                var datasheetHeaderRow = responseTable.insertRow();
+                var datasheetHeaderCell = datasheetHeaderRow.insertCell(0);
+                datasheetHeaderCell.colSpan = 2;
+                
                 // Create an h3 element for 'Datasheet' header
                 var datasheetHeaderElement = document.createElement('h3');
                 datasheetHeaderElement.textContent = 'Datasheet';
@@ -172,6 +177,11 @@ function displayComparison(response, type, url) {
                 datasheetValueCell1.appendChild(datasheetLink);
 
             } else {
+                // Create a single row for 'Datasheet' header with merged cells
+                var datasheetHeaderRow = responseTable.insertRow();
+                var datasheetHeaderCell = datasheetHeaderRow.insertCell(0);
+                datasheetHeaderCell.colSpan = 2;
+                
                 // Create an h3 element for 'Datasheet' header
                 var datasheetHeaderElement = document.createElement('h3');
                 datasheetHeaderElement.textContent = 'Datasheet';
