@@ -72,6 +72,9 @@ function displayComparison(response, type, url) {
     
     // Create a new table for each response
     var responseTable = document.createElement('table');
+
+    // Set a fixed width for the table
+    responseTable.style.width = '600px';
     
     if (type === 'reference') {
         responseTable.innerHTML = '<h2>Reference MPN</h2>';
