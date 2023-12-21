@@ -10,33 +10,6 @@ function sendQuery() {
     makeGraphQLRequest(query, accessToken);
 }
 
-// Function to make GraphQL request using the provided access token
-function makeGraphQLRequest(query, accessToken) {
-    var graphqlEndpoint = 'https://api.nexar.com/graphql/';
-
-    axios.post(graphqlEndpoint, { query: query }, {
-        headers: {
-            Authorization: 'Bearer ' + accessToken,
-        },
-    })
-    .then(function(apiResponse) {
-        // Handle the GraphQL API response
-        displayResponse(apiResponse.data);
-    })
-    .catch(function(error) {
-        // Handle errors in GraphQL request
-        console.error('GraphQL Request Error:', error);
-        displayError('Error making GraphQL request. Check console for details.');
-    });
-}
-
-// Function to display error message to the user
-function displayError(message) {
-    var errorContainer = document.getElementById('errorContainer');
-    errorContainer.textContent = message;
-    errorContainer.style.display = 'block';
-}
-
 // Function to display the JSON response attributes and values in an HTML table
 function displayResponse(response) {
     var responseTableContainer = document.getElementById('responseTableContainer');
@@ -71,10 +44,13 @@ function displayResponse(response) {
 
                 // Check if the attribute is 'specs'
                 if (attribute === 'specs') {
-                    // Display specs in separate cells
-                    var specsCell = tr.insertCell(2);
                     partDetails[attribute].forEach(function (spec) {
-                        specsCell.innerHTML += `<strong>${spec.attribute.name}:</strong> ${spec.displayValue}<br>`;
+                        var specRow = responseTable.insertRow();
+                        var specAttributeCell = specRow.insertCell(0);
+                        var specValueCell = specRow.insertCell(1);
+
+                        specAttributeCell.textContent = spec.attribute.name;
+                        specValueCell.textContent = spec.displayValue;
                     });
                 } else {
                     valueCell.textContent = JSON.stringify(partDetails[attribute]);
