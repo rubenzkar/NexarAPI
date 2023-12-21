@@ -91,6 +91,7 @@ function displayComparison(response, type, url) {
     // Check if the response contains valid data
     if (response.data && response.data.supSearchMpn && response.data.supSearchMpn.results) {
         var partDetails = response.data.supSearchMpn.results[0]?.part;
+        console.log('partDetails :' + partDetails +'.'); // Add this line for debugging
 
         // Check if partDetails is valid
         if (partDetails) {
