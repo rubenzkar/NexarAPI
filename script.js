@@ -69,7 +69,7 @@ function displayResponse(response) {
                 manufacturer: 'Manufacturer',
                 shortDescription: 'Description',
                 bestImage: 'Image',
-                specs: '<h2>Specifications</h2>'
+                specs: 'Specifications<'
             };
 
             var cleanUpFunctions = {
@@ -105,6 +105,9 @@ function displayResponse(response) {
             var specsHeaderCell = specsHeaderRow.insertCell(0);
             specsHeaderCell.colSpan = 2;
             specsHeaderCell.textContent = headers.specs;
+
+            // Add the "specs" class to make it bold
+            specsHeaderCell.classList.add('specs');
 
             partDetails.specs.forEach(function (spec) {
                 var specRow = responseTable.insertRow();
