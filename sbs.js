@@ -94,9 +94,6 @@ function displayComparison(response, type, url) {
 
             // Create headers row
             var headersRow = responseTable.insertRow();
-            headersRow.insertCell(0).textContent = 'Headers';
-            headersRow.insertCell(1).textContent = 'Object 1';
-            headersRow.insertCell(2).textContent = 'Object 2';
 
             var cleanUpFunctions = {
                 mpn: function (value) {
