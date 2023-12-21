@@ -1,10 +1,7 @@
 // credentials.js
 
 const credentials = {
-  clientId: '2fbc50ad-4999-47b2-b523-616a509a66d0',
-  clientSecret: 'dek_wdMgzVT9zlKHvwJw1SjvmjYYC18fOiVM',
-  redirectUri: 'https://api.nexar.com/graphql',
-  scope: 'supply.domain',
+  accessToken: 'eyJhbGciOiJSUzI1NiIsImtpZCI6IjA5NzI5QTkyRDU0RDlERjIyRDQzMENBMjNDNkI4QjJFIiwidHlwIjoiYXQrand0In0', // Replace with your actual static access token
 };
 
 export default credentials;
