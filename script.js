@@ -91,7 +91,7 @@ function displayResponse(response) {
             };
 
             Object.keys(partDetails).forEach(function (attribute) {
-                if (attribute !== 'specs') {
+                if (attribute !== 'specs' && attribute !== 'bestDatasheet') {
                     var tr = responseTable.insertRow();
                     var attributeCell = tr.insertCell(0);
                     var valueCell = tr.insertCell(1);
@@ -124,20 +124,20 @@ function displayResponse(response) {
                 specValueCell.textContent = spec.displayValue;
             });
 
-            // Create a single row for 'Datasheet' header with merged cells
-            var datasheetHeaderRow = responseTable.insertRow();
-            var datasheetHeaderCell = datasheetHeaderRow.insertCell(0);
-            datasheetHeaderCell.colSpan = 2;
-
-            // Create an h3 element for 'Datasheet' header
-            var datasheetHeaderElement = document.createElement('h3');
-            datasheetHeaderElement.textContent = 'Datasheet';
-
-            // Append the h3 element to the datasheetHeaderCell
-            datasheetHeaderCell.appendChild(datasheetHeaderElement);
-
             // Check if 'bestDatasheet' property is present
             if (partDetails.bestDatasheet && partDetails.bestDatasheet.url) {
+                // Create a single row for 'Datasheet' header with merged cells
+                var datasheetHeaderRow = responseTable.insertRow();
+                var datasheetHeaderCell = datasheetHeaderRow.insertCell(0);
+                datasheetHeaderCell.colSpan = 2;
+
+                // Create an h3 element for 'Datasheet' header
+                var datasheetHeaderElement = document.createElement('h3');
+                datasheetHeaderElement.textContent = 'Datasheet';
+
+                // Append the h3 element to the datasheetHeaderCell
+                datasheetHeaderCell.appendChild(datasheetHeaderElement);
+
                 // Create a row for the datasheet URL
                 var datasheetRow = responseTable.insertRow();
                 var datasheetAttributeCell = datasheetRow.insertCell(0);
