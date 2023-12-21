@@ -52,3 +52,6 @@ button {
 #responseTable th {
     background-color: #f2f2f2;
 }
+ #responseTable th.specs {
+    font-weight: bold;
+}
