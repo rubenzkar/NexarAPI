@@ -1,21 +1,48 @@
 // script.js
 
-// Function to send GraphQL query
+/ Function to send GraphQL query
 function sendQuery() {
-    var query = document.getElementById('query').value;
+    // Get the user-input value for 'q'
+    var userInput = document.getElementById('userInput').value;
+
+    // Hardcoded GraphQL query with a variable for 'q'
+    var query = `
+      query specAttributes($inputQ: String!) {
+        supSearchMpn(q: $inputQ, limit: 1) {
+          results {
+            part {
+              mpn
+              manufacturer {
+                name
+              }
+              bestImage {
+                url
+              }
+              shortDescription
+              specs {
+                attribute {
+                  name
+                }
+                displayValue
+              }
+            }
+          }
+        }
+      }
+    `;
 
     // Destructure credentials
     var accessToken = credentials.accessToken;
 
-    // Make GraphQL Request using the static access token
-    makeGraphQLRequest(query, accessToken);
+    // Make GraphQL Request using the static access token and user-input value for 'q'
+    makeGraphQLRequest(query, userInput, accessToken);
 }
 
-// Function to make GraphQL request using the provided access token
-function makeGraphQLRequest(query, accessToken) {
+// Function to make GraphQL request using the provided access token and user-input value for 'q'
+function makeGraphQLRequest(query, userInput, accessToken) {
     var graphqlEndpoint = 'https://api.nexar.com/graphql/';
 
-    axios.post(graphqlEndpoint, { query: query }, {
+    axios.post(graphqlEndpoint, { query: query, variables: { inputQ: userInput } }, {
         headers: {
             Authorization: 'Bearer ' + accessToken,
         },
