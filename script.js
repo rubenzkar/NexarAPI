@@ -76,4 +76,3 @@ function displayResponse(response) {
         displayError('Invalid response format. Check console for details.');
     }
 }
-}
