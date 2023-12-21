@@ -124,14 +124,15 @@ function displayComparison(response, type, url) {
 
             // Create a single row for 'Specifications' header with merged cells
             var specsHeaderRow = responseTable.insertRow();
-            specsHeaderRow.insertCell(0).colSpan = 2;
+            var specsHeaderCell = specsHeaderRow.insertCell(0);
+            specsHeaderCell.colSpan = 2;
 
             // Create an h3 element for 'Specifications' header
-            var specsHeaderElement = document.createElement('h4');
+            var specsHeaderElement = document.createElement('h3');
             specsHeaderElement.textContent = headers.specs;
 
             // Append the h3 element to the specsHeaderCell
-            specsHeaderRow.appendChild(specsHeaderElement);
+            specsHeaderCell.appendChild(specsHeaderElement);
 
             partDetails.specs.forEach(function (spec) {
                 if (spec.attribute.name !== 'Schedule B'){
