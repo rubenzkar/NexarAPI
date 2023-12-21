@@ -1,5 +1,6 @@
 // script.js
 
+// Function to send GraphQL query
 function sendQuery() {
     var query = document.getElementById('query').value;
 
@@ -8,6 +9,33 @@ function sendQuery() {
 
     // Make GraphQL Request using the static access token
     makeGraphQLRequest(query, accessToken);
+}
+
+// Function to make GraphQL request using the provided access token
+function makeGraphQLRequest(query, accessToken) {
+    var graphqlEndpoint = 'https://api.nexar.com/graphql/';
+
+    axios.post(graphqlEndpoint, { query: query }, {
+        headers: {
+            Authorization: 'Bearer ' + accessToken,
+        },
+    })
+    .then(function(apiResponse) {
+        // Handle the GraphQL API response
+        displayResponse(apiResponse.data);
+    })
+    .catch(function(error) {
+        // Handle errors in GraphQL request
+        console.error('GraphQL Request Error:', error);
+        displayError('Error making GraphQL request. Check console for details.');
+    });
+}
+
+// Function to display error message to the user
+function displayError(message) {
+    var errorContainer = document.getElementById('errorContainer');
+    errorContainer.textContent = message;
+    errorContainer.style.display = 'block';
 }
 
 // Function to display the JSON response attributes and values in an HTML table
@@ -31,9 +59,9 @@ function displayResponse(response) {
 
         // Check if 'part' property exists
         if (partDetails) {
-            // Iterate over each attribute in 'partDetails'
+            // Create a table row for each attribute and value
             Object.keys(partDetails).forEach(function (attribute) {
-                // Create a table row for each attribute and value
+                // Create a row for each attribute and value
                 var tr = responseTable.insertRow();
 
                 // Create cells for attribute and value
