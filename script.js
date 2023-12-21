@@ -87,6 +87,12 @@ function displayResponse(response) {
                 }
             };
 
+            // Create a single row for 'Specifications' header with merged cells
+            var specsHeaderRow = responseTable.insertRow();
+            var specsHeaderCell = specsHeaderRow.insertCell(0);
+            specsHeaderCell.colSpan = 2;
+            specsHeaderCell.textContent = headers.specs;
+
             // Create rows for 'MPN,' 'Manufacturer,' 'Description,' and 'Image'
             Object.keys(partDetails).forEach(function (attribute) {
                 if (attribute !== 'specs') {
@@ -101,11 +107,6 @@ function displayResponse(response) {
                     valueCell.innerHTML = cleanedValue;
                 }
             });
-
-            // Create a row for 'Specifications' header
-            var specsHeaderRow = responseTable.insertRow();
-            var specsHeaderCell = specsHeaderRow.insertCell(0);
-            specsHeaderCell.textContent = headers.specs;
 
             // Create rows for each spec attribute and value
             partDetails.specs.forEach(function (spec) {
