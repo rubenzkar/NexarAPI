@@ -21,7 +21,9 @@ function sendGraphQLQuery(query, url, type, accessToken) {
 function compareResponses() {
     var referenceInput = document.getElementById('reference').value.trim();
     var alternateInput = document.getElementById('alternate').value.trim();
-
+    // Clear the responseTableContainer
+    responseTableContainer.innerHTML = '';
+    
     if (!referenceInput || !alternateInput) {
         alert('Please provide both reference and alternate URLs.');
         return;
