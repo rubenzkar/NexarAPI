@@ -3,7 +3,6 @@ const urlParams = new URLSearchParams(window.location.search);
 const referenceInput = urlParams.get('reference');
 const alternateInput = urlParams.get('alternate');
 const accessToken = credentials.accessToken;
-const referencePart = getPart(referenceInput);
 
 // Function to perform GraphQL query and return response
 async function getGraphQLResponse(query, variables) {
@@ -82,8 +81,9 @@ function getPartSpecs(part) {
     return specs;
 }
 
-async function fetchAttribute(part, specValue) {
+async function fetchAttribute(input, specValue) {
     try {
+        const part = getPart(input);
         const specs = getPartSpecs(part);
         const attribute = specs.find(spec => spec.attribute.name === specValue);
 
@@ -97,4 +97,4 @@ async function fetchAttribute(part, specValue) {
     }
 }
 
-fetchAttribute(referencePart, 'Capacitance');
+fetchAttribute(referenceInput, 'Capacitance');
