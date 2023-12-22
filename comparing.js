@@ -119,7 +119,7 @@ function displayImage(url) {
     // Add custom size
     image.style.maxWidth = '100px';
     image.style.maxHeight = '100px';
-    return document.body.appendChild(image);
+    return image;
 }
 // Function to display the comparison table
 async function displayComparisonTable() {
