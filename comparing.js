@@ -2,12 +2,12 @@ const GRAPHQL_ENDPOINT = 'https://api.nexar.com/graphql/';
 const urlParams = new URLSearchParams(window.location.search);
 const reference = urlParams.get('reference');
 const alternate = urlParams.get('alternate');
-const accessToken = credentials.accessToken;  // Credentials not defined, please provide them
+const accessToken = credentials.accessToken; 
 
 // Function to perform GraphQL query and return response
-async function getGraphQLResponse(query, type) {
+async function getGraphQLResponse(query, variables) {
     try {
-        const response = await axios.post(GRAPHQL_ENDPOINT, { query, type }, {
+        const response = await axios.post(GRAPHQL_ENDPOINT, { query, variables }, {
             headers: {
                 Authorization: `Bearer ${accessToken}`,
             },
@@ -51,9 +51,9 @@ async function getPart(type) {
         }
     `;
 
-    const q = { inputQ: type };
+    const variables = { inputQ: type };
     try {
-        const response = await getGraphQLResponse(query, q);
+        const response = await getGraphQLResponse(query, variables);
         if (!response) {
             throw new Error('Error getting GraphQL response.');
         }
