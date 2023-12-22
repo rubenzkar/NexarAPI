@@ -94,43 +94,41 @@ function getAttribute(specs, specValue) {
     }
 }
 
-// Function to create a table column with part values
-function createTableColumn(label, values) {
-    const column = document.createElement('div');
-    column.className = 'table-column';
+// Function to create a table row with part values
+function createTableRow(label, refValue, altValue) {
+    const row = document.createElement('tr');
 
-    const header = document.createElement('div');
-    header.className = 'column-header';
-    header.textContent = label;
-    column.appendChild(header);
+    const labelCell = document.createElement('td');
+    labelCell.textContent = label;
+    row.appendChild(labelCell);
 
-    values.forEach((value, index) => {
-        const cell = document.createElement('div');
-        cell.className = 'column-cell';
-        cell.textContent = value;
-        column.appendChild(cell);
-    });
+    const refValueCell = document.createElement('td');
+    refValueCell.textContent = refValue;
+    row.appendChild(refValueCell);
 
-    return column;
+    const altValueCell = document.createElement('td');
+    altValueCell.textContent = altValue;
+    row.appendChild(altValueCell);
+
+    return row;
 }
 
-// Function to display the transposed comparison table
-function displayTransposedTable(refManufacturer, refMpn, refCapValue, altManufacturer, altMpn, altCapValue) {
-    const tableContainer = document.createElement('div');
-    tableContainer.className = 'transposed-table';
+// Function to display the comparison table
+function displayComparisonTable(refManufacturer, refMpn, refCapValue, altManufacturer, altMpn, altCapValue) {
+    const table = document.createElement('table');
 
-    // Create columns for each part attribute
-    const manufacturerColumn = createTableColumn('Manufacturer', [refManufacturer, altManufacturer]);
-    const mpnColumn = createTableColumn('MPN', [refMpn, altMpn]);
-    const capValueColumn = createTableColumn('Capacitance', [refCapValue, altCapValue]);
+    // Create rows for each part attribute
+    const manufacturerRow = createTableRow('Manufacturer', refManufacturer, altManufacturer);
+    const mpnRow = createTableRow('MPN', refMpn, altMpn);
+    const capValueRow = createTableRow('Capacitance', refCapValue, altCapValue);
 
-    // Append columns to the table container
-    tableContainer.appendChild(manufacturerColumn);
-    tableContainer.appendChild(mpnColumn);
-    tableContainer.appendChild(capValueColumn);
+    // Append rows to the table
+    table.appendChild(manufacturerRow);
+    table.appendChild(mpnRow);
+    table.appendChild(capValueRow);
 
-    // Append table container to the body or any desired container
-    document.body.appendChild(tableContainer);
+    // Append table to the body or any desired container
+    document.body.appendChild(table);
 }
 
 async function compareResponses() {
@@ -152,8 +150,8 @@ async function compareResponses() {
         console.log(refManufacturer + "'s " + refMpn + ' cap value: ' + refCapValue);
         console.log(altManufacturer + "'s " + altMpn + ' cap value: ' + altCapValue);
 
-        // Display the transposed comparison table
-        displayTransposedTable(refManufacturer, refMpn, refCapValue, altManufacturer, altMpn, altCapValue);
+        // Display the comparison table
+        displayComparisonTable(refManufacturer, refMpn, refCapValue, altManufacturer, altMpn, altCapValue);
     } catch (error) {
         console.error(error.message);
     }
