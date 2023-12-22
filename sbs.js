@@ -94,6 +94,45 @@ function getAttribute(specs, specValue) {
     }
 }
 
+// Function to create a table row with part values
+function createTableRow(manufacturer, mpn, capValue) {
+    const row = document.createElement('tr');
+
+    const manufacturerCell = document.createElement('td');
+    manufacturerCell.textContent = manufacturer;
+    row.appendChild(manufacturerCell);
+
+    const mpnCell = document.createElement('td');
+    mpnCell.textContent = mpn;
+    row.appendChild(mpnCell);
+
+    const capValueCell = document.createElement('td');
+    capValueCell.textContent = capValue;
+    row.appendChild(capValueCell);
+
+    return row;
+}
+
+// Function to display the comparison table
+function displayComparisonTable(refManufacturer, refMpn, refCapValue, altManufacturer, altMpn, altCapValue) {
+    const table = document.createElement('table');
+
+    // Create header row
+    const headerRow = createTableRow('Manufacturer', 'MPN', 'Capacitance');
+    table.appendChild(headerRow);
+
+    // Create reference row
+    const refRow = createTableRow(refManufacturer, refMpn, refCapValue);
+    table.appendChild(refRow);
+
+    // Create alternate row
+    const altRow = createTableRow(altManufacturer, altMpn, altCapValue);
+    table.appendChild(altRow);
+
+    // Append table to the body or any desired container
+    document.body.appendChild(table);
+}
+
 async function compareResponses() {
     try {
         const refPart = await getPart(reference);
@@ -102,17 +141,19 @@ async function compareResponses() {
         const refSpecs = getSpecs(refPart);
         const altSpecs = getSpecs(altPart);
 
-        
         var refMpn = refPart.mpn;
         var refManufacturer = refPart.manufacturer.name;
         var refCapValue = getAttribute(refSpecs, 'Capacitance');
 
         var altMpn = altPart.mpn;
-        var altManufacturer = altPart.manufacturer.name;        
+        var altManufacturer = altPart.manufacturer.name;
         var altCapValue = getAttribute(altSpecs, 'Capacitance');
 
-        console.log(refManufacturer+ "'s " + refMpn + ' cap value: ' + refCapValue);
-        console.log(altManufacturer+ "'s " + altMpn + ' cap value: ' + altCapValue);
+        console.log(refManufacturer + "'s " + refMpn + ' cap value: ' + refCapValue);
+        console.log(altManufacturer + "'s " + altMpn + ' cap value: ' + altCapValue);
+
+        // Display the comparison table
+        displayComparisonTable(refManufacturer, refMpn, refCapValue, altManufacturer, altMpn, altCapValue);
     } catch (error) {
         console.error(error.message);
     }
