@@ -132,8 +132,8 @@ async function displayComparisonTable() {
     var refVolValue = getAttribute(refSpecs, 'Voltage Rating');
     var refLifeValue = getAttribute(refSpecs, 'Life (Hours)');
     var refLeakValue = getAttribute(refSpecs, 'Leakage Current');
-    var refLeakValue = getAttribute(refSpecs, 'Height');
-    var refLeakValue = getAttribute(refSpecs, 'Length');
+    var refHeightValue = getAttribute(refSpecs, 'Height');
+    var refLengthValue = getAttribute(refSpecs, 'Length');
     //Get values for Alt
     var altManufacturer = altPart.manufacturer.name;
     var altMpn = altPart.mpn;
