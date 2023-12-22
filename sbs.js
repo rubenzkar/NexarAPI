@@ -88,7 +88,7 @@ async function fetchProperty(input, property) {
     }
 }
 
-function fetchSpecsValue(specs, attributeName) {
+async function fetchSpecsValue(specs, attributeName) {
     try {
         if (specs && specs.specs && specs.specs.length > 0) {
             const attribute = specs.specs.find(spec => spec.attribute.name === attributeName);
