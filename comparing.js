@@ -144,7 +144,7 @@ async function displayComparisonTable() {
             return value && value.url ? `<img src="${value.url}" alt="Product Image" style="max-width: 100px; max-height: 100px;">` : value;
         }
     }
-    var altDesc = refPart.shortDescription;
+    var altDesc = altPart.shortDescription;
     var altCapValue = getAttribute(altSpecs, 'Capacitance');
     var altTolValue = getAttribute(altSpecs, 'Tolerance');
     var altVolValue = getAttribute(altSpecs, 'Voltage Rating');
