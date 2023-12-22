@@ -12,7 +12,7 @@ async function getGraphQLResponse(query, variables) {
                 Authorization: `Bearer ${accessToken}`,
             },
         });
-        console.log('GraphQL Response:', response.data);
+        //console.log('GraphQL Response:', response.data);
         return response.data;
     } catch (error) {
         console.error('GraphQL Request Error:', error);
@@ -60,7 +60,7 @@ async function getPart(type) {
         if (!part) {
             throw new Error('Error retrieving part values from GraphQL response.');
         }
-        console.log('Part Values:', part);
+        //console.log('Part Values:', part);
         return part;
     } catch (error) {
         console.error(error.message);
@@ -105,7 +105,9 @@ async function compareResponses() {
         var refCapValue = getAttribute(referenceSpecs, 'Capacitance');
         var altCapValue = getAttribute(alternateSpecs, 'Capacitance');
 
-        console.log('Reference cap value: ' + refCapValue);
+        var refMpn = referenceSpecs.mpn;
+
+        console.log( refMpn + ' cap value: ' + refCapValue);
         console.log('Alternate cap value: ' + altCapValue);
     } catch (error) {
         console.error(error.message);
