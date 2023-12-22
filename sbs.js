@@ -52,9 +52,12 @@ async function getPart(input) {
     `;
 
     const variables = { inputQ: input };
-
     try {
         const response = await getGraphQLResponse(query, variables);
+        if (!response) {
+            throw new Error('Error getting GraphQL response.');
+        }
+        
         const part = response?.data?.supSearchMpn?.results[0]?.part;
 
         if (!part) {
