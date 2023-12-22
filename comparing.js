@@ -112,7 +112,7 @@ async function compareResponses() {
         var altCapValue = getAttribute(altSpecs, 'Capacitance');
 
         console.log(refManufacturer+ "'s " + refMpn + ' cap value: ' + refCapValue);
-        console.log('Alternate cap value: ' + altCapValue);
+        console.log(altManufacturer+ "'s " + altMpn + ' cap value: ' + altCapValue);
     } catch (error) {
         console.error(error.message);
     }
