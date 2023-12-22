@@ -102,8 +102,8 @@ async function compareResponses() {
         const referenceSpecs = getSpecs(referencePart);
         const alternateSpecs = getSpecs(alternatePart);
 
-        const refCapValue = getAttribute(referenceSpecs, 'Capacitance');
-        const altCapValue = getAttribute(alternateSpecs, 'Capacitance');
+        var refCapValue = getAttribute(referenceSpecs, 'Capacitance');
+        var altCapValue = getAttribute(alternateSpecs, 'Capacitance');
 
         console.log('Alternate cap value: ' + altCapValue.displayValue);
     } catch (error) {
