@@ -87,4 +87,21 @@ async function fetchProperty(input, property) {
     }
 }
 
+async function fetchSpecsAttributeValue(input, attributeName) {
+    try {
+        const graphqlObject = await getGraphQLResponse(query, input, accessToken);
+        const specsValue = getSpecsAttributeValue(graphqlObject, input, attributeName);
+
+        if (specsValue !== null) {
+            console.log(`The value of ${attributeName} for ${input}:`, specsValue);
+        } else {
+            console.error(`Unable to retrieve the value of ${attributeName} for ${input}.`);
+        }
+    } catch (error) {
+        console.error(error.message);
+    }
+}
+
 fetchProperty(alternateInput,'specs');
+
+fetchProperty(alternateInput,'Capacitance');
