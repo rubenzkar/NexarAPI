@@ -5,7 +5,7 @@ const alternateInput = urlParams.get('alternate');
 const accessToken = credentials.accessToken;
 
 // Function to perform GraphQL query and return response
-async function getGraphQLResponse(query, variables, accessToken) {
+async function getGraphQLResponse(query, variables) {
     try {
         const response = await axios.post(GRAPHQL_ENDPOINT, { query, variables }, {
             headers: {
@@ -22,7 +22,7 @@ async function getGraphQLResponse(query, variables, accessToken) {
 }
 
 // Function to get part values
-async function getPart(input, accessToken) {
+async function getPart(input) {
     const query = `
         query specAttributes($inputQ: String!) {
             supSearchMpn(q: $inputQ, limit: 1) {
@@ -54,7 +54,7 @@ async function getPart(input, accessToken) {
     const variables = { inputQ: input };
 
     try {
-        const response = await getGraphQLResponse(query, variables, accessToken);
+        const response = await getGraphQLResponse(query, variables);
         const part = response?.data?.supSearchMpn?.results[0]?.part;
 
         if (!part) {
@@ -82,15 +82,20 @@ function getPartSpecs(part) {
 }
 
 // Example usage
-async function fetchAtribute(input, specValue) {
+async function fetchAttribute(input, specValue) {
     try {
-        const part = await getPart(input, accessToken);
+        const part = await getPart(input);
         const specs = getPartSpecs(part);
         const attribute = specs.find(spec => spec.attribute.name === specValue);
-        console.log(specValue + ' value of ' + part.mpn + ':', attribute.displayValue);
 
+        if (!attribute) {
+            throw new Error(`Attribute '${specValue}' not found for part '${part.mpn}'.`);
+        }
+
+        console.log(`${specValue} value of ${part.mpn}:`, attribute.displayValue);
     } catch (error) {
         console.error(error.message);
     }
 }
-fetchAtribute(fetchAtribute, 'Capacitance');
+
+fetchAttribute(referenceInput, 'Capacitance');
