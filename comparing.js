@@ -112,15 +112,6 @@ function createTableRow(label, refValue, altValue) {
 
     return row;
 }
-function displayImage(url) {
-    const image = document.createElement('img');
-    image.src = url;
-    image.alt = 'Product Image';
-    // Add custom size
-    image.style.maxWidth = '100px';
-    image.style.maxHeight = '100px';
-    return image;
-}
 // Function to display the comparison table
 async function displayComparisonTable() {
     const table = document.createElement('table');
@@ -134,8 +125,11 @@ async function displayComparisonTable() {
     //Get values for Ref
     var refManufacturer = refPart.manufacturer.name;
     var refMpn = refPart.mpn;
-    var refImg = refPart.bestImage.url;
-    refImg = refImage.appendChild;
+    var refImgUrl = refPart.bestImage.url;
+    var refImage = {
+    refImgUrl: function (value) {
+        return value && value.url ? `<img src="${value.url}" alt="Product Image" style="max-width: 100px; max-height: 100px;">` : value;
+    }
     var refDesc = refPart.shortDescription;
     var refCapValue = getAttribute(refSpecs, 'Capacitance');
     var refTolValue = getAttribute(refSpecs, 'Tolerance');
@@ -144,6 +138,10 @@ async function displayComparisonTable() {
     var altManufacturer = altPart.manufacturer.name;
     var altMpn = altPart.mpn;
     var altImg = altPart.bestImage.url;
+     var altImage = {
+    altImgUrl: function (value) {
+        return value && value.url ? `<img src="${value.url}" alt="Product Image" style="max-width: 100px; max-height: 100px;">` : value;
+    }
     var altDesc = refPart.shortDescription;
     var altCapValue = getAttribute(altSpecs, 'Capacitance');
     var altTolValue = getAttribute(altSpecs, 'Tolerance');
@@ -151,7 +149,7 @@ async function displayComparisonTable() {
     // Create rows for each part attribute
     const manufacturerRow = createTableRow('Manufacturer', refManufacturer, altManufacturer);
     const mpnRow = createTableRow('MPN', refMpn, altMpn);
-    const imgRow = createTableRow('Image', displayImage(refImg), displayImage(altImg));
+    const imgRow = createTableRow('Image', refImg, altImg);
     const descRow = createTableRow('Description', refDesc, altDesc);
     const capValueRow = createTableRow('Capacitance', refCapValue, altCapValue);
     const tolValueRow = createTableRow('Tolerance', refTolValue, altTolValue);
