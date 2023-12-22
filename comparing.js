@@ -115,6 +115,7 @@ function createTableRow(label, refValue, altValue) {
 
 function buyNow (alternate){
     var newUrl = 'https://i.zkar.com/zephyr+' + alternate;
+    consol.log(newURL);
     window.location.href = newUrl;
 }
 
