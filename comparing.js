@@ -51,7 +51,7 @@ async function getPart(type) {
         }
     `;
 
-    const q = { inputQ: input };
+    const q = { inputQ: type };
     try {
         const response = await getGraphQLResponse(query, q);
         if (!response) {
