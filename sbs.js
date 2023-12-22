@@ -87,10 +87,10 @@ async function fetchAttribute(type, specValue) {
     try {
         if (type === 'reference') {
             part = await getPart(referenceInput);
-            specs = getPartSpecs(referencePart);
+            specs = getPartSpecs(part);
         } else if (type === 'alternate') {
             part = await getPart(alternateInput);
-            specs = getPartSpecs(alternatePart);
+            specs = getPartSpecs(part);
         }
 
         const attribute = specs.find(spec => spec.attribute.name === specValue);
