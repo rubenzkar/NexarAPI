@@ -105,7 +105,7 @@ async function fetchAttribute(type, specValue) {
     }
 }
 
-function main() {
+async function main() {
     fetchAttribute('alternate', 'Capacitance');
 }
 
