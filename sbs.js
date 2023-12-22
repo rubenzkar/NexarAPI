@@ -3,6 +3,7 @@ const urlParams = new URLSearchParams(window.location.search);
 const referenceInput = urlParams.get('reference');
 const alternateInput = urlParams.get('alternate');
 const accessToken = credentials.accessToken;
+const referencePart = getPart(referenceInput);
 
 // Function to perform GraphQL query and return response
 async function getGraphQLResponse(query, variables) {
@@ -96,6 +97,4 @@ async function fetchAttribute(part, specValue) {
     }
 }
 
-
-const referencePart = getPart(referenceInput);
 fetchAttribute(referencePart, 'Capacitance');
