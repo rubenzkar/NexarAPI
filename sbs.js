@@ -82,14 +82,14 @@ function getPartSpecs(part) {
 }
 
 async function fetchAttribute(type, specValue) {
-    let referencePart, alternatePart, specs;
+    let part, specs;
 
-    referencePart = await getPart(referenceInput);
-    alternatePart = await getPart(alternateInput);
     try {
         if (type === 'reference') {
+            part = await getPart(referenceInput);
             specs = getPartSpecs(referencePart);
         } else if (type === 'alternate') {
+            part = await getPart(alternateInput);
             specs = getPartSpecs(alternatePart);
         }
 
@@ -99,7 +99,7 @@ async function fetchAttribute(type, specValue) {
             throw new Error(`Attribute '${specValue}' not found.`);
         }
 
-        console.log(`${specValue} value:`, attribute.displayValue);
+        console.log('${specValue} value of :', attribute.displayValue);
     } catch (error) {
         console.error(error.message);
     }
