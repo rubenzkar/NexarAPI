@@ -78,8 +78,7 @@ async function fetchData(input, attribute) {
         const attributeValue = getSpecAttributeValue(graphqlObject, attribute);
 
         if (attributeValue !== null) {
-            console.log('The value of ' + attribute +'  is:', attributeValue);
-            return attributeValue;
+            console.log('The ' + attribute +' of ' + input + ' is:', attributeValue);
         } else {
             console.error('Unable to retrieve the value of .' + attribute);
         }
@@ -89,3 +88,4 @@ async function fetchData(input, attribute) {
 }
 
 fetchData(referenceInput,'manufacturer');
+fetchData(alternateInput,'manufacturer');
