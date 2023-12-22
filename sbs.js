@@ -89,5 +89,5 @@ async function fetchData(input, attribute) {
 
 fetchData(referenceInput,'manufacturer');
 fetchData(alternateInput,'manufacturer');
-fetchData(alternateInput,'capacitance');
+fetchData(alternateInput,'specs');
 
