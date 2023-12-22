@@ -81,15 +81,13 @@ function getPartSpecs(part) {
     return specs;
 }
 
-// Example usage
-async function fetchAttribute(input, specValue) {
+async function fetchAttribute(part, specValue) {
     try {
-        const part = await getPart(input);
         const specs = getPartSpecs(part);
         const attribute = specs.find(spec => spec.attribute.name === specValue);
 
         if (!attribute) {
-            throw new Error(`Attribute '${specValue}' not found for part '${part.mpn}'.`);
+            throw new Error('Attribute '${specValue}' not found for part '${part.mpn}'.');
         }
 
         console.log(`${specValue} value of ${part.mpn}:`, attribute.displayValue);
@@ -97,5 +95,5 @@ async function fetchAttribute(input, specValue) {
         console.error(error.message);
     }
 }
-
-fetchAttribute(referenceInput, 'Capacitance');
+const referencePart = await getPart(referenceInput);
+fetchAttribute(referencePart, 'Capacitance');
