@@ -1,13 +1,17 @@
 const GRAPHQL_ENDPOINT = 'https://api.nexar.com/graphql/';
 const urlParams = new URLSearchParams(window.location.search);
-const referenceInput = urlParams.get('reference');
-const alternateInput = urlParams.get('alternate');
+const reference = urlParams.get('reference');
+const alternate = urlParams.get('alternate');
 const accessToken = credentials.accessToken;
+const referencePart = getPart(reference);
+const alternatePart = getPart(alternate);
+const referenceSpecs = getSpecs(referencePart);
+const alternateSpecs = getSpecs(alternatePart);
 
 // Function to perform GraphQL query and return response
-async function getGraphQLResponse(query, variables) {
+function getGraphQLResponse(query, type) {
     try {
-        const response = await axios.post(GRAPHQL_ENDPOINT, { query, variables }, {
+        const response = await axios.post(GRAPHQL_ENDPOINT, { query, type }, {
             headers: {
                 Authorization: `Bearer ${accessToken}`,
             },
@@ -22,7 +26,7 @@ async function getGraphQLResponse(query, variables) {
 }
 
 // Function to get part values
-async function getPart(input) {
+function getPart(tyoe) {
     const query = `
         query specAttributes($inputQ: String!) {
             supSearchMpn(q: $inputQ, limit: 1) {
@@ -51,12 +55,18 @@ async function getPart(input) {
         }
     `;
 
-    const variables = { inputQ: input };
-
     try {
-        const response = await getGraphQLResponse(query, variables);
-        const part = response?.data?.supSearchMpn?.results[0]?.part;
+        let response;
 
+        if (type === 'reference') {
+             response = getGraphQLResponse(query, type);
+        } else if (type === 'alternate') {
+            part = await getPart(alternateInput);
+            response = getGraphQLResponse(query, type);
+        }
+        
+        const part = response?.data?.supSearchMpn?.results[0]?.part;
+        
         if (!part) {
             throw new Error('Error retrieving part values from GraphQL response.');
         }
@@ -70,9 +80,9 @@ async function getPart(input) {
 }
 
 // Function to get part specs
-function getPartSpecs(part) {
+function getSpecs(part) {
     const specs = part?.specs;
-
+    
     if (!specs) {
         throw new Error('Error retrieving specs from part values.');
     }
@@ -81,17 +91,8 @@ function getPartSpecs(part) {
     return specs;
 }
 
-async function fetchAttribute(type, specValue) {
-    let part, specs;
-
+ function getAttribute(specs, specValue) {
     try {
-        if (type === 'reference') {
-            part = await getPart(referenceInput);
-            specs = getPartSpecs(part);
-        } else if (type === 'alternate') {
-            part = await getPart(alternateInput);
-            specs = getPartSpecs(part);
-        }
 
         const attribute = specs.find(spec => spec.attribute.name === specValue);
 
@@ -106,10 +107,10 @@ async function fetchAttribute(type, specValue) {
     }
 }
 
-async function main() {
+function main() {
     try {
-        fetchAttribute('reference', 'Capacitance');
-        fetchAttribute('alternate', 'Capacitance');
+        getAttribute(referenceSpecs, 'Capacitance');
+        getAttribute(alternateSpecs, 'Capacitance');
         
     } catch (error) {
         console.error(error.message);
