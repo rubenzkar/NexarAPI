@@ -49,16 +49,16 @@ const query = `
     }
 `;
 
-function getSpecAttributeValue(response, attributeName) {
+function getPropertyValue(response, partPropertyName) {
     if (response.data && response.data.supSearchMpn && response.data.supSearchMpn.results) {
         const partDetails = (response.data.supSearchMpn.results[0] || {}).part;
 
         if (partDetails) {
             // Check if the attribute exists in partDetails
-            if (partDetails.hasOwnProperty(attributeName)) {
-                return partDetails[attributeName];
+            if (partDetails.hasOwnProperty(partPropertyName)) {
+                return partDetails[partPropertyName];
             } else {
-                console.error(`Attribute "${attributeName}" not found in GraphQL response.`);
+                console.error(`Part Detail "${partPropertyName}" not found in GraphQL response.`);
                 return null; // or handle the absence of the attribute as needed
             }
         } else {
@@ -71,16 +71,16 @@ function getSpecAttributeValue(response, attributeName) {
     }
 }
 
-async function fetchData(input, attribute) {
+async function fetchProperty(input, property) {
     try {
         const graphqlObject = await getGraphQLResponse(query, input, accessToken);
         // Now you can use graphqlReference and graphqlAlternate for further processing
-        const attributeValue = getSpecAttributeValue(graphqlObject, attribute);
+        const propertyValue = getPropertyValue(graphqlObject, propertyValue);
 
-        if (attributeValue !== null) {
-            console.log('The ' + attribute +' of ' + input + ' is:', attributeValue);
+        if (detailValue !== null) {
+            console.log('The ' + property +' of ' + input + ' is:', propertyValue);
         } else {
-            console.error('Unable to retrieve the value of .' + attribute);
+            console.error('Unable to retrieve the value of .' + property);
         }
     } catch (error) {
         console.error(error.message);
