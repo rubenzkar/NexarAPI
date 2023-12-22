@@ -168,7 +168,7 @@ async function displayComparisonTable() {
 
     
     
-    const buyRow = createTableRow('', '', '<button type="button" onclick="buyNow(' + alternate + ')">Buy Now</button>');
+    const buyRow = createTableRow('', '', '<button type="button" onclick="buyNow(' + "'"+ alternate + "'"+ ')">Buy Now</button>');
 
     // Append rows to the table
     table.appendChild(manufacturerRow);
