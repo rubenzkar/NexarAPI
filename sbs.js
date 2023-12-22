@@ -87,4 +87,4 @@ async function fetchProperty(input, property) {
     }
 }
 
-fetchData(alternateInput,'specs');
+fetchProperty(alternateInput,'specs');
