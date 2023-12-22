@@ -26,7 +26,7 @@ function getGraphQLResponse(query, type) {
 }
 
 // Function to get part values
-function getPart(tyoe) {
+function getPart(type) {
     const query = `
         query specAttributes($inputQ: String!) {
             supSearchMpn(q: $inputQ, limit: 1) {
