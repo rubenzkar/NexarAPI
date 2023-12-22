@@ -88,10 +88,27 @@ async function fetchProperty(input, property) {
     }
 }
 
-function fetchSpecsValue(propertyValue, attributeName) {
-    
+function fetchSpecsValue(specs, attributeName) {
+    try {
+        if (specs && specs.specs && specs.specs.length > 0) {
+            const attribute = specs.specs.find(spec => spec.attribute.name === attributeName);
+
+            if (attribute) {
+                console.log(`The value of ${attributeName}:`, attribute.displayValue);
+                return attribute.displayValue;
+            } else {
+                console.error(`Specs attribute "${attributeName}" not found.`);
+                return null; // or handle the absence of the attribute as needed
+            }
+        } else {
+            console.error('Invalid specs format or empty specs array.');
+            return null; // or handle the absence of specs as needed
+        }
+    } catch (error) {
+        console.error(error.message);
+        return null;
+    }
 }
 
-var alternatePartSpecs = fetchProperty(alternateInput,'specs');
-
-fetchSpecsValue(alternatePartSpecs,'Capacitance');
+var alternatePartSpecs = await fetchProperty(alternateInput, 'specs');
+fetchSpecsValue(alternatePartSpecs, 'Capacitance');
