@@ -5,9 +5,9 @@ const alternateInput = urlParams.get('alternate');
 const accessToken = credentials.accessToken;
 
 // Function to perform GraphQL query and return response
-async function getGraphQLResponse(query, variables) {
+async function getGraphQLResponse(query, q) {
     try {
-        const response = await axios.post(GRAPHQL_ENDPOINT, { query, variables }, {
+        const response = await axios.post(GRAPHQL_ENDPOINT, { query, q }, {
             headers: {
                 Authorization: `Bearer ${accessToken}`,
             },
@@ -22,7 +22,7 @@ async function getGraphQLResponse(query, variables) {
 }
 
 // Function to get part values
-async function getPart(input) {
+async function getPart(type) {
     const query = `
         query specAttributes($inputQ: String!) {
             supSearchMpn(q: $inputQ, limit: 1) {
@@ -51,9 +51,9 @@ async function getPart(input) {
         }
     `;
 
-    const variables = { inputQ: input };
+    const q = { inputQ: typw };
     try {
-        const response = await getGraphQLResponse(query, variables);
+        const response = await getGraphQLResponse(query, q);
         if (!response) {
             throw new Error('Error getting GraphQL response.');
         }
