@@ -113,7 +113,7 @@ function createTableRow(label, refValue, altValue) {
     return row;
 }
 
-function buyNow (){
+function buyNow (alternate){
     var newUrl = 'https://i.zkar.com/zephyr+' + alternate;
     window.location.href = newUrl;
 }
@@ -167,7 +167,7 @@ async function displayComparisonTable() {
 
     
     
-    const buyRow = createTableRow('', '', '<button type="button" onclick="buyNow()">Buy Now</button>');
+    const buyRow = createTableRow('', '', '<button type="button" onclick="buyNow(' + alternate + ')">Buy Now</button>');
 
     // Append rows to the table
     table.appendChild(manufacturerRow);
