@@ -110,5 +110,5 @@ async function fetchSpecsValue(specs, attributeName) {
     }
 }
 
-var alternatePartSpecs = await fetchProperty(alternateInput, 'specs');
+var alternatePartSpecs = fetchProperty(alternateInput, 'specs');
 fetchSpecsValue(alternatePartSpecs, 'Capacitance');
