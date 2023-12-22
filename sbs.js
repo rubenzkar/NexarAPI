@@ -58,16 +58,16 @@ async function fetchData(attribute) {
         const attributeValue = getSpecAttributeValue(graphqlReference, attribute);
 
         if (attributeValue !== null) {
-            console.log(`The value of "manufacturer" is:`, attributeValue);
+            console.log('The value of "manufacturer" is:', attributeValue);
         } else {
-            console.error(`Unable to retrieve the value of .` + attribute);
+            console.error('Unable to retrieve the value of .' + attribute);
         }
     } catch (error) {
         console.error(error.message);
     }
 }
 
-fetchData();
+fetchData('manufacturer');
 
 function getSpecAttributeValue(response, attributeName) {
     if (response.data && response.data.supSearchMpn && response.data.supSearchMpn.results) {
