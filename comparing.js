@@ -127,8 +127,9 @@ async function displayComparisonTable() {
     var refMpn = refPart.mpn;
     var refImgage = refPart.bestImage;
     var refImg = {
-    refImage: function (value) {
-        return value && value.url ? `<img src="${value.url}" alt="Product Image" style="max-width: 100px; max-height: 100px;">` : value;
+        refImage: function (value) {
+            return value && value.url ? `<img src="${value.url}" alt="Product Image" style="max-width: 100px; max-height: 100px;">` : value;
+        }
     }
     var refDesc = refPart.shortDescription;
     var refCapValue = getAttribute(refSpecs, 'Capacitance');
@@ -138,9 +139,10 @@ async function displayComparisonTable() {
     var altManufacturer = altPart.manufacturer.name;
     var altMpn = altPart.mpn;
     var altImage = altPart.bestImage;
-     var altImg = {
-    altImage: function (value) {
-        return value && value.url ? `<img src="${value.url}" alt="Product Image" style="max-width: 100px; max-height: 100px;">` : value;
+    var altImg = {
+        altImage: function (value) {
+            return value && value.url ? `<img src="${value.url}" alt="Product Image" style="max-width: 100px; max-height: 100px;">` : value;
+        }
     }
     var altDesc = refPart.shortDescription;
     var altCapValue = getAttribute(altSpecs, 'Capacitance');
