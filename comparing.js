@@ -125,7 +125,7 @@ async function displayComparisonTable() {
     //Get values for Ref
     var refManufacturer = refPart.manufacturer.name;
     var refMpn = refPart.mpn;
-    var refImgage = refPart.bestImage;
+    var refImage = refPart.bestImage;
     var refDesc = refPart.shortDescription;
     var refCapValue = getAttribute(refSpecs, 'Capacitance');
     var refTolValue = getAttribute(refSpecs, 'Tolerance');
