@@ -112,6 +112,12 @@ function createTableRow(label, refValue, altValue) {
 
     return row;
 }
+
+function byyNow (){
+    var newUrl = 'https://store.zephyr-t.com/product-category/all/passives/capacitors-passives/aluminum-electrolytic-capacitors-capacitors-passives/';
+    window.location.href = newUrl;
+}
+
 // Function to display the comparison table
 async function displayComparisonTable() {
     const table = document.createElement('table');
@@ -161,7 +167,7 @@ async function displayComparisonTable() {
 
     
     
-    const buyRow = createTableRow('', '', '<button type="button">Buy Now</button>');
+    const buyRow = createTableRow('', '', '<button type="button" onclick="buyNow()">Buy Now</button>');
 
     // Append rows to the table
     table.appendChild(manufacturerRow);
