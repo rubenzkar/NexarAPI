@@ -156,8 +156,8 @@ async function displayComparisonTable() {
     const volValueRow = createTableRow('Voltage Rating', refVolValue, altVolValue);
     const lifeValueRow = createTableRow('Life (Hours)', refLifeValue, altLifeValue);
     const leakValueRow = createTableRow('Leakage Current', refLeakValue, altLeakValue);
-    const heightValueRow = createTableRow('Leakage Current', refHeightValue, altHeightValue);
-    const lengthValueRow = createTableRow('Leakage Current', refLengthValue, altLengthValue);
+    const heightValueRow = createTableRow('Height', refHeightValue, altHeightValue);
+    const lengthValueRow = createTableRow('Length', refLengthValue, altLengthValue);
 
     // Append rows to the table
     table.appendChild(manufacturerRow);
