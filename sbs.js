@@ -91,6 +91,8 @@ function displayComparison(response, type, url) {
         headerCell.innerHTML = '<h2>Alternate MPN</h2>';
     }
 
+    responseTableContainer.style.display = 'block';
+    
     if (response.data && response.data.supSearchMpn && response.data.supSearchMpn.results) {
         var partDetails = (response.data.supSearchMpn.results[0] || {}).part;
 
