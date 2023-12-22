@@ -87,8 +87,8 @@ function getAttribute(specs, specValue) {
             throw new Error(`Attribute ${specValue} not found.`);
         }
 
-        console.log(`${specValue} value: ${attribute.displayValue}`);
-        return attribute;
+        //console.log(`${specValue} value: ${attribute.displayValue}`);
+        return attribute.displayValue;
     } catch (error) {
         console.error(error.message);
     }
@@ -102,8 +102,10 @@ async function compareResponses() {
         const referenceSpecs = getSpecs(referencePart);
         const alternateSpecs = getSpecs(alternatePart);
 
-        getAttribute(referenceSpecs, 'Capacitance');
-        getAttribute(alternateSpecs, 'Capacitance');
+        const refCapacitance = getAttribute(referenceSpecs, 'Capacitance');
+        const altCapacitance = getAttribute(alternateSpecs, 'Capacitance');
+
+        console.log(`Alternate cap value: ${altCapacitance.displayValue}`);
     } catch (error) {
         console.error(error.message);
     }
