@@ -1,7 +1,7 @@
 const GRAPHQL_ENDPOINT = 'https://api.nexar.com/graphql/';
 const urlParams = new URLSearchParams(window.location.search);
-const referenceInput = urlParams.get('reference');
-const alternateInput = urlParams.get('alternate');
+const reference = urlParams.get('reference');
+const alternate = urlParams.get('alternate');
 const accessToken = credentials.accessToken;
 
 // Function to perform GraphQL query and return response
@@ -89,10 +89,10 @@ async function fetchAttribute(type, specValue) {
 
     try {
         if (type === 'reference') {
-            part = await getPart(referenceInput);
+            part = await getPart(reference);
             specs = getPartSpecs(part);
         } else if (type === 'alternate') {
-            part = await getPart(alternateInput);
+            part = await getPart(alternate);
             specs = getPartSpecs(part);
         }
 
