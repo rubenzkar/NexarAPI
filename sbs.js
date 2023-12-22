@@ -99,7 +99,7 @@ async function fetchAttribute(type, specValue) {
             throw new Error(`Attribute '${specValue}' not found.`);
         }
 
-        console.log('${specValue} value of '${part.mpn}':', attribute.displayValue);
+        console.log(${specValue}' value of '${part.mpn}':', attribute.displayValue);
     } catch (error) {
         console.error(error.message);
     }
