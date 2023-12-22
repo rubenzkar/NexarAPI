@@ -60,7 +60,7 @@ async function getPart(type) {
         if (!part) {
             throw new Error('Error retrieving part values from GraphQL response.');
         }
-        //console.log('Part Values:', part);
+        console.log('Part:', part);
         return part;
     } catch (error) {
         console.error(error.message);
