@@ -82,8 +82,10 @@ function getPartSpecs(part) {
 }
 
 async function fetchAttribute(type, specValue) {
-    let specs;
+    let referencePart, alternatePart, specs;
 
+    referencePart = await getPart(referenceInput);
+    alternatePart = await getPart(alternateInput);
     try {
         if (type === 'reference') {
             specs = getPartSpecs(referencePart);
@@ -104,12 +106,7 @@ async function fetchAttribute(type, specValue) {
 }
 
 async function main() {
-    let referencePart, alternatePart;
-
     try {
-        referencePart = await getPart(referenceInput);
-        alternatePart = await getPart(alternateInput);
-
         fetchAttribute('alternate', 'Capacitance');
     } catch (error) {
         console.error(error.message);
