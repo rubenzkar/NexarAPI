@@ -69,11 +69,11 @@ function compareResponses() {
 function displayComparison(response, type, url) {
     var responseTableContainer = document.getElementById('responseTableContainer');
     
-    // Set an id for the table
-    responseTable.id = 'responseTable'; 
     
     // Create a single table for both responses
     var responseTable = document.createElement('table');
+    
+    responseTable.id = 'responseTable';  // Set an id for the table
     responseTable.style.width = '600px';  // Set a fixed width for the table
 
     if (type === 'reference') {
