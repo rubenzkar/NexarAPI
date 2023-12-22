@@ -11,7 +11,7 @@ const alternateSpecs = getSpecs(alternatePart);
 // Function to perform GraphQL query and return response
 function getGraphQLResponse(query, type) {
     try {
-        const response = await axios.post(GRAPHQL_ENDPOINT, { query, type }, {
+        const response = axios.post(GRAPHQL_ENDPOINT, { query, type }, {
             headers: {
                 Authorization: `Bearer ${accessToken}`,
             },
@@ -61,7 +61,7 @@ function getPart(tyoe) {
         if (type === 'reference') {
              response = getGraphQLResponse(query, type);
         } else if (type === 'alternate') {
-            part = await getPart(alternateInput);
+            part = getPart(alternateInput);
             response = getGraphQLResponse(query, type);
         }
         
@@ -107,7 +107,7 @@ function getSpecs(part) {
     }
 }
 
-function main() {
+function compareResponses() {
     try {
         getAttribute(referenceSpecs, 'Capacitance');
         getAttribute(alternateSpecs, 'Capacitance');
@@ -116,5 +116,3 @@ function main() {
         console.error(error.message);
     }
 }
-
-main();
