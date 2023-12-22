@@ -1,37 +1,38 @@
 const GRAPHQL_ENDPOINT = 'https://api.nexar.com/graphql/';
+const REFERENCE_TYPE = 'reference';
+const ALTERNATE_TYPE = 'alternate';
 
 // Function to send GraphQL query
 function sendGraphQLQuery(query, url, type, accessToken) {
     axios.post(GRAPHQL_ENDPOINT, { query: query, variables: { inputQ: url } }, {
-        headers: {
-            Authorization: 'Bearer ' + accessToken,
-        },
-    })
-    .then(function(apiResponse) {
-        console.log(`GraphQL Response for ${type}:`, apiResponse.data);
-        displayComparison(apiResponse.data, type, url);
-    })
-    .catch(function(error) {
-        console.error('GraphQL Request Error:', error);
-        displayError(`Error making GraphQL request for ${type}. Check console for details.`);
-    });
+            headers: {
+                Authorization: 'Bearer ' + accessToken,
+            },
+        })
+        .then(function (apiResponse) {
+            console.log(`GraphQL Response for ${type}:`, apiResponse.data);
+            displayComparison(apiResponse.data, type, url);
+        })
+        .catch(function (error) {
+            console.error(`GraphQL Request Error for ${type}:`, error);
+            displayError(`Error making GraphQL request for ${type}. Check console for details.`);
+        });
 }
 
-// Function to compare GraphQL responses
 function compareResponses() {
-    var urlParams = new URLSearchParams(window.location.search);
-    var referenceInput = urlParams.get('reference');
-    var alternateInput = urlParams.get('alternate');
-    
-    // Clear the responseTableContainer
+    const urlParams = new URLSearchParams(window.location.search);
+    const referenceInput = urlParams.get('reference');
+    const alternateInput = urlParams.get('alternate');
+    const responseTableContainer = document.getElementById('responseTableContainer');
+
     responseTableContainer.innerHTML = '';
-    
+
     if (!referenceInput || !alternateInput) {
         alert('Please provide both reference and alternate URLs.');
         return;
     }
 
-    var query = `
+    const query = `
         query specAttributes($inputQ: String!) {
             supSearchMpn(q: $inputQ, limit: 1) {
                 results {
@@ -59,11 +60,31 @@ function compareResponses() {
         }
     `;
 
-    var accessToken = credentials.accessToken;
+    const accessToken = credentials.accessToken;
 
-    // Send GraphQL queries and display responses
-    sendGraphQLQuery(query, referenceInput, 'reference', accessToken);
-    sendGraphQLQuery(query, alternateInput, 'alternate', accessToken);
+    sendGraphQLQuery(query, referenceInput, REFERENCE_TYPE, accessToken);
+    sendGraphQLQuery(query, alternateInput, ALTERNATE_TYPE, accessToken);
+}
+
+function createTableHeaders(responseTable, partDetails) {
+    const headers = {
+        mpn: 'MPN',
+        manufacturer: 'Manufacturer',
+        shortDescription: 'Description',
+        bestImage: 'Image',
+        specs: 'Specifications'
+    };
+
+    Object.keys(partDetails).forEach(function (attribute) {
+        if (attribute !== 'specs' && attribute !== 'bestDatasheet') {
+            const row = responseTable.insertRow();
+            row.insertCell(0).textContent = headers[attribute] || attribute;
+
+            const valueCell1 = row.insertCell(1);
+            const cleanedValue1 = cleanUpAttributeValue(attribute, partDetails[attribute]);
+            valueCell1.innerHTML = cleanedValue1;
+        }
+    });
 }
 
 // Function to display GraphQL response for comparison
