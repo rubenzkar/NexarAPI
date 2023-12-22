@@ -158,6 +158,7 @@ async function displayComparisonTable() {
     const leakValueRow = createTableRow('Leakage Current', refLeakValue, altLeakValue);
     const heightValueRow = createTableRow('Height', refHeightValue, altHeightValue);
     const lengthValueRow = createTableRow('Length', refLengthValue, altLengthValue);
+    const buyRow = createTableRow('Length', '', '<button type="button">Buy Now</button>');
 
     // Append rows to the table
     table.appendChild(manufacturerRow);
