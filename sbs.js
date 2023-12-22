@@ -13,11 +13,11 @@ async function getGraphQLResponse(query, variables) {
             },
         });
 
-        //console.log('GraphQL Response:', response.data);
+        console.log('GraphQL Response:', response.data);
         return response.data;
     } catch (error) {
         console.error('GraphQL Request Error:', error);
-        throw new Error('Error making GraphQL request. Check the console for details.');  // Improved error message
+        throw new Error('Error making GraphQL request. Check console for details.');
     }
 }
 
@@ -58,10 +58,10 @@ async function getPart(input) {
         const part = response?.data?.supSearchMpn?.results[0]?.part;
 
         if (!part) {
-            throw new Error('Error retrieving part values from the GraphQL response.');
+            throw new Error('Error retrieving part values from GraphQL response.');
         }
 
-        //console.log('Part:', part);
+        console.log('Part Values:', part);
         return part;
     } catch (error) {
         console.error(error.message);
@@ -77,13 +77,14 @@ function getPartSpecs(part) {
         throw new Error('Error retrieving specs from part values.');
     }
 
-    //console.log('Specs:', specs);
+    console.log('Specs:', specs);
     return specs;
 }
 
+// Example usage
 async function fetchAttribute(input, specValue) {
     try {
-        const part = getPart(input);
+        const part = await getPart(input);
         const specs = getPartSpecs(part);
         const attribute = specs.find(spec => spec.attribute.name === specValue);
 
