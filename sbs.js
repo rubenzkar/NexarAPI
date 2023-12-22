@@ -69,98 +69,51 @@ function compareResponses() {
 function displayComparison(response, type, url) {
     var responseTableContainer = document.getElementById('responseTableContainer');
     
-    
-    // Create a single table for both responses
-    var responseTable = document.createElement('table');
-    
-    responseTable.id = 'responseTable';  // Set an id for the table
-    responseTable.style.width = '600px';  // Set a fixed width for the table
-
-    if (type === 'reference') {
-        responseTable.innerHTML = '<h2>Reference MPN</h2>';
-    } else if (type === 'alternate') {
-        responseTable.innerHTML = '<h2>Alternate MPN</h2>';
+    // Check if the table already exists; if not, create one
+    var responseTable = document.getElementById('responseTable');
+    if (!responseTable) {
+        responseTable = document.createElement('table');
+        responseTable.id = 'responseTable';  // Set an id for the table
+        responseTable.style.width = '600px';  // Set a fixed width for the table
+        responseTableContainer.appendChild(responseTable);
     }
-    responseTableContainer.style.display = 'block';
+
+    // Create a single row for each response
+    var responseRow = responseTable.insertRow();
+    
+    if (type === 'reference') {
+        var headerCell = responseRow.insertCell();
+        headerCell.colSpan = 2;
+        headerCell.innerHTML = '<h2>Reference MPN</h2>';
+    } else if (type === 'alternate') {
+        var headerCell = responseRow.insertCell();
+        headerCell.colSpan = 2;
+        headerCell.innerHTML = '<h2>Alternate MPN</h2>';
+    }
 
     if (response.data && response.data.supSearchMpn && response.data.supSearchMpn.results) {
         var partDetails = (response.data.supSearchMpn.results[0] || {}).part;
 
         if (partDetails) {
-            var headers = {
-                mpn: 'MPN',
-                manufacturer: 'Manufacturer',
-                shortDescription: 'Description',
-                bestImage: 'Image',
-                specs: 'Specifications'
-            };
-
-            // Create headers dynamically
-            Object.keys(partDetails).forEach(function (attribute) {
-                if (attribute !== 'specs' && attribute !== 'bestDatasheet') {
-                    var row = responseTable.insertRow();
-                    row.insertCell(0).textContent = headers[attribute] || attribute;
-
-                    // Values for the first object
-                    var valueCell1 = row.insertCell(1);
-                    var cleanedValue1 = cleanUpAttributeValue(attribute, partDetails[attribute]);
-                    valueCell1.innerHTML = cleanedValue1;
-                }
-            });
-
-            // Create a single row for 'Specifications' header with merged cells
-            var specsHeaderRow = responseTable.insertRow();
-            var specsHeaderCell = specsHeaderRow.insertCell(0);
+            // Append cells for each attribute/value pair side by side in the same row
+            appendAttributeValuePair(responseRow, 'MPN', partDetails.mpn);
+            appendAttributeValuePair(responseRow, 'Manufacturer', partDetails.manufacturer?.name);
+            appendAttributeValuePair(responseRow, 'Description', partDetails.shortDescription);
+            appendAttributeValuePair(responseRow, 'Image', getBestImageHTML(partDetails.bestImage));
+            
+            // Append specifications
+            var specsHeaderCell = responseRow.insertCell();
             specsHeaderCell.colSpan = 2;
-
-            // Create an h3 element for 'Specifications' header
-            var specsHeaderElement = document.createElement('h3');
-            specsHeaderElement.textContent = headers.specs;
-
-            // Append the h3 element to the specsHeaderCell
-            specsHeaderCell.appendChild(specsHeaderElement);
+            specsHeaderCell.innerHTML = '<h3>Specifications</h3>';
 
             partDetails.specs.forEach(function (spec) {
                 if (spec.attribute.name !== 'Schedule B') {
-                    var specRow = responseTable.insertRow();
-                    specRow.insertCell(0).textContent = spec.attribute.name;
-
-                    // Values for the first object
-                    var specValueCell1 = specRow.insertCell(1);
-                    specValueCell1.textContent = spec.displayValue;
+                    appendAttributeValuePair(responseRow, spec.attribute.name, spec.displayValue);
                 }
             });
 
-            // Reuse elements for 'Datasheet' header
-            var datasheetHeaderRow = responseTable.insertRow();
-            var datasheetHeaderCell = datasheetHeaderRow.insertCell(0);
-            datasheetHeaderCell.colSpan = 2;
-            var datasheetHeaderElement = document.createElement('h3');
-            datasheetHeaderElement.textContent = 'Datasheet';
-            datasheetHeaderCell.appendChild(datasheetHeaderElement);
-
-            // Create a row for the datasheet URL
-            var datasheetRow = responseTable.insertRow();
-            var datasheetAttributeCell = datasheetRow.insertCell(0);
-            var datasheetValueCell = datasheetRow.insertCell(1);
-
-            datasheetAttributeCell.textContent = 'PDF';
-
-            // Check if 'bestDatasheet' property is present
-            if (partDetails.bestDatasheet && partDetails.bestDatasheet.url) {
-                // Create a link element for the datasheet URL
-                var datasheetLink = document.createElement('a');
-                datasheetLink.href = partDetails.bestDatasheet.url;
-                datasheetLink.target = '_blank'; // Open the link in a new tab
-                datasheetLink.textContent = 'Open PDF';
-
-                // Values for the first object
-                datasheetValueCell.appendChild(datasheetLink);
-            } else {
-                // If 'bestDatasheet' is not present or doesn't have a URL, display a message
-                datasheetValueCell.colSpan = 2;  // Span both cells
-                datasheetValueCell.textContent = 'Datasheet not available';
-            }
+            // Append datasheet
+            appendDatasheet(responseRow, partDetails.bestDatasheet);
         } else {
             console.error('Invalid response format: "part" property is missing or empty.');
             displayError('Invalid response format. Check console for details.');
@@ -169,20 +122,39 @@ function displayComparison(response, type, url) {
         console.error('Invalid response format: "supSearchMpn.results" property is missing.');
         displayError('Invalid response format. Check console for details.');
     }
-
-    // Append the table to the responseTableContainer
-    responseTableContainer.appendChild(responseTable);
 }
 
-// Cleanup function for attributes
-function cleanUpAttributeValue(attribute, value) {
-    // Your cleanup logic here
-    switch (attribute) {
-        case 'manufacturer':
-            return value && value.name ? value.name : value;
-        case 'bestImage':
-            return value && value.url ? `<img src="${value.url}" alt="Product Image" style="max-width: 100px; max-height: 100px;">` : value;
-        default:
-            return value;
+// Function to append attribute and value pair to a row
+function appendAttributeValuePair(row, attribute, value) {
+    var attributeCell = row.insertCell();
+    attributeCell.textContent = attribute;
+
+    var valueCell = row.insertCell();
+    valueCell.textContent = value;
+}
+
+// Function to append datasheet information to a row
+function appendDatasheet(row, datasheet) {
+    var datasheetHeaderCell = row.insertCell();
+    datasheetHeaderCell.colSpan = 2;
+    datasheetHeaderCell.innerHTML = '<h3>Datasheet</h3>';
+
+    var datasheetCell = row.insertCell();
+    datasheetCell.colSpan = 2;
+
+    if (datasheet && datasheet.url) {
+        var datasheetLink = document.createElement('a');
+        datasheetLink.href = datasheet.url;
+        datasheetLink.target = '_blank'; // Open the link in a new tab
+        datasheetLink.textContent = 'Open PDF';
+
+        datasheetCell.appendChild(datasheetLink);
+    } else {
+        datasheetCell.textContent = 'Datasheet not available';
     }
+}
+
+// Function to get HTML for the best image
+function getBestImageHTML(bestImage) {
+    return bestImage && bestImage.url ? `<img src="${bestImage.url}" alt="Product Image" style="max-width: 100px; max-height: 100px;">` : '';
 }
