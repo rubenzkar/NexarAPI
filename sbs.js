@@ -104,15 +104,16 @@ async function fetchAttribute(type, specValue) {
 }
 
 async function main() {
-    const referencePartPromise = getPart(referenceInput);
-    const alternatePartPromise = getPart(alternateInput);
+    let referencePart, alternatePart;
 
-    // Use Promise.all to wait for both promises to resolve
-    const [referencePart, alternatePart] = await Promise.all([referencePartPromise, alternatePartPromise]);
+    try {
+        referencePart = await getPart(referenceInput);
+        alternatePart = await getPart(alternateInput);
 
-    // Rest of your code...
-
-    fetchAttribute('alternate', 'Capacitance');
+        fetchAttribute('alternate', 'Capacitance');
+    } catch (error) {
+        console.error(error.message);
+    }
 }
 
 main();
