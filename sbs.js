@@ -1,4 +1,8 @@
 const GRAPHQL_ENDPOINT = 'https://api.nexar.com/graphql/';
+const urlParams = new URLSearchParams(window.location.search);
+const referenceInput = urlParams.get('reference');
+const alternateInput = urlParams.get('alternate');
+const accessToken = credentials.accessToken;
 
 // Function to perform GraphQL query and return response
 async function getGraphQLResponse(query, url, accessToken) {
@@ -44,11 +48,6 @@ const query = `
         }
     }
 `;
-
-const urlParams = new URLSearchParams(window.location.search);
-const referenceInput = urlParams.get('reference');
-const alternateInput = urlParams.get('alternate');
-const accessToken = credentials.accessToken;
 
 async function fetchData(attribute) {
     try {
