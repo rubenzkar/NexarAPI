@@ -3,10 +3,6 @@ const urlParams = new URLSearchParams(window.location.search);
 const reference = urlParams.get('reference');
 const alternate = urlParams.get('alternate');
 const accessToken = credentials.accessToken;  // Credentials not defined, please provide them
-const referencePart = getPart(reference);
-const alternatePart = getPart(alternate);
-const referenceSpecs = getSpecs(referencePart);
-const alternateSpecs = getSpecs(alternatePart);
 
 // Function to perform GraphQL query and return response
 async function getGraphQLResponse(query, type) {
@@ -26,7 +22,7 @@ async function getGraphQLResponse(query, type) {
 }
 
 // Function to get part values
-function getPart(type) {
+async function getPart(type) {
     const query = `
         query specAttributes($inputQ: String!) {
             supSearchMpn(q: $inputQ, limit: 1) {
@@ -56,7 +52,7 @@ function getPart(type) {
     `;
 
     try {
-        const response = await getGraphQLResponse(query, type);  // Await the response
+        const response = await getGraphQLResponse(query, type);
         if (!response) {
             throw new Error('Error getting GraphQL response.');
         }
@@ -91,10 +87,10 @@ function getAttribute(specs, specValue) {
         const attribute = specs.find(spec => spec.attribute.name === specValue);
 
         if (!attribute) {
-            throw new Error('Attribute ' + specValue + ' not found.');
+            throw new Error(`Attribute ${specValue} not found.`);
         }
 
-        console.log(specValue + ' value of ' + part.mpn + ': ' + attribute.displayValue);
+        console.log(`${specValue} value: ${attribute.displayValue}`);
 
     } catch (error) {
         console.error(error.message);
@@ -103,8 +99,14 @@ function getAttribute(specs, specValue) {
 
 async function compareResponses() {
     try {
-        await getAttribute(referenceSpecs, 'Capacitance');
-        await getAttribute(alternateSpecs, 'Capacitance');
+        const referencePart = await getPart(reference);
+        const alternatePart = await getPart(alternate);
+
+        const referenceSpecs = getSpecs(referencePart);
+        const alternateSpecs = getSpecs(alternatePart);
+
+        getAttribute(referenceSpecs, 'Capacitance');
+        getAttribute(alternateSpecs, 'Capacitance');
     } catch (error) {
         console.error(error.message);
     }
