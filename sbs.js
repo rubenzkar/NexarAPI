@@ -22,7 +22,7 @@ async function getGraphQLResponse(query, variables, accessToken) {
 }
 
 // Function to get part values
-async function getPartValues(referenceInput, accessToken) {
+async function getPartValues(input, accessToken) {
     const query = `
         query specAttributes($inputQ: String!) {
             supSearchMpn(q: $inputQ, limit: 1) {
@@ -51,7 +51,7 @@ async function getPartValues(referenceInput, accessToken) {
         }
     `;
 
-    const variables = { inputQ: referenceInput };
+    const variables = { inputQ: input };
 
     try {
         const response = await getGraphQLResponse(query, variables, accessToken);
@@ -90,5 +90,20 @@ async function fetchData() {
         console.error(error.message);
     }
 }
-
 fetchData();
+
+// Function to get a specific spec value by name
+function getSpecValueByName(specs, specName) {
+    const spec = specs.find(item => item.attribute.name === specName);
+
+    if (!spec) {
+        throw new Error(`Spec with name "${specName}" not found.`);
+    }
+
+    const specValue = spec.displayValue;
+    console.log(`Value for ${specName}:`, specValue);
+
+    return specValue;
+}
+
+ console.log (specificSpecValue = getSpecValueByName(specs, 'Capacitance');)
