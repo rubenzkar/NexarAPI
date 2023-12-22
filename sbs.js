@@ -159,6 +159,6 @@ function appendDatasheet(row, datasheet) {
 }
 
 // Function to get HTML for the best image
-function getBestImageHTML(bestImage) {
-    return bestImage && bestImage.url ? `<img src="${bestImage.url}" alt="Product Image" style="max-width: 100px; max-height: 100px;">` : '';
+function getBestImageHTML(value) {
+    return value && value.url ? `<img src="${value.url}" alt="Product Image" style="max-width: 100px; max-height: 100px;">` : value;
 }
