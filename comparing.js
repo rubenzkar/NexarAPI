@@ -147,6 +147,7 @@ async function displayComparisonTable() {
     // Append rows to the table
     table.appendChild(manufacturerRow);
     table.appendChild(mpnRow);
+    table.appendChild(descRow);
     table.appendChild(capValueRow);
     table.appendChild(tolValueRow);
     table.appendChild(volValueRow);
