@@ -56,16 +56,8 @@ function getPart(type) {
     `;
 
     try {
-        let response;
-
-        if (type === 'reference') {
-             response = getGraphQLResponse(query, type);
-        } else if (type === 'alternate') {
-            part = getPart(alternateInput);
-            response = getGraphQLResponse(query, type);
-        }
-        
-        const part = response?.data?.supSearchMpn?.results[0]?.part;
+        var response = getGraphQLResponse(query, type);        
+        var part = response?.data?.supSearchMpn?.results[0]?.part;
         
         if (!part) {
             throw new Error('Error retrieving part values from GraphQL response.');
@@ -81,7 +73,7 @@ function getPart(type) {
 
 // Function to get part specs
 function getSpecs(part) {
-    const specs = part?.specs;
+    var specs = part?.specs;
     
     if (!specs) {
         throw new Error('Error retrieving specs from part values.');
@@ -93,8 +85,7 @@ function getSpecs(part) {
 
  function getAttribute(specs, specValue) {
     try {
-
-        const attribute = specs.find(spec => spec.attribute.name === specValue);
+        var attribute = specs.find(spec => spec.attribute.name === specValue);
 
         if (!attribute) {
             throw new Error('Attribute ' + specValue+ ' not found.');
