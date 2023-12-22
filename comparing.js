@@ -116,30 +116,33 @@ function createTableRow(label, refValue, altValue) {
 // Function to display the comparison table
 async function displayComparisonTable() {
     const table = document.createElement('table');
-
+    //Get parts
     const refPart = await getPart(reference);
     const altPart = await getPart(alternate);
-
+    // Get specs
     const refSpecs = getSpecs(refPart);
     const altSpecs = getSpecs(altPart);
-
+    //Get values for Ref
     var refMpn = refPart.mpn;
     var refManufacturer = refPart.manufacturer.name;
     var refCapValue = getAttribute(refSpecs, 'Capacitance');
-
+    var refTolValue = getAttribute(refSpecs, 'Tolerance');
+    //Get values for Alt
     var altMpn = altPart.mpn;
     var altManufacturer = altPart.manufacturer.name;
     var altCapValue = getAttribute(altSpecs, 'Capacitance');
-    
+    var altTolValue = getAttribute(altSpecs, 'Tolerance');
     // Create rows for each part attribute
     const manufacturerRow = createTableRow('Manufacturer', refManufacturer, altManufacturer);
     const mpnRow = createTableRow('MPN', refMpn, altMpn);
     const capValueRow = createTableRow('Capacitance', refCapValue, altCapValue);
+    const tolValueRow = createTableRow('Tolerance', refTolValue, altTolValue);
 
     // Append rows to the table
     table.appendChild(manufacturerRow);
     table.appendChild(mpnRow);
     table.appendChild(capValueRow);
+    table.appendChild(tolValueRow);
 
     // Append table to the body or any desired container
     document.body.appendChild(table);
