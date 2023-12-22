@@ -109,3 +109,5 @@ async function compareResponses() {
         console.error(error.message);
     }
 }
+
+compareResponses();
