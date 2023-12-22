@@ -71,15 +71,15 @@ function getSpecAttributeValue(response, attributeName) {
     }
 }
 
-async function fetchData(attribute) {
+async function fetchData(input, attribute) {
     try {
-        const graphqlReference = await getGraphQLResponse(query, referenceInput, accessToken);
-        //const graphqlAlternate = await getGraphQLResponse(query, alternateInput, accessToken);
+        const graphqlObject = await getGraphQLResponse(query, input, accessToken);
         // Now you can use graphqlReference and graphqlAlternate for further processing
-        const attributeValue = getSpecAttributeValue(graphqlReference, attribute);
+        const attributeValue = getSpecAttributeValue(graphqlObject, attribute);
 
         if (attributeValue !== null) {
             console.log('The value of ' + attribute +'  is:', attributeValue);
+            return attributeValue;
         } else {
             console.error('Unable to retrieve the value of .' + attribute);
         }
@@ -88,4 +88,4 @@ async function fetchData(attribute) {
     }
 }
 
-fetchData('manufacturer');
+fetchData('reference','manufacturer');
