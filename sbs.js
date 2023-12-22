@@ -50,13 +50,24 @@ const referenceInput = urlParams.get('reference');
 const alternateInput = urlParams.get('alternate');
 const accessToken = credentials.accessToken;
 
-try {
-    const graphqlReference = await getGraphQLResponse(query, referenceInput, accessToken);
-    const graphqlAlternate = await getGraphQLResponse(query, alternateInput, accessToken);
-    // Now you can use graphqlResponse for further processing
-} catch (error) {
-    console.error(error.message);
+async function fetchData(attribute) {
+    try {
+        const graphqlReference = await getGraphQLResponse(query, referenceInput, accessToken);
+        const graphqlAlternate = await getGraphQLResponse(query, alternateInput, accessToken);
+        // Now you can use graphqlReference and graphqlAlternate for further processing
+        const attributeValue = getSpecAttributeValue(graphqlReference, attribute);
+
+        if (attributeValue !== null) {
+            console.log(`The value of "manufacturer" is:`, attributeValue);
+        } else {
+            console.error(`Unable to retrieve the value of .` + attribute);
+        }
+    } catch (error) {
+        console.error(error.message);
+    }
 }
+
+fetchData();
 
 function getSpecAttributeValue(response, attributeName) {
     if (response.data && response.data.supSearchMpn && response.data.supSearchMpn.results) {
