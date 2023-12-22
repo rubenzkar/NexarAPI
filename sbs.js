@@ -13,7 +13,7 @@ async function getGraphQLResponse(query, variables) {
             },
         });
 
-        console.log('GraphQL Response:', response.data);
+        //console.log('GraphQL Response:', response.data);
         return response.data;
     } catch (error) {
         console.error('GraphQL Request Error:', error);
@@ -61,7 +61,7 @@ async function getPart(input) {
             throw new Error('Error retrieving part values from the GraphQL response.');
         }
 
-        console.log('Part:', part);
+        //console.log('Part:', part);
         return part;
     } catch (error) {
         console.error(error.message);
@@ -77,7 +77,7 @@ function getPartSpecs(part) {
         throw new Error('Error retrieving specs from part values.');
     }
 
-    console.log('Specs:', specs);
+    //console.log('Specs:', specs);
     return specs;
 }
 
