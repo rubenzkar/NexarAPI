@@ -103,9 +103,8 @@ function getAttribute(specs, specValue) {
 
 async function compareResponses() {
     try {
-        getAttribute(referenceSpecs, 'Capacitance');
-        getAttribute(alternateSpecs, 'Capacitance');
-
+        await getAttribute(referenceSpecs, 'Capacitance');
+        await getAttribute(alternateSpecs, 'Capacitance');
     } catch (error) {
         console.error(error.message);
     }
