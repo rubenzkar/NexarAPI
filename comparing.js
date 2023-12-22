@@ -2,16 +2,16 @@ const GRAPHQL_ENDPOINT = 'https://api.nexar.com/graphql/';
 const urlParams = new URLSearchParams(window.location.search);
 const reference = urlParams.get('reference');
 const alternate = urlParams.get('alternate');
-const accessToken = credentials.accessToken;
+const accessToken = credentials.accessToken;  // Credentials not defined, please provide them
 const referencePart = getPart(reference);
 const alternatePart = getPart(alternate);
 const referenceSpecs = getSpecs(referencePart);
 const alternateSpecs = getSpecs(alternatePart);
 
 // Function to perform GraphQL query and return response
-function getGraphQLResponse(query, type) {
+async function getGraphQLResponse(query, type) {
     try {
-        const response = axios.post(GRAPHQL_ENDPOINT, { query, type }, {
+        const response = await axios.post(GRAPHQL_ENDPOINT, { query, type }, {
             headers: {
                 Authorization: `Bearer ${accessToken}`,
             },
@@ -56,13 +56,12 @@ function getPart(type) {
     `;
 
     try {
-        var response = getGraphQLResponse(query, type);   
-        console.log('GraphQLResponse', response);
+        const response = await getGraphQLResponse(query, type);  // Await the response
         if (!response) {
             throw new Error('Error getting GraphQL response.');
         }
-        
-        var part = response?.data?.supSearchMpn?.results[0]?.part;
+
+        const part = response?.data?.supSearchMpn?.results[0]?.part;
         if (!part) {
             throw new Error('Error retrieving part values from GraphQL response.');
         }
@@ -77,8 +76,8 @@ function getPart(type) {
 
 // Function to get part specs
 function getSpecs(part) {
-    var specs = part?.specs;
-    
+    const specs = part?.specs;
+
     if (!specs) {
         throw new Error('Error retrieving specs from part values.');
     }
@@ -87,12 +86,12 @@ function getSpecs(part) {
     return specs;
 }
 
- function getAttribute(specs, specValue) {
+function getAttribute(specs, specValue) {
     try {
-        var attribute = specs.find(spec => spec.attribute.name === specValue);
+        const attribute = specs.find(spec => spec.attribute.name === specValue);
 
         if (!attribute) {
-            throw new Error('Attribute ' + specValue+ ' not found.');
+            throw new Error('Attribute ' + specValue + ' not found.');
         }
 
         console.log(specValue + ' value of ' + part.mpn + ': ' + attribute.displayValue);
@@ -106,7 +105,7 @@ function compareResponses() {
     try {
         getAttribute(referenceSpecs, 'Capacitance');
         getAttribute(alternateSpecs, 'Capacitance');
-        
+
     } catch (error) {
         console.error(error.message);
     }
