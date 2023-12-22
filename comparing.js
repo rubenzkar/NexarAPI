@@ -146,9 +146,9 @@ function displayComparison(response, type, url) {
             var datasheetRow = responseTable.insertRow();
             var datasheetAttributeCell = datasheetRow.insertCell(0);
             var datasheetValueCell = datasheetRow.insertCell(1);
-
+            
             datasheetAttributeCell.textContent = 'PDF';
-
+            
             // Check if 'bestDatasheet' property is present
             if (partDetails.bestDatasheet && partDetails.bestDatasheet.url) {
                 // Create a link element for the datasheet URL
@@ -156,14 +156,12 @@ function displayComparison(response, type, url) {
                 datasheetLink.href = partDetails.bestDatasheet.url;
                 datasheetLink.target = '_blank'; // Open the link in a new tab
                 datasheetLink.textContent = 'Open PDF';
-
+            
                 // Values for the first object
-                var datasheetValueCell1 = datasheetRow.insertCell(1);
-                datasheetValueCell1.appendChild(datasheetLink);
-
+                datasheetValueCell.appendChild(datasheetLink);
             } else {
                 // If 'bestDatasheet' is not present or doesn't have a URL, display a message
-                datasheetRow.insertCell(1).textContent = 'Datasheet not available';
+                datasheetValueCell.textContent = 'Datasheet not available';
             }
         } else {
             console.error('Invalid response format: "part" property is missing or empty.');
