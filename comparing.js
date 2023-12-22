@@ -151,7 +151,7 @@ async function displayComparisonTable() {
     // Create rows for each part attribute
     const manufacturerRow = createTableRow('Manufacturer', refManufacturer, altManufacturer);
     const mpnRow = createTableRow('MPN', refMpn, altMpn);
-    const imgRow = createTableRow('Image', refImg, altImg);
+    const imgRow = createTableRow('Image', refImg.refImage(refImage), altImg.altImage(altImage));
     const descRow = createTableRow('Description', refDesc, altDesc);
     const capValueRow = createTableRow('Capacitance', refCapValue, altCapValue);
     const tolValueRow = createTableRow('Tolerance', refTolValue, altTolValue);
