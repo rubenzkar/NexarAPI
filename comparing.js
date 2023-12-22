@@ -125,9 +125,9 @@ async function displayComparisonTable() {
     //Get values for Ref
     var refManufacturer = refPart.manufacturer.name;
     var refMpn = refPart.mpn;
-    var refImgUrl = refPart.bestImage.url;
-    var refImage = {
-    refImgUrl: function (value) {
+    var refImgage = refPart.bestImage;
+    var refImg = {
+    refImage: function (value) {
         return value && value.url ? `<img src="${value.url}" alt="Product Image" style="max-width: 100px; max-height: 100px;">` : value;
     }
     var refDesc = refPart.shortDescription;
@@ -137,9 +137,9 @@ async function displayComparisonTable() {
     //Get values for Alt
     var altManufacturer = altPart.manufacturer.name;
     var altMpn = altPart.mpn;
-    var altImg = altPart.bestImage.url;
-     var altImage = {
-    altImgUrl: function (value) {
+    var altImage = altPart.bestImage;
+     var altImg = {
+    altImage: function (value) {
         return value && value.url ? `<img src="${value.url}" alt="Product Image" style="max-width: 100px; max-height: 100px;">` : value;
     }
     var altDesc = refPart.shortDescription;
