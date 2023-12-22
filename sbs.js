@@ -95,5 +95,5 @@ async function fetchAttribute(part, specValue) {
         console.error(error.message);
     }
 }
-const referencePart = await getPart(referenceInput);
+//const referencePart = await getPart(referenceInput);
 fetchAttribute(referencePart, 'Capacitance');
