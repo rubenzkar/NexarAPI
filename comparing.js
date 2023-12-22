@@ -126,7 +126,7 @@ async function displayComparisonTable() {
     var refManufacturer = refPart.manufacturer.name;
     var refMpn = refPart.mpn;
     var refImgage = refPart.bestImage;
-    var refImg = {
+    var refImgage = {
         refImage: function (value) {
             return value && value.url ? `<img src="${value.url}" alt="Product Image" style="max-width: 100px; max-height: 100px;">` : value;
         }
@@ -139,7 +139,7 @@ async function displayComparisonTable() {
     var altManufacturer = altPart.manufacturer.name;
     var altMpn = altPart.mpn;
     var altImage = altPart.bestImage;
-    var altImg = {
+    var altImage = {
         altImage: function (value) {
             return value && value.url ? `<img src="${value.url}" alt="Product Image" style="max-width: 100px; max-height: 100px;">` : value;
         }
@@ -151,7 +151,7 @@ async function displayComparisonTable() {
     // Create rows for each part attribute
     const manufacturerRow = createTableRow('Manufacturer', refManufacturer, altManufacturer);
     const mpnRow = createTableRow('MPN', refMpn, altMpn);
-    const imgRow = createTableRow('Image', refImg.refImage(refImage), altImg.altImage(altImage));
+    const imgRow = createTableRow('Image', refImage(refImage), altImage(altImage));
     const descRow = createTableRow('Description', refDesc, altDesc);
     const capValueRow = createTableRow('Capacitance', refCapValue, altCapValue);
     const tolValueRow = createTableRow('Tolerance', refTolValue, altTolValue);
