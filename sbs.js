@@ -5,11 +5,11 @@ const alternateInput = urlParams.get('alternate');
 const accessToken = credentials.accessToken;
 
 // Function to perform GraphQL query and return response
-async function getGraphQLResponse(query, url, accessToken) {
+async function getGraphQLResponse(query, variables, accessToken) {
     try {
-        const response = await axios.post(GRAPHQL_ENDPOINT, { query, variables: { inputQ: url } }, {
+        const response = await axios.post(GRAPHQL_ENDPOINT, { query, variables }, {
             headers: {
-                Authorization: 'Bearer ' + accessToken,
+                Authorization: `Bearer ${accessToken}`,
             },
         });
 
@@ -21,103 +21,70 @@ async function getGraphQLResponse(query, url, accessToken) {
     }
 }
 
-const query = `
-    query specAttributes($inputQ: String!) {
-        supSearchMpn(q: $inputQ, limit: 1) {
-            results {
-                part {
-                    mpn
-                    manufacturer {
-                        name
-                    }
-                    bestImage {
-                        url
-                    }
-                    shortDescription
-                    specs {
-                        attribute {
+// Function to get part values
+async function getPartValues(referenceInput, accessToken) {
+    const query = `
+        query specAttributes($inputQ: String!) {
+            supSearchMpn(q: $inputQ, limit: 1) {
+                results {
+                    part {
+                        mpn
+                        manufacturer {
                             name
                         }
-                        displayValue
-                    }
-                    bestDatasheet {
-                        url
+                        bestImage {
+                            url
+                        }
+                        shortDescription
+                        specs {
+                            attribute {
+                                name
+                            }
+                            displayValue
+                        }
+                        bestDatasheet {
+                            url
+                        }
                     }
                 }
             }
         }
-    }
-`;
+    `;
 
-function getPropertyValue(response, partPropertyName) {
-    if (response.data && response.data.supSearchMpn && response.data.supSearchMpn.results) {
-        const partDetails = (response.data.supSearchMpn.results[0] || {}).part;
+    const variables = { inputQ: referenceInput };
 
-        if (partDetails) {
-            // Check if the attribute exists in partDetails
-            if (partDetails.hasOwnProperty(partPropertyName)) {
-                return partDetails[partPropertyName];
-            } else {
-                console.error(`Part Detail "${partPropertyName}" not found in GraphQL response.`);
-                return null; // or handle the absence of the attribute as needed
-            }
-        } else {
-            console.error('Invalid response format: "part" property is missing or empty.');
-            return null; // or handle the absence of the "part" property as needed
-        }
-    } else {
-        console.error('Invalid response format: "supSearchMpn.results" property is missing.');
-        return null; // or handle the absence of the "supSearchMpn.results" property as needed
-    }
-}
-
-async function fetchProperty(input, property) {
     try {
-        const graphqlObject = await getGraphQLResponse(query, input, accessToken);
-        // Now you can use graphqlReference and graphqlAlternate for further processing
-        const propertyValue = getPropertyValue(graphqlObject, property);
+        const response = await getGraphQLResponse(query, variables, accessToken);
+        const part = response?.data?.supSearchMpn?.results[0]?.part;
 
-        if (propertyValue !== null) {
-            console.log('The ' + property +' of ' + input + ':', propertyValue);
-            return propertyValue;
-        } else {
-            console.error('Unable to retrieve the value of .' + property);
+        if (!part) {
+            throw new Error('Error retrieving part values from GraphQL response.');
         }
+
+        console.log('Part Values:', part);
+        return part;
     } catch (error) {
         console.error(error.message);
+        throw error;
     }
 }
 
-async function fetchSpecsValue(specs, attributeName) {
-    try {
-        if (specs && specs.specs && specs.specs.length > 0) {
-            const attribute = specs.specs.find(spec => spec.attribute.name === attributeName);
+// Function to get part specs
+function getPartSpecs(part) {
+    const specs = part?.specs;
 
-            if (attribute) {
-                console.log(`The value of ${attributeName}:`, attribute.displayValue);
-                return attribute.displayValue;
-            } else {
-                console.error(`Specs attribute "${attributeName}" not found.`);
-                return null; // or handle the absence of the attribute as needed
-            }
-        } else {
-            console.error('Invalid specs format or empty specs array.');
-            return null; // or handle the absence of specs as needed
-        }
-    } catch (error) {
-        console.error(error.message);
-        return null;
+    if (!specs) {
+        throw new Error('Error retrieving specs from part values.');
     }
+
+    console.log('Specs:', specs);
+    return specs;
 }
 
-async function getSpecsValue(specValue) {
-    try {
-        var alternatePartSpecs = await fetchProperty(alternateInput, 'specs');
-        await fetchSpecsValue(alternatePartSpecs, specValue);
-    } catch (error) {
-        console.error(error.message);
-    }
+// Example usage
+try {
+    const partValues = await getPartValues(referenceInput, accessToken);
+    const specsArray = getPartSpecs(partValues);
+} catch (error) {
+    console.error(error.message);
 }
-
-// Call the main function
-getSpecsValue('Capacitance');
