@@ -56,9 +56,13 @@ function getPart(type) {
     `;
 
     try {
-        var response = getGraphQLResponse(query, type);        
-        var part = response?.data?.supSearchMpn?.results[0]?.part;
+        var response = getGraphQLResponse(query, type);   
+        console.log('GraphQLResponse', response);
+        if (!response) {
+            throw new Error('Error getting GraphQL response.');
+        }
         
+        var part = response?.data?.supSearchMpn?.results[0]?.part;
         if (!part) {
             throw new Error('Error retrieving part values from GraphQL response.');
         }
