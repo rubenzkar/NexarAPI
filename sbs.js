@@ -93,4 +93,4 @@ async function fetchAtribute(input, specValue) {
         console.error(error.message);
     }
 }
-fetchData(fetchAtribute, 'Capacitance');
+fetchAtribute(fetchAtribute, 'Capacitance');
