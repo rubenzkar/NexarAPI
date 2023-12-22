@@ -61,7 +61,7 @@ async function getPart(input) {
             throw new Error('Error retrieving part values from GraphQL response.');
         }
 
-        console.log('Part Values:', part);
+        console.log('Part:', part);
         return part;
     } catch (error) {
         console.error(error.message);
@@ -90,7 +90,7 @@ async function fetchAttribute(part, specValue) {
             throw new Error('Attribute '${specValue}' not found for part '${part.mpn}'.');
         }
 
-        console.log(`${specValue} value of ${part.mpn}:`, attribute.displayValue);
+        console.log('${specValue} value of ${part.mpn}:', attribute.displayValue);
     } catch (error) {
         console.error(error.message);
     }
