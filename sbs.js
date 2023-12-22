@@ -69,18 +69,6 @@ async function getPart(input) {
     }
 }
 
-// Function to get part specs
-function getPartSpecs(part) {
-    const specs = part?.specs;
-
-    if (!specs) {
-        throw new Error('Error retrieving specs from part values.');
-    }
-
-    console.log('Specs:', specs);
-    return specs;
-}
-
 // Example usage
 async function fetchAttribute(input, specValue) {
     try {
@@ -98,4 +86,15 @@ async function fetchAttribute(input, specValue) {
     }
 }
 
-fetchAttribute(referenceInput, 'Capacitance');
+// Call getPart once and store the result
+const partForReference = await getPart(referenceInput);
+
+// Now you can use partForReference in other functions as needed.
+// For example:
+function anotherFunction() {
+    const specs = getPartSpecs(partForReference);
+    // Perform actions with specs
+}
+
+// Call anotherFunction
+anotherFunction();
