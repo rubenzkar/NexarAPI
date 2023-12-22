@@ -88,4 +88,4 @@ async function fetchData(input, attribute) {
     }
 }
 
-fetchData('reference','manufacturer');
+fetchData(referenceInput,'manufacturer');
