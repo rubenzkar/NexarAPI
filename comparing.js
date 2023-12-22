@@ -132,6 +132,8 @@ async function displayComparisonTable() {
     var refVolValue = getAttribute(refSpecs, 'Voltage Rating');
     var refLifeValue = getAttribute(refSpecs, 'Life (Hours)');
     var refLeakValue = getAttribute(refSpecs, 'Leakage Current');
+    var refLeakValue = getAttribute(refSpecs, 'Height');
+    var refLeakValue = getAttribute(refSpecs, 'Length');
     //Get values for Alt
     var altManufacturer = altPart.manufacturer.name;
     var altMpn = altPart.mpn;
@@ -142,6 +144,8 @@ async function displayComparisonTable() {
     var altVolValue = getAttribute(altSpecs, 'Voltage Rating');
     var altLifeValue = getAttribute(altSpecs, 'Life (Hours)');
     var altLeakValue = getAttribute(altSpecs, 'Leakage Current');
+    var altHeightValue = getAttribute(altSpecs, 'Height');
+    var altLengthValue = getAttribute(altSpecs, 'Length');
     // Create rows for each part attribute
     const manufacturerRow = createTableRow('Manufacturer', refManufacturer, altManufacturer);
     const mpnRow = createTableRow('MPN', refMpn, altMpn);
@@ -152,6 +156,8 @@ async function displayComparisonTable() {
     const volValueRow = createTableRow('Voltage Rating', refVolValue, altVolValue);
     const lifeValueRow = createTableRow('Life (Hours)', refLifeValue, altLifeValue);
     const leakValueRow = createTableRow('Leakage Current', refLeakValue, altLeakValue);
+    const heightValueRow = createTableRow('Leakage Current', refHeightValue, altHeightValue);
+    const lengthValueRow = createTableRow('Leakage Current', refLengthValue, altLengthValue);
 
     // Append rows to the table
     table.appendChild(manufacturerRow);
@@ -163,6 +169,8 @@ async function displayComparisonTable() {
     table.appendChild(volValueRow);
     table.appendChild(lifeValueRow);
     table.appendChild(leakValueRow);
+    table.appendChild(heightValueRow);
+    table.appendChild(lengthValueRow);
 
     // Append table to the body or any desired container
     document.body.appendChild(table);
