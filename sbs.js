@@ -101,6 +101,8 @@ function displayComparison(response, type, url) {
             appendAttributeValuePair(responseRow, 'MPN', partDetails.mpn);
             appendAttributeValuePair(responseRow, 'Manufacturer', partDetails.manufacturer?.name);
             appendAttributeValuePair(responseRow, 'Description', partDetails.shortDescription);
+
+            // Append image to the row
             appendAttributeValuePair(responseRow, 'Image', getBestImageHTML(partDetails.bestImage));
             
             // Append specifications
