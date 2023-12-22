@@ -103,11 +103,11 @@ function createTableRow(label, refValue, altValue) {
     row.appendChild(labelCell);
 
     const refValueCell = document.createElement('td');
-    refValueCell.textContent = refValue;
+    refValueCell.innerHTML = refValue; // Use innerHTML to parse HTML content
     row.appendChild(refValueCell);
 
     const altValueCell = document.createElement('td');
-    altValueCell.textContent = altValue;
+    altValueCell.innerHTML = altValue; // Use innerHTML to parse HTML content
     row.appendChild(altValueCell);
 
     return row;
