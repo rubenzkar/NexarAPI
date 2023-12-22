@@ -3,8 +3,6 @@ const urlParams = new URLSearchParams(window.location.search);
 const referenceInput = urlParams.get('reference');
 const alternateInput = urlParams.get('alternate');
 const accessToken = credentials.accessToken;
-const referencePart = await getPart(referenceInput);
-const alternatePart = await getPart(alternateInput);
 
 // Function to perform GraphQL query and return response
 async function getGraphQLResponse(query, variables) {
@@ -106,7 +104,15 @@ async function fetchAttribute(type, specValue) {
 }
 
 async function main() {
-    await fetchAttribute('alternate', 'Capacitance');
+    const referencePartPromise = getPart(referenceInput);
+    const alternatePartPromise = getPart(alternateInput);
+
+    // Use Promise.all to wait for both promises to resolve
+    const [referencePart, alternatePart] = await Promise.all([referencePartPromise, alternatePartPromise]);
+
+    // Rest of your code...
+
+    fetchAttribute('alternate', 'Capacitance');
 }
 
 main();
