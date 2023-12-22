@@ -78,7 +78,7 @@ async function fetchProperty(input, property) {
         const propertyValue = getPropertyValue(graphqlObject, property);
 
         if (propertyValue !== null) {
-            console.log('The ' + property +' of ' + input + ' is:', propertyValue);
+            console.log('The ' + property +' of ' + input + ':', propertyValue);
         } else {
             console.error('Unable to retrieve the value of .' + property);
         }
