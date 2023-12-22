@@ -82,12 +82,14 @@ function getPartSpecs(part) {
 }
 
 // Example usage
-async function fetchData() {
+async function fetchData(specValue) {
     try {
-        const partValues = await getPartValues(referenceInput, accessToken);
-        const specsArray = getPartSpecs(partValues);
+        const part = await getPartValues(referenceInput, accessToken);
+        const specs = getPartSpecs(part);
+        const capacitanceAttribute = specs.find(spec => spec.attribute.daplayValue === specValue);
+
     } catch (error) {
         console.error(error.message);
     }
 }
-fetchData();
+fetchData('capacitance');
