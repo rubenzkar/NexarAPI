@@ -1,6 +1,8 @@
 const GRAPHQL_ENDPOINT = 'https://api.nexar.com/graphql/';
 const REFERENCE_TYPE = 'reference';
 const ALTERNATE_TYPE = 'alternate';
+const REFERENCE_DATA = '';
+const ALTERNATE_DATA = '';
 
 // Function to send GraphQL query
 function sendGraphQLQuery(query, url, type, accessToken) {
@@ -12,7 +14,12 @@ function sendGraphQLQuery(query, url, type, accessToken) {
         .then(function (apiResponse) {
             console.log(`GraphQL Response for ${type}:`, apiResponse.data);
             displayComparison(apiResponse.data, type, url);
-        })
+            if (type == REFERENCE_TYPE) {
+                REFERENCE_DATA = apiResponse.data;
+            } else  if (type == ALTERNATE_TYPE) {
+                ALTERNATE_DATA = apiResponse.data;
+            }
+        }
         .catch(function (error) {
             console.error(`GraphQL Request Error for ${type}:`, error);
             displayError(`Error making GraphQL request for ${type}. Check console for details.`);
