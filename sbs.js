@@ -51,9 +51,9 @@ async function getPart(input) {
         }
     `;
 
-    const q = { inputQ: input };
+    const variables = { inputQ: input };
     try {
-        const response = await getGraphQLResponse(query, q);
+        const response = await getGraphQLResponse(query, variables);
         if (!response) {
             throw new Error('Error getting GraphQL response.');
         }
