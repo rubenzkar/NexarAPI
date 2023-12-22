@@ -86,11 +86,11 @@ async function fetchData(input, specValue) {
     try {
         const part = await getPartValues(input, accessToken);
         const specs = getPartSpecs(part);
-        const value = specs.find(spec => spec.attribute.name === specValue);
-        console.log('Value:', value);
+        const attribute = specs.find(spec => spec.attribute.name === specValue);
+        console.log(specValue + ' value:', attribute.displayValue);
 
     } catch (error) {
         console.error(error.message);
     }
 }
-fetchData(referenceInput, 'capacitance');
+fetchData(referenceInput, 'Capacitance');
