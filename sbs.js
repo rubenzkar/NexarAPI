@@ -77,7 +77,7 @@ async function fetchProperty(input, property) {
         // Now you can use graphqlReference and graphqlAlternate for further processing
         const propertyValue = getPropertyValue(graphqlObject, propertyValue);
 
-        if (detailValue !== null) {
+        if (propertyValue !== null) {
             console.log('The ' + property +' of ' + input + ' is:', propertyValue);
         } else {
             console.error('Unable to retrieve the value of .' + property);
