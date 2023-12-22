@@ -84,24 +84,29 @@ function getPartSpecs(part) {
 }
 
 async function fetchAttribute(type, specValue) {
+    let specs;
+
     try {
-        if (type == 'reference') {
-            const specs = getPartSpecs(referencePart);
-        } else if (type == 'alternate') {
-            const specs = getPartSpecs(alternatePart);
-        } 
+        if (type === 'reference') {
+            specs = getPartSpecs(referencePart);
+        } else if (type === 'alternate') {
+            specs = getPartSpecs(alternatePart);
+        }
+
         const attribute = specs.find(spec => spec.attribute.name === specValue);
 
         if (!attribute) {
-            throw new Error(`Attribute '${specValue}' not found for part '${part.mpn}'.`);
+            throw new Error(`Attribute '${specValue}' not found.`);
         }
 
-        console.log(`${specValue} value of ${part.mpn}:`, attribute.displayValue);
+        console.log(`${specValue} value:`, attribute.displayValue);
     } catch (error) {
         console.error(error.message);
     }
 }
+
 function main() {
     fetchAttribute('alternate', 'Capacitance');
 }
-main()
+
+main();
