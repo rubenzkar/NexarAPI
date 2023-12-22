@@ -114,9 +114,23 @@ function createTableRow(label, refValue, altValue) {
 }
 
 // Function to display the comparison table
-function displayComparisonTable(refManufacturer, refMpn, refCapValue, altManufacturer, altMpn, altCapValue) {
+function displayComparisonTable() {
     const table = document.createElement('table');
 
+    const refPart = await getPart(reference);
+    const altPart = await getPart(alternate);
+
+    const refSpecs = getSpecs(refPart);
+    const altSpecs = getSpecs(altPart);
+
+    var refMpn = refPart.mpn;
+    var refManufacturer = refPart.manufacturer.name;
+    var refCapValue = getAttribute(refSpecs, 'Capacitance');
+
+    var altMpn = altPart.mpn;
+    var altManufacturer = altPart.manufacturer.name;
+    var altCapValue = getAttribute(altSpecs, 'Capacitance');
+    
     // Create rows for each part attribute
     const manufacturerRow = createTableRow('Manufacturer', refManufacturer, altManufacturer);
     const mpnRow = createTableRow('MPN', refMpn, altMpn);
@@ -133,25 +147,8 @@ function displayComparisonTable(refManufacturer, refMpn, refCapValue, altManufac
 
 async function compareResponses() {
     try {
-        const refPart = await getPart(reference);
-        const altPart = await getPart(alternate);
-
-        const refSpecs = getSpecs(refPart);
-        const altSpecs = getSpecs(altPart);
-
-        var refMpn = refPart.mpn;
-        var refManufacturer = refPart.manufacturer.name;
-        var refCapValue = getAttribute(refSpecs, 'Capacitance');
-
-        var altMpn = altPart.mpn;
-        var altManufacturer = altPart.manufacturer.name;
-        var altCapValue = getAttribute(altSpecs, 'Capacitance');
-
-        console.log(refManufacturer + "'s " + refMpn + ' cap value: ' + refCapValue);
-        console.log(altManufacturer + "'s " + altMpn + ' cap value: ' + altCapValue);
-
         // Display the comparison table
-        displayComparisonTable(refManufacturer, refMpn, refCapValue, altManufacturer, altMpn, altCapValue);
+        displayComparisonTable();
     } catch (error) {
         console.error(error.message);
     }
