@@ -112,7 +112,15 @@ function createTableRow(label, refValue, altValue) {
 
     return row;
 }
-
+function displayImage(url) {
+    const image = document.createElement('img');
+    image.src = url;
+    image.alt = 'Product Image';
+    // Add custom size
+    image.style.maxWidth = '100px';
+    image.style.maxHeight = '100px';
+    return document.body.appendChild(image);
+}
 // Function to display the comparison table
 async function displayComparisonTable() {
     const table = document.createElement('table');
@@ -126,6 +134,7 @@ async function displayComparisonTable() {
     //Get values for Ref
     var refManufacturer = refPart.manufacturer.name;
     var refMpn = refPart.mpn;
+    var refImg = refPart.bestImage.url;
     var refDesc = refPart.shortDescription;
     var refCapValue = getAttribute(refSpecs, 'Capacitance');
     var refTolValue = getAttribute(refSpecs, 'Tolerance');
@@ -133,6 +142,7 @@ async function displayComparisonTable() {
     //Get values for Alt
     var altManufacturer = altPart.manufacturer.name;
     var altMpn = altPart.mpn;
+    var altImg = altPart.bestImage.url;
     var altDesc = refPart.shortDescription;
     var altCapValue = getAttribute(altSpecs, 'Capacitance');
     var altTolValue = getAttribute(altSpecs, 'Tolerance');
@@ -140,6 +150,7 @@ async function displayComparisonTable() {
     // Create rows for each part attribute
     const manufacturerRow = createTableRow('Manufacturer', refManufacturer, altManufacturer);
     const mpnRow = createTableRow('MPN', refMpn, altMpn);
+    const imgRow = createTableRow('Image', displayImage(refImg), displayImage(altImg));
     const descRow = createTableRow('Description', refDesc, altDesc);
     const capValueRow = createTableRow('Capacitance', refCapValue, altCapValue);
     const tolValueRow = createTableRow('Tolerance', refTolValue, altTolValue);
@@ -148,6 +159,7 @@ async function displayComparisonTable() {
     // Append rows to the table
     table.appendChild(manufacturerRow);
     table.appendChild(mpnRow);
+    table.appendChild(imgRow);
     table.appendChild(descRow);
     table.appendChild(capValueRow);
     table.appendChild(tolValueRow);
