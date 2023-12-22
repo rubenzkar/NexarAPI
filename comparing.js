@@ -108,7 +108,7 @@ async function compareResponses() {
         var refMpn = referencePart.mpn;
         var refManufacturer = referencePart.manufacturer.name;
 
-        console.log(refManufacturer+ "'s" + refMpn + ' cap value: ' + refCapValue);
+        console.log(refManufacturer+ "'s " + refMpn + ' cap value: ' + refCapValue);
         console.log('Alternate cap value: ' + altCapValue);
     } catch (error) {
         console.error(error.message);
