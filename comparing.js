@@ -101,7 +101,7 @@ function getAttribute(specs, specValue) {
     }
 }
 
-function compareResponses() {
+async function compareResponses() {
     try {
         getAttribute(referenceSpecs, 'Capacitance');
         getAttribute(alternateSpecs, 'Capacitance');
