@@ -22,7 +22,7 @@ async function getGraphQLResponse(query, variables) {
 }
 
 // Function to get part values
-async function getPart(input) {
+async function getPart(type) {
     const query = `
         query specAttributes($inputQ: String!) {
             supSearchMpn(q: $inputQ, limit: 1) {
@@ -51,7 +51,7 @@ async function getPart(input) {
         }
     `;
 
-    const variables = { inputQ: input };
+    const variables = { inputQ: type };
     try {
         const response = await getGraphQLResponse(query, variables);
         if (!response) {
