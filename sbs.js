@@ -82,9 +82,13 @@ function getPartSpecs(part) {
 }
 
 // Example usage
-try {
-    const partValues = await getPartValues(referenceInput, accessToken);
-    const specsArray = getPartSpecs(partValues);
-} catch (error) {
-    console.error(error.message);
+async function fetchData() {
+    try {
+        const partValues = await getPartValues(referenceInput, accessToken);
+        const specsArray = getPartSpecs(partValues);
+    } catch (error) {
+        console.error(error.message);
+    }
 }
+
+fetchData();
