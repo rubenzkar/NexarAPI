@@ -119,7 +119,7 @@ function displayImage(url) {
     // Add custom size
     image.style.maxWidth = '100px';
     image.style.maxHeight = '100px';
-    return image.outerHTML;
+    return image;
 }
 // Function to display the comparison table
 async function displayComparisonTable() {
@@ -135,6 +135,7 @@ async function displayComparisonTable() {
     var refManufacturer = refPart.manufacturer.name;
     var refMpn = refPart.mpn;
     var refImg = refPart.bestImage.url;
+    refImg = refImage.appendChild;
     var refDesc = refPart.shortDescription;
     var refCapValue = getAttribute(refSpecs, 'Capacitance');
     var refTolValue = getAttribute(refSpecs, 'Tolerance');
