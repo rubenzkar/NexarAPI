@@ -116,6 +116,7 @@ function createTableRow(label, refValue, altValue) {
 // Function to display the comparison table
 async function displayComparisonTable() {
     const table = document.createElement('table');
+    table.id = 'responseTable';
     //Get parts
     const refPart = await getPart(reference);
     const altPart = await getPart(alternate);
