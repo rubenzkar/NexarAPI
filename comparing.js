@@ -130,6 +130,7 @@ async function displayComparisonTable() {
     var refCapValue = getAttribute(refSpecs, 'Capacitance');
     var refTolValue = getAttribute(refSpecs, 'Tolerance');
     var refVolValue = getAttribute(refSpecs, 'Voltage Rating');
+    var refLifeValue = getAttribute(refSpecs, 'Life (Hours)');
     //Get values for Alt
     var altManufacturer = altPart.manufacturer.name;
     var altMpn = altPart.mpn;
@@ -138,6 +139,7 @@ async function displayComparisonTable() {
     var altCapValue = getAttribute(altSpecs, 'Capacitance');
     var altTolValue = getAttribute(altSpecs, 'Tolerance');
     var altVolValue = getAttribute(altSpecs, 'Voltage Rating');
+    var altLifeValue = getAttribute(altSpecs, 'Life (Hours)');
     // Create rows for each part attribute
     const manufacturerRow = createTableRow('Manufacturer', refManufacturer, altManufacturer);
     const mpnRow = createTableRow('MPN', refMpn, altMpn);
@@ -146,6 +148,7 @@ async function displayComparisonTable() {
     const capValueRow = createTableRow('Capacitance', refCapValue, altCapValue);
     const tolValueRow = createTableRow('Tolerance', refTolValue, altTolValue);
     const volValueRow = createTableRow('Voltage Rating', refVolValue, altVolValue);
+    const lifeValueRow = createTableRow('Life (Hours)', refLifeValue, altLifeValue);
 
     // Append rows to the table
     table.appendChild(manufacturerRow);
@@ -155,6 +158,7 @@ async function displayComparisonTable() {
     table.appendChild(capValueRow);
     table.appendChild(tolValueRow);
     table.appendChild(volValueRow);
+    table.appendChild(lifeValueRow);
 
     // Append table to the body or any desired container
     document.body.appendChild(table);
