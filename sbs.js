@@ -49,6 +49,28 @@ const query = `
     }
 `;
 
+function getSpecAttributeValue(response, attributeName) {
+    if (response.data && response.data.supSearchMpn && response.data.supSearchMpn.results) {
+        const partDetails = (response.data.supSearchMpn.results[0] || {}).part;
+
+        if (partDetails) {
+            // Check if the attribute exists in partDetails
+            if (partDetails.hasOwnProperty(attributeName)) {
+                return partDetails[attributeName];
+            } else {
+                console.error(`Attribute "${attributeName}" not found in GraphQL response.`);
+                return null; // or handle the absence of the attribute as needed
+            }
+        } else {
+            console.error('Invalid response format: "part" property is missing or empty.');
+            return null; // or handle the absence of the "part" property as needed
+        }
+    } else {
+        console.error('Invalid response format: "supSearchMpn.results" property is missing.');
+        return null; // or handle the absence of the "supSearchMpn.results" property as needed
+    }
+}
+
 async function fetchData(attribute) {
     try {
         const graphqlReference = await getGraphQLResponse(query, referenceInput, accessToken);
