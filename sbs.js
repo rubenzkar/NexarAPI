@@ -87,7 +87,7 @@ async function fetchData(input, specValue) {
         const part = await getPartValues(input, accessToken);
         const specs = getPartSpecs(part);
         const attribute = specs.find(spec => spec.attribute.name === specValue);
-        console.log(specValue + ' value:', attribute.displayValue);
+        console.log(specValue + ' value of' + part.mpn + ':', attribute.displayValue);
 
     } catch (error) {
         console.error(error.message);
