@@ -113,7 +113,7 @@ function createTableRow(label, refValue, altValue) {
     return row;
 }
 
-function byyNow (){
+function buyNow (){
     var newUrl = 'https://store.zephyr-t.com/product-category/all/passives/capacitors-passives/aluminum-electrolytic-capacitors-capacitors-passives/';
     window.location.href = newUrl;
 }
