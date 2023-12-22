@@ -52,7 +52,7 @@ const query = `
 async function fetchData(attribute) {
     try {
         const graphqlReference = await getGraphQLResponse(query, referenceInput, accessToken);
-        const graphqlAlternate = await getGraphQLResponse(query, alternateInput, accessToken);
+        //const graphqlAlternate = await getGraphQLResponse(query, alternateInput, accessToken);
         // Now you can use graphqlReference and graphqlAlternate for further processing
         const attributeValue = getSpecAttributeValue(graphqlReference, attribute);
 
