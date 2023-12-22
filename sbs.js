@@ -22,7 +22,7 @@ async function getGraphQLResponse(query, variables, accessToken) {
 }
 
 // Function to get part values
-async function getPartValues(input, accessToken) {
+async function getPart(input, accessToken) {
     const query = `
         query specAttributes($inputQ: String!) {
             supSearchMpn(q: $inputQ, limit: 1) {
@@ -82,15 +82,15 @@ function getPartSpecs(part) {
 }
 
 // Example usage
-async function fetchData(input, specValue) {
+async function fetchAtribute(input, specValue) {
     try {
-        const part = await getPartValues(input, accessToken);
+        const part = await getPart(input, accessToken);
         const specs = getPartSpecs(part);
         const attribute = specs.find(spec => spec.attribute.name === specValue);
-        console.log(specValue + ' value of' + part.mpn + ':', attribute.displayValue);
+        console.log(specValue + ' value of ' + part.mpn + ':', attribute.displayValue);
 
     } catch (error) {
         console.error(error.message);
     }
 }
-fetchData(referenceInput, 'Capacitance');
+fetchData(fetchAtribute, 'Capacitance');
