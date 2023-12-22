@@ -96,7 +96,7 @@ async function fetchAttribute(type, specValue) {
         const attribute = specs.find(spec => spec.attribute.name === specValue);
 
         if (!attribute) {
-            throw new Error(`Attribute '${specValue}' not found.`);
+            throw new Error('Attribute '${specValue}' not found.');
         }
 
         console.log(${specValue}' value of '${part.mpn}':', attribute.displayValue);
