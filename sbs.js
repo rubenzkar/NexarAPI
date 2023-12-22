@@ -17,7 +17,7 @@ async function getGraphQLResponse(query, variables) {
         return response.data;
     } catch (error) {
         console.error('GraphQL Request Error:', error);
-        throw new Error('Error making GraphQL request. Check console for details.');
+        throw new Error('Error making GraphQL request. Check the console for details.');  // Improved error message
     }
 }
 
@@ -58,7 +58,7 @@ async function getPart(input) {
         const part = response?.data?.supSearchMpn?.results[0]?.part;
 
         if (!part) {
-            throw new Error('Error retrieving part values from GraphQL response.');
+            throw new Error('Error retrieving part values from the GraphQL response.');
         }
 
         console.log('Part:', part);
@@ -87,13 +87,15 @@ async function fetchAttribute(part, specValue) {
         const attribute = specs.find(spec => spec.attribute.name === specValue);
 
         if (!attribute) {
-            throw new Error('Attribute '${specValue}' not found for part '${part.mpn}'.');
+            throw new Error(`Attribute '${specValue}' not found for part '${part.mpn}'.`);
         }
-        console.log('${specValue} value of ${part.mpn}:', attribute.displayValue);
 
+        console.log(`${specValue} value of ${part.mpn}:`, attribute.displayValue);
     } catch (error) {
         console.error(error.message);
     }
 }
-const referencePart = await getPart(referenceInput);
+
+
+const referencePart = getPart(referenceInput);
 fetchAttribute(referencePart, 'Capacitance');
