@@ -3,6 +3,8 @@ const urlParams = new URLSearchParams(window.location.search);
 const referenceInput = urlParams.get('reference');
 const alternateInput = urlParams.get('alternate');
 const accessToken = credentials.accessToken;
+const referencePart = await getPart(referenceInput);
+const alternatePart = await getPart(alternateInput);
 
 // Function to perform GraphQL query and return response
 async function getGraphQLResponse(query, variables) {
@@ -69,11 +71,25 @@ async function getPart(input) {
     }
 }
 
-// Example usage
-async function fetchAttribute(input, specValue) {
+// Function to get part specs
+function getPartSpecs(part) {
+    const specs = part?.specs;
+
+    if (!specs) {
+        throw new Error('Error retrieving specs from part values.');
+    }
+
+    console.log('Specs:', specs);
+    return specs;
+}
+
+async function fetchAttribute(type, specValue) {
     try {
-        const part = await getPart(input);
-        const specs = getPartSpecs(part);
+        if (type == 'reference') {
+            const specs = getPartSpecs(referencePart);
+        } else if (type == 'alternate') {
+            const specs = getPartSpecs(alternatePart);
+        } 
         const attribute = specs.find(spec => spec.attribute.name === specValue);
 
         if (!attribute) {
@@ -86,15 +102,4 @@ async function fetchAttribute(input, specValue) {
     }
 }
 
-// Call getPart once and store the result
-const partForReference = await getPart(referenceInput);
-
-// Now you can use partForReference in other functions as needed.
-// For example:
-function anotherFunction() {
-    const specs = getPartSpecs(partForReference);
-    // Perform actions with specs
-}
-
-// Call anotherFunction
-anotherFunction();
+fetchAttribute('alternate', 'Capacitance');
