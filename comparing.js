@@ -87,7 +87,7 @@ function getAttribute(specs, specValue) {
             throw new Error(`Attribute ${specValue} not found.`);
         }
 
-        //console.log(`${specValue} value: ${attribute.displayValue}`);
+        console.log(`${specValue} value: ${attribute.displayValue}`);
         return attribute.displayValue;
     } catch (error) {
         console.error(error.message);
