@@ -101,5 +101,7 @@ async function fetchAttribute(type, specValue) {
         console.error(error.message);
     }
 }
-
-fetchAttribute('alternate', 'Capacitance');
+function main() {
+    fetchAttribute('alternate', 'Capacitance');
+}
+main()
