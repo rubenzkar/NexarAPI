@@ -106,7 +106,7 @@ async function compareResponses() {
         var altCapValue = getAttribute(alternateSpecs, 'Capacitance');
 
         var refMpn = referencePart.mpn;
-        var refManufacturer = referencePart.nanufsacturer.name;
+        var refManufacturer = referencePart.manufacturer.name;
 
         console.log(refManufacturer+ "'s" + refMpn + ' cap value: ' + refCapValue);
         console.log('Alternate cap value: ' + altCapValue);
