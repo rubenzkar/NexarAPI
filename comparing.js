@@ -96,17 +96,20 @@ function getAttribute(specs, specValue) {
 
 async function compareResponses() {
     try {
-        const referencePart = await getPart(reference);
-        const alternatePart = await getPart(alternate);
+        const refPart = await getPart(reference);
+        const altPart = await getPart(alternate);
 
-        const referenceSpecs = getSpecs(referencePart);
-        const alternateSpecs = getSpecs(alternatePart);
+        const refSpecs = getSpecs(refPart);
+        const altSpecs = getSpecs(altPart);
 
-        var refCapValue = getAttribute(referenceSpecs, 'Capacitance');
-        var altCapValue = getAttribute(alternateSpecs, 'Capacitance');
+        
+        var refMpn = refPart.mpn;
+        var refManufacturer = refPart.manufacturer.name;
+        var refCapValue = getAttribute(refSpecs, 'Capacitance');
 
-        var refMpn = referencePart.mpn;
-        var refManufacturer = referencePart.manufacturer.name;
+        var altMpn = altPart.mpn;
+        var altManufacturer = altPart.manufacturer.name;        
+        var altCapValue = getAttribute(altSpecs, 'Capacitance');
 
         console.log(refManufacturer+ "'s " + refMpn + ' cap value: ' + refCapValue);
         console.log('Alternate cap value: ' + altCapValue);
