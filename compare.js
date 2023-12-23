@@ -7,6 +7,8 @@ const accessToken = credentials.accessToken;
 // Function to perform GraphQL query and return response
 async function getGraphQLResponse(query, variables) {
     try {
+        console.log('Query sent:', query);
+        console.log('Vvariables sent:', variables);
         const response = await axios.post(GRAPHQL_ENDPOINT, { query, variables }, {
             headers: {
                 Authorization: `Bearer ${accessToken}`,
