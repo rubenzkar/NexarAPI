@@ -78,7 +78,6 @@ function getSpecs(part) {
     if (!specs) {
         throw new Error('Error retrieving specs from part values.');
     }
-    console.log('Specs:', specs);
     return specs;
 }
 
