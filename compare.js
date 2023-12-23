@@ -1,34 +1,27 @@
-// Function to send GraphQL query
-function sendGraphQLQuery(query, url, type, accessToken) {
-    var graphqlEndpoint = 'https://api.nexar.com/graphql/';
+const GRAPHQL_ENDPOINT = 'https://api.nexar.com/graphql/';
+const urlParams = new URLSearchParams(window.location.search);
+const reference = urlParams.get('reference');
+const alternate = urlParams.get('alternate');
+const accessToken = credentials.accessToken; 
 
-    axios.post(graphqlEndpoint, { query: query, variables: { inputQ: url } }, {
-        headers: {
-            Authorization: 'Bearer ' + accessToken,
-        },
-    })
-    .then(function(apiResponse) {
-        console.log('GraphQL Response for ' + type + ':', apiResponse.data);
-        displayComparison(apiResponse.data, type, url);
-    })
-    .catch(function(error) {
+// Function to perform GraphQL query and return response
+async function getGraphQLResponse(query, variables) {
+    try {
+        const response = await axios.post(GRAPHQL_ENDPOINT, { query, variables }, {
+            headers: {
+                Authorization: `Bearer ${accessToken}`,
+            },
+        });
+        //console.log('GraphQL Response:', response.data);
+        return response.data;
+    } catch (error) {
         console.error('GraphQL Request Error:', error);
-        displayError('Error making GraphQL request for ' + type + '. Check console for details.');
-    });
+        throw new Error('Error making GraphQL request. Check console for details.');
+    }
 }
 
-// Function to compare GraphQL responses
-function compareResponses() {
-    var referenceInput = document.getElementById('reference').value.trim();
-    var alternateInput = document.getElementById('alternate').value.trim();
-    // Clear the responseTableContainer
-    responseTableContainer.innerHTML = '';
-    
-    if (!referenceInput || !alternateInput) {
-        alert('Please provide both reference and alternate URLs.');
-        return;
-    }
-
+// Function to get part values
+async function getPart(type) {
     var query = `
         query specAttributes($inputQ: String!) {
             supSearchMpn(q: $inputQ, limit: 1) {
@@ -51,137 +44,187 @@ function compareResponses() {
                         bestDatasheet {
                             url
                         }
+                        medianPrice1000{
+                          price
+                        }
                     }
                 }
             }
         }
     `;
 
-    var accessToken = credentials.accessToken;
-
-    // Send GraphQL queries and display responses
-    sendGraphQLQuery(query, referenceInput, 'reference', accessToken);
-    sendGraphQLQuery(query, alternateInput, 'alternate', accessToken);
-}
-
-// Function to display GraphQL response for comparison
-function displayComparison(response, type, url) {
-    var responseTableContainer = document.getElementById('responseTableContainer');
-    
-    // Create a new table for each response
-    var responseTable = document.createElement('table');
-    
-    if (type == 'reference') {
-        responseTable.innerHTML = '<h3>Reference MPN</h3>';
-    } else if (type == 'alternate'){
-        responseTable.innerHTML = '<h3>Alternate MPN</h3>';
-    }
-    responseTableContainer.style.display = 'block';
-
-    if (response.data && response.data.supSearchMpn && response.data.supSearchMpn.results) {
-        var partDetails = response.data.supSearchMpn.results[0]?.part;
-
-        if (partDetails) {
-            var headers = {
-                mpn: 'MPN',
-                manufacturer: 'Manufacturer',
-                shortDescription: 'Description',
-                bestImage: 'Image',
-                specs: 'Specifications'
-            };
-
-            var cleanUpFunctions = {
-                mpn: function (value) {
-                    return value;
-                },
-                manufacturer: function (value) {
-                    return value && value.name ? value.name : value;
-                },
-                shortDescription: function (value) {
-                    return value;
-                },
-                bestImage: function (value) {
-                    return value && value.url ? `<img src="${value.url}" alt="Product Image" style="max-width: 100px; max-height: 100px;">` : value;
-                }
-            };
-
-            Object.keys(partDetails).forEach(function (attribute) {
-                if (attribute !== 'specs' && attribute !== 'bestDatasheet') {
-                    var tr = responseTable.insertRow();
-                    var attributeCell = tr.insertCell(0);
-                    var valueCell = tr.insertCell(1);
-
-                    attributeCell.textContent = headers[attribute] || attribute;
-                    var cleanedValue = cleanUpFunctions[attribute] ? cleanUpFunctions[attribute](partDetails[attribute]) : partDetails[attribute];
-                    valueCell.innerHTML = cleanedValue;
-                }
-            });
-
-            // Create a single row for 'Specifications' header with merged cells
-            var specsHeaderRow = responseTable.insertRow();
-            var specsHeaderCell = specsHeaderRow.insertCell(0);
-            specsHeaderCell.colSpan = 2;
-
-            // Create an h3 element for 'Specifications' header
-            var specsHeaderElement = document.createElement('h4');
-            specsHeaderElement.textContent = headers.specs;
-
-            // Append the h3 element to the specsHeaderCell
-            specsHeaderCell.appendChild(specsHeaderElement);
-
-            partDetails.specs.forEach(function (spec) {
-                var specRow = responseTable.insertRow();
-                var specAttributeCell = specRow.insertCell(0);
-                var specValueCell = specRow.insertCell(1);
-
-                specAttributeCell.textContent = spec.attribute.name;
-                specValueCell.textContent = spec.displayValue;
-            });
-
-            // Check if 'bestDatasheet' property is present
-            if (partDetails.bestDatasheet && partDetails.bestDatasheet.url) {
-                // Create a single row for 'Datasheet' header with merged cells
-                var datasheetHeaderRow = responseTable.insertRow();
-                var datasheetHeaderCell = datasheetHeaderRow.insertCell(0);
-                datasheetHeaderCell.colSpan = 2;
-
-                // Create an h3 element for 'Datasheet' header
-                var datasheetHeaderElement = document.createElement('h3');
-                datasheetHeaderElement.textContent = 'Datasheet';
-
-                // Append the h3 element to the datasheetHeaderCell
-                datasheetHeaderCell.appendChild(datasheetHeaderElement);
-
-                // Create a row for the datasheet URL
-                var datasheetRow = responseTable.insertRow();
-                var datasheetAttributeCell = datasheetRow.insertCell(0);
-                var datasheetValueCell = datasheetRow.insertCell(1);
-
-                datasheetAttributeCell.textContent = 'PDF';
-
-                // Create a link element for the datasheet URL
-                var datasheetLink = document.createElement('a');
-                datasheetLink.href = partDetails.bestDatasheet.url;
-                datasheetLink.target = '_blank'; // Open the link in a new tab
-                datasheetLink.textContent = 'Open PDF';
-
-                datasheetValueCell.appendChild(datasheetLink);
-            } else {
-                // If 'bestDatasheet' is not present or doesn't have a URL, display a message
-                var noDatasheetRow = responseTable.insertRow();
-                var noDatasheetCell = noDatasheetRow.insertCell(0);
-                noDatasheetCell.colSpan = 2;
-                noDatasheetCell.innerHTML = 'Datasheet not available';
-            }
-        } else {
-            console.error('Invalid response format: "part" property is missing or empty.');
-            displayError('Invalid response format. Check console for details.');
+    const variables = { inputQ: type };
+    try {
+        const response = await getGraphQLResponse(query, variables);
+        if (!response) {
+            throw new Error('Error getting GraphQL response.');
         }
-    } else {
-        console.error('Invalid response format: "supSearchMpn.results" property is missing.');
-        displayError('Invalid response format. Check console for details.');
+        const part = response?.data?.supSearchMpn?.results[0]?.part;
+        if (!part) {
+            throw new Error('Error retrieving part values from GraphQL response.');
+        }
+        console.log('Part:', part);
+        return part;
+    } catch (error) {
+        console.error(error.message);
+        throw error;
     }
-
-    // Append the table to the responseTableContainer
-    responseTableContainer.appendChild(responseTable);
 }
+
+// Function to get part specs
+function getSpecs(part) {
+    const specs = part?.specs;
+
+    if (!specs) {
+        throw new Error('Error retrieving specs from part values.');
+    }
+    console.log('Specs:', specs);
+    return specs;
+}
+
+function getAttribute(specs, specValue) {
+    try {
+        const attribute = specs.find(spec => spec.attribute.name === specValue);
+
+        if (!attribute) {
+            throw new Error(`Attribute ${specValue} not found.`);
+        }
+
+        //console.log(`${specValue} value: ${attribute.displayValue}`);
+        return attribute.displayValue;
+    } catch (error) {
+        console.error(error.message);
+    }
+}
+function setId(input) {
+    if (input) {
+        // Split the string into words
+        const words = input.split(' ');
+        // Capitalize the first letter of each word
+        const formattedWords = words.map(word => word.charAt(0).toUpperCase() + word.slice(1));
+        // Join the words and return the result
+        return formattedWords.join('');
+    } else {
+        return 'Empty';
+    }
+}
+
+// Function to create a table row with part values
+function createTableRow(label, refValue, altValue) {
+    var bgColor = '#FFFF00';
+    const row = document.createElement('tr');
+
+    const labelCell = document.createElement('td');
+    labelCell.textContent = label;
+    labelCell.id = 'label' + setId(label);
+    row.appendChild(labelCell);
+
+    const refValueCell = document.createElement('td');
+    refValueCell.innerHTML = refValue; // Use innerHTML to parse HTML content
+    if (label == 'Price') {
+        refValueCell.id = 'refPrice'
+        refValueCell.style.backgroundColor = bgColor;
+    } else {
+        refValueCell.id = 'ref' + setId(label);
+    }
+    row.appendChild(refValueCell);
+
+    const altValueCell = document.createElement('td');
+    altValueCell.innerHTML = altValue; // Use innerHTML to parse HTML content
+    if (label == 'Price') {
+        altValueCell.id = 'altPrice'
+        altValueCell.style.backgroundColor = bgColor;
+    } else {
+        refValueCell.id = 'alt' + setId(label);
+    }
+    row.appendChild(altValueCell);
+
+    return row;
+}
+
+function buyNow (alternate){
+    var newUrl = 'https://i.zephyr-t.com/' + alternate;
+    console.log(newUrl);
+    window.location.href = newUrl;
+}
+
+// Function to display the comparison table
+async function displayComparisonTable() {
+    const table = document.createElement('table');
+    table.id = 'responseTable';
+    //Get parts
+    const refPart = await getPart(reference);
+    const altPart = await getPart(alternate);
+    // Get specs
+    const refSpecs = getSpecs(refPart);
+    const altSpecs = getSpecs(altPart);
+    //Get values for Ref
+    var refManufacturer = refPart.manufacturer.name;
+    var refMpn = refPart.mpn;
+    var refImage = refPart.bestImage;
+    var refDesc = refPart.shortDescription;
+    var refCapValue = getAttribute(refSpecs, 'Capacitance');
+    var refTolValue = getAttribute(refSpecs, 'Tolerance');
+    var refVolValue = getAttribute(refSpecs, 'Voltage Rating');
+    var refLifeValue = getAttribute(refSpecs, 'Life (Hours)');
+    var refLeakValue = getAttribute(refSpecs, 'Leakage Current');
+    var refHeightValue = getAttribute(refSpecs, 'Height');
+    var refLengthValue = getAttribute(refSpecs, 'Length');
+    var refPrice = refPart.medianPrice1000.price;
+    //Get values for Alt
+    var altManufacturer = altPart.manufacturer.name;
+    var altMpn = altPart.mpn;
+    var altImage = altPart.bestImage;
+    var altDesc = altPart.shortDescription;
+    var altCapValue = getAttribute(altSpecs, 'Capacitance');
+    var altTolValue = getAttribute(altSpecs, 'Tolerance');
+    var altVolValue = getAttribute(altSpecs, 'Voltage Rating');
+    var altLifeValue = getAttribute(altSpecs, 'Life (Hours)');
+    var altLeakValue = getAttribute(altSpecs, 'Leakage Current');
+    var altHeightValue = getAttribute(altSpecs, 'Height');
+    var altLengthValue = getAttribute(altSpecs, 'Length');
+    var altPrice = altPart.medianPrice1000.price;
+    // Create rows for each part attribute
+    const manufacturerRow = createTableRow('Manufacturer', refManufacturer, altManufacturer);
+    const mpnRow = createTableRow('MPN', refMpn, altMpn);
+    const imageRow = createTableRow('Image', refImage ? `<img src="${refImage.url}" alt="Product Image" style="max-width: 100px; max-height: 100px;">` : '', altImage ? `<img src="${altImage.url}" alt="Product Image" style="max-width: 100px; max-height: 100px;">` : '');
+    const descRow = createTableRow('Description', refDesc, altDesc);
+    const capValueRow = createTableRow('Capacitance', refCapValue, altCapValue);
+    const tolValueRow = createTableRow('Tolerance', refTolValue, altTolValue);
+    const volValueRow = createTableRow('Voltage Rating', refVolValue, altVolValue);
+    const lifeValueRow = createTableRow('Life (Hours)', refLifeValue, altLifeValue);
+    const leakValueRow = createTableRow('Leakage Current', refLeakValue, altLeakValue);
+    const heightValueRow = createTableRow('Height', refHeightValue, altHeightValue);
+    const lengthValueRow = createTableRow('Length', refLengthValue, altLengthValue);
+    const priceRow = createTableRow('Price', '$' + refPrice, '$' + altPrice);
+    const buyRow = createTableRow('', '', '<button type="button" onclick="buyNow(' + "'"+ alternate + "'"+ ')">Buy Now</button>');
+
+    // Append rows to the table
+    table.appendChild(manufacturerRow);
+    table.appendChild(mpnRow);
+    table.appendChild(imageRow);
+    table.appendChild(descRow);
+    table.appendChild(capValueRow);
+    table.appendChild(tolValueRow);
+    table.appendChild(volValueRow);
+    table.appendChild(lifeValueRow);
+    table.appendChild(leakValueRow);
+    table.appendChild(heightValueRow);
+    table.appendChild(lengthValueRow);
+    table.appendChild(priceRow);
+    table.appendChild(buyRow);
+
+    // Append table to the body or any desired container
+    document.body.appendChild(table);
+}
+
+function compareResponses() {
+    try {
+        // Display the comparison table
+        displayComparisonTable();
+    } catch (error) {
+        console.error(error.message);
+    }
+}
+
+compareResponses();
