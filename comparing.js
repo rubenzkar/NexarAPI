@@ -107,12 +107,12 @@ function createTableRow(label, refValue, altValue) {
 
     const refValueCell = document.createElement('td');
     refValueCell.innerHTML = refValue; // Use innerHTML to parse HTML content
-    if (lable == 'Price') {refValueCell.if = 'refPrice'}
+    if (label == 'Price') {refValueCell.if = 'refPrice'}
     row.appendChild(refValueCell);
 
     const altValueCell = document.createElement('td');
     altValueCell.innerHTML = altValue; // Use innerHTML to parse HTML content
-    if (lable == 'Price') {altValueCell.if = 'refPrice'}
+    if (label == 'Price') {altValueCell.if = 'refPrice'}
     row.appendChild(altValueCell);
 
     return row;
