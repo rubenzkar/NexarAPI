@@ -112,7 +112,7 @@ function createTableRow(label, refValue, altValue) {
 
     const altValueCell = document.createElement('td');
     altValueCell.innerHTML = altValue; // Use innerHTML to parse HTML content
-    if (label == 'Price') {altValueCell.id = 'refPrice'}
+    if (label == 'Price') {altValueCell.id = 'altPrice'}
     row.appendChild(altValueCell);
 
     return row;
