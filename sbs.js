@@ -97,12 +97,16 @@ function getAttribute(specs, specValue) {
     }
 }
 function setId(input) {
-    // Split the string into words
-    const words = input.split(' ');
-    // Capitalize the first letter of each word
-    const formattedWords = words.map(word => word.charAt(0).toUpperCase() + word.slice(1));
-    // Join the words and return the result
-    return formattedWords.join('');
+    if (input) {
+        // Split the string into words
+        const words = input.split(' ');
+        // Capitalize the first letter of each word
+        const formattedWords = words.map(word => word.charAt(0).toUpperCase() + word.slice(1));
+        // Join the words and return the result
+        return formattedWords.join('');
+    } else {
+        return 'Empty';
+    }
 }
 
 // Function to create a table row with part values
