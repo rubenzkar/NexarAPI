@@ -12,7 +12,7 @@ async function getGraphQLResponse(query, variables) {
                 Authorization: `Bearer ${accessToken}`,
             },
         });
-        console.log('GraphQL Response:', response.data);
+        //console.log('GraphQL Response:', response.data);
         return response.data;
     } catch (error) {
         console.error('GraphQL Request Error:', error);
@@ -63,7 +63,7 @@ async function getPart(type) {
         if (!part) {
             throw new Error('Error retrieving part values from GraphQL response.');
         }
-        console.log('Part:', part);
+       //console.log('Part:', part);
         return part;
     } catch (error) {
         console.error(error.message);
@@ -73,8 +73,8 @@ async function getPart(type) {
 
 // Function to get part specs
 function getSpecs(part) {
+    console.log('Specs:', part?.specs);
     const specs = part?.specs;
-
     if (!specs) {
         throw new Error('Error retrieving specs from part values.');
     }
@@ -89,8 +89,6 @@ function getAttribute(specs, specValue) {
         if (!attribute) {
             throw new Error(`Attribute ${specValue} not found.`);
         }
-
-        //console.log(`${specValue} value: ${attribute.displayValue}`);
         return attribute.displayValue;
     } catch (error) {
         console.error(error.message);
