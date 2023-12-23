@@ -20,16 +20,7 @@ async function getGraphQLResponse(query, variables) {
     }
 }
 
-// Function to get part values
-async function getPart(parts, type) {
-    if (type == 'ref'){
-        return parts[0];
-    } else {
-        return parts[1];
-    }
-}
-
-// Function to get parts
+// Function to get the parts
 async function getParts(ref, alt) {
     var query = `
         query multiSearch($refInput: String!, $altInput: String!) {
@@ -69,7 +60,7 @@ async function getParts(ref, alt) {
         if (!response) {
             throw new Error('Error getting GraphQL response.');
         }
-        const parts = response?.data?.supMultiMatch?.parts;
+        const parts = response?.data?.supMultiMatch;
         if (!parts) {
             throw new Error('Error retrieving parts from GraphQL response.');
         }
@@ -78,6 +69,15 @@ async function getParts(ref, alt) {
     } catch (error) {
         console.error(error.message);
         throw error;
+    }
+}
+
+// Function to get a part 
+async function getPart(parts, type) {
+    if (type == 'ref'){
+        return parts[0];
+    } else {
+        return parts[1];
     }
 }
 
@@ -164,8 +164,8 @@ async function displayComparisonTable() {
     table.id = 'responseTable';
     //Get parts
     const parts = await getParts(reference, alternate);
-    const refPart = await getPart(parts,'alt');
-    const altPart = await getPart(alternate);
+    const refPart = await getPart(parts,'ref');
+    const altPart = await getPart(parts,'alt');
     // Get specs
     const refSpecs = getSpecs(refPart);
     const altSpecs = getSpecs(altPart);
