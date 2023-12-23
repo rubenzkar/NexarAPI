@@ -23,9 +23,9 @@ async function getGraphQLResponse(query, variables) {
 // Function to get part values
 async function getPart(parts, type) {
     if (type == 'ref'){
-        return part[0];
+        return parts[0];
     } else {
-        return part[1];
+        return parts[1];
     }
 }
 
@@ -70,7 +70,7 @@ async function getParts(ref, alt) {
             throw new Error('Error getting GraphQL response.');
         }
         const parts = response?.data?.supMultiMatch?.parts;
-        if (!part) {
+        if (!parts) {
             throw new Error('Error retrieving parts from GraphQL response.');
         }
         console.log('Parts:', parts);
@@ -164,7 +164,7 @@ async function displayComparisonTable() {
     table.id = 'responseTable';
     //Get parts
     const parts = await getParts(reference, alternate);
-    const refPart = await getPart(parts,'alt'),
+    const refPart = await getPart(parts,'alt');
     const altPart = await getPart(alternate);
     // Get specs
     const refSpecs = getSpecs(refPart);
