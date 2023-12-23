@@ -2,8 +2,9 @@ const GRAPHQL_ENDPOINT = 'https://api.nexar.com/graphql/';
 const urlParams = new URLSearchParams(window.location.search);
 const reference = urlParams.get('reference');
 const alternate = urlParams.get('alternate');
-const accessToken = credentials.accessToken;
+const accessToken = credentials.accessToken; 
 
+// Function to perform GraphQL query and return response
 async function getGraphQLResponse(query, variables) {
     try {
         const response = await axios.post(GRAPHQL_ENDPOINT, { query, variables }, {
@@ -11,7 +12,7 @@ async function getGraphQLResponse(query, variables) {
                 Authorization: `Bearer ${accessToken}`,
             },
         });
-        console.log('GraphQL Response:', response.data);
+        //console.log('GraphQL Response:', response.data);
         return response.data;
     } catch (error) {
         console.error('GraphQL Request Error:', error);
@@ -19,8 +20,9 @@ async function getGraphQLResponse(query, variables) {
     }
 }
 
+// Function to get the parts
 async function getParts(ref, alt) {
-    const query = `
+    var query = `
         query multiSearch($refInput: String!, $altInput: String!) {
           supMultiMatch(
             queries: [{ mpn: $refInput, limit: 1 }, { mpn: $altInput, limit: 1 }]
@@ -55,12 +57,14 @@ async function getParts(ref, alt) {
 
     try {
         const response = await getGraphQLResponse(query, variables);
-        if (!response || !response.data || !response.data.supMultiMatch) {
-            throw new Error('Error getting or parsing GraphQL response.');
+        if (!response) {
+            throw new Error('Error getting GraphQL response.');
         }
-
-        const parts = response.data.supMultiMatch.parts;
-        console.log('Parts:', parts);
+        const parts = response?.data?.supMultiMatch;
+        if (!parts) {
+            throw new Error('Error retrieving parts from GraphQL response.');
+        }
+        //console.log('Parts:', parts);
         return parts;
     } catch (error) {
         console.error(error.message);
@@ -68,190 +72,167 @@ async function getParts(ref, alt) {
     }
 }
 
+// Function to get a part 
 async function getPart(parts, type) {
-    try {
-        const partIndex = (type === 'ref') ? 0 : 1;
-        const part = parts?.[partIndex]?.parts?.[0];
-
-        if (partIndex === 0 && !part) {
-            throw new Error('Reference part not found.');
-        }
-
-        console.log(`${type === 'ref' ? 'Reference' : 'Alternate'} Part:`, part?.mpn);
-        return part;
-    } catch (error) {
-        console.error(error.message);
-        throw error;
+    if (type == 'ref'){
+        //console.log('Reference Part:', parts[0]?.parts);
+        return parts[0]?.parts[0];
+    } else {
+        //console.log('Alternate Part:', parts[1]?.parts);
+        return parts[1]?.parts[0];
     }
 }
 
-
+// Function to get part specs
 function getSpecs(part) {
     const specs = part.specs;
     if (!specs) {
         throw new Error('Error retrieving specs from part.');
     }
-    console.log('Specs:', specs);
+    //console.log('Specs:', specs);
     return specs;
 }
 
 function getAttribute(specs, specValue) {
-    const attribute = specs.find(spec => spec.attribute.name === specValue);
+    try {
+        const attribute = specs.find(spec => spec.attribute.name === specValue);
 
-    if (!attribute) {
-        throw new Error(`Attribute ${specValue} not found.`);
+        if (!attribute) {
+            throw new Error(`Attribute ${specValue} not found.`);
+        }
+
+        //console.log(`${specValue} value: ${attribute.displayValue}`);
+        return attribute.displayValue;
+    } catch (error) {
+        console.error(error.message);
     }
-
-    console.log(`${specValue} value: ${attribute.displayValue}`);
-    return attribute.displayValue;
 }
-
 function setId(input) {
     if (input) {
+        // Split the string into words
         const words = input.split(' ');
+        // Capitalize the first letter of each word
         const formattedWords = words.map(word => word.charAt(0).toUpperCase() + word.slice(1));
+        // Join the words and return the result
         return formattedWords.join('');
     } else {
         return 'Empty';
     }
 }
 
-function createImageElement(url) {
-    const image = document.createElement('img');
-    image.src = url;
-    image.alt = 'Product Image';
-    image.style.maxWidth = '100px';
-    image.style.maxHeight = '100px';
-    return image;
-}
-
+// Function to create a table row with part values
 function createTableRow(label, refValue, altValue) {
-    const bgColor = '#FFFF00';
+    var bgColor = '#FFFF00';
     const row = document.createElement('tr');
 
     const labelCell = document.createElement('td');
     labelCell.textContent = label;
-    labelCell.id = `label${setId(label)}`;
+    labelCell.id = 'label' + setId(label);
     row.appendChild(labelCell);
 
     const refValueCell = document.createElement('td');
-    refValueCell.appendChild(refValue); // Use appendChild for security
-    applyCellStyle(refValueCell, label);
+    refValueCell.innerHTML = refValue; // Use innerHTML to parse HTML content
+    if (label == 'Price') {
+        refValueCell.id = 'refPrice'
+        refValueCell.style.backgroundColor = bgColor;
+    } else {
+        refValueCell.id = 'ref' + setId(label);
+    }
     row.appendChild(refValueCell);
 
     const altValueCell = document.createElement('td');
-    altValueCell.appendChild(altValue); // Use appendChild for security
-    applyCellStyle(altValueCell, label);
+    altValueCell.innerHTML = altValue; // Use innerHTML to parse HTML content
+    if (label == 'Price') {
+        altValueCell.id = 'altPrice'
+        altValueCell.style.backgroundColor = bgColor;
+    } else {
+        altValueCell.id = 'alt' + setId(label);
+    }
     row.appendChild(altValueCell);
 
     return row;
 }
 
-function applyCellStyle(cell, label) {
-    if (label === 'Price') {
-        cell.id = `alt${setId(label)}`;
-        cell.style.backgroundColor = bgColor;
-    } else {
-        cell.id = `ref${setId(label)}`;
-    }
-}
-
-function createBuyRow(alternate) {
-    const buyRow = createTableRow('', '', '');
-
-    const buyButtonCell = buyRow.children[2];
-
-    const buyButton = document.createElement('button');
-    buyButton.type = 'button';
-    buyButton.textContent = 'Buy Now';
-    buyButton.onclick = () => buyNow(alternate);
-
-    buyButtonCell.appendChild(document.createTextNode(' ')); // Add a space
-    buyButtonCell.appendChild(buyButton);
-
-    return buyRow;
-}
-
-function buyNow(alternate) {
-    const newUrl = 'https://i.zephyr-t.com/' + alternate;
+function buyNow (alternate){
+    var newUrl = 'https://i.zephyr-t.com/' + alternate;
     console.log(newUrl);
     window.location.href = newUrl;
 }
 
+// Function to display the comparison table
 async function displayComparisonTable() {
     const table = document.createElement('table');
     table.id = 'responseTable';
+    //Get parts
+    const parts = await getParts(reference, alternate);
+    const refPart = await getPart(parts,'ref');
+    const altPart = await getPart(parts,'alt');
+    // Get specs
+    const refSpecs = getSpecs(refPart);
+    const altSpecs = getSpecs(altPart);
+    //Get values for Ref
+    var refManufacturer = refPart.manufacturer.name;
+    var refMpn = refPart.mpn;
+    var refImage = refPart.bestImage;
+    var refDesc = refPart.shortDescription;
+    var refCapValue = getAttribute(refSpecs, 'Capacitance');
+    var refTolValue = getAttribute(refSpecs, 'Tolerance');
+    var refVolValue = getAttribute(refSpecs, 'Voltage Rating');
+    var refLifeValue = getAttribute(refSpecs, 'Life (Hours)');
+    var refLeakValue = getAttribute(refSpecs, 'Leakage Current');
+    var refHeightValue = getAttribute(refSpecs, 'Height');
+    var refLengthValue = getAttribute(refSpecs, 'Length');
+    var refPrice = refPart.medianPrice1000.price;
+    //Get values for Alt
+    var altManufacturer = altPart.manufacturer.name;
+    var altMpn = altPart.mpn;
+    var altImage = altPart.bestImage;
+    var altDesc = altPart.shortDescription;
+    var altCapValue = getAttribute(altSpecs, 'Capacitance');
+    var altTolValue = getAttribute(altSpecs, 'Tolerance');
+    var altVolValue = getAttribute(altSpecs, 'Voltage Rating');
+    var altLifeValue = getAttribute(altSpecs, 'Life (Hours)');
+    var altLeakValue = getAttribute(altSpecs, 'Leakage Current');
+    var altHeightValue = getAttribute(altSpecs, 'Height');
+    var altLengthValue = getAttribute(altSpecs, 'Length');
+    var altPrice = altPart.medianPrice1000.price;
+    // Create rows for each part attribute
+    const manufacturerRow = createTableRow('Manufacturer', refManufacturer, altManufacturer);
+    const mpnRow = createTableRow('MPN', refMpn, altMpn);
+    const imageRow = createTableRow('Image', refImage ? `<img src="${refImage.url}" alt="Product Image" style="max-width: 100px; max-height: 100px;">` : '', altImage ? `<img src="${altImage.url}" alt="Product Image" style="max-width: 100px; max-height: 100px;">` : '');
+    const descRow = createTableRow('Description', refDesc, altDesc);
+    const capValueRow = createTableRow('Capacitance', refCapValue, altCapValue);
+    const tolValueRow = createTableRow('Tolerance', refTolValue, altTolValue);
+    const volValueRow = createTableRow('Voltage Rating', refVolValue, altVolValue);
+    const lifeValueRow = createTableRow('Life (Hours)', refLifeValue, altLifeValue);
+    const leakValueRow = createTableRow('Leakage Current', refLeakValue, altLeakValue);
+    const heightValueRow = createTableRow('Height', refHeightValue, altHeightValue);
+    const lengthValueRow = createTableRow('Length', refLengthValue, altLengthValue);
+    const priceRow = createTableRow('Price', '$' + refPrice, '$' + altPrice);
+    const buyRow = createTableRow('', '', '<button type="button" onclick="buyNow(' + "'"+ alternate + "'"+ ')">Buy Now</button>');
 
-    try {
-        const parts = await getParts(reference, alternate);
-        const refPart = await getPart(parts, 'ref');
-        const altPart = await getPart(parts, 'alt');
+    // Append rows to the table
+    table.appendChild(manufacturerRow);
+    table.appendChild(mpnRow);
+    table.appendChild(imageRow);
+    table.appendChild(descRow);
+    table.appendChild(capValueRow);
+    table.appendChild(tolValueRow);
+    table.appendChild(volValueRow);
+    table.appendChild(lifeValueRow);
+    table.appendChild(leakValueRow);
+    table.appendChild(heightValueRow);
+    table.appendChild(lengthValueRow);
+    table.appendChild(priceRow);
+    table.appendChild(buyRow);
 
-        const refSpecs = getSpecs(refPart);
-        const altSpecs = getSpecs(altPart);
-
-        var refManufacturer = refPart.manufacturer.name;
-        var refMpn = refPart.mpn;
-        var refImage = refPart.bestImage;
-        var refDesc = refPart.shortDescription;
-        var refCapValue = getAttribute(refSpecs, 'Capacitance');
-        var refTolValue = getAttribute(refSpecs, 'Tolerance');
-        var refVolValue = getAttribute(refSpecs, 'Voltage Rating');
-        var refLifeValue = getAttribute(refSpecs, 'Life (Hours)');
-        var refLeakValue = getAttribute(refSpecs, 'Leakage Current');
-        var refHeightValue = getAttribute(refSpecs, 'Height');
-        var refLengthValue = getAttribute(refSpecs, 'Length');
-        var refPrice = refPart.medianPrice1000.price;
-
-        var altManufacturer = altPart.manufacturer.name;
-        var altMpn = altPart.mpn;
-        var altImage = altPart.bestImage;
-        var altDesc = altPart.shortDescription;
-        var altCapValue = getAttribute(altSpecs, 'Capacitance');
-        var altTolValue = getAttribute(altSpecs, 'Tolerance');
-        var altVolValue = getAttribute(altSpecs, 'Voltage Rating');
-        var altLifeValue = getAttribute(altSpecs, 'Life (Hours)');
-        var altLeakValue = getAttribute(altSpecs, 'Leakage Current');
-        var altHeightValue = getAttribute(altSpecs, 'Height');
-        var altLengthValue = getAttribute(altSpecs, 'Length');
-        var altPrice = altPart.medianPrice1000.price;
-
-        const manufacturerRow = createTableRow('Manufacturer', refManufacturer, altManufacturer);
-        const mpnRow = createTableRow('MPN', refMpn, altMpn);
-        const imageRow = createTableRow('Image', refImage ? createImageElement(refImage.url) : '', altImage ? createImageElement(altImage.url) : '');
-        const descRow = createTableRow('Description', refDesc, altDesc);
-        const capValueRow = createTableRow('Capacitance', refCapValue, altCapValue);
-        const tolValueRow = createTableRow('Tolerance', refTolValue, altTolValue);
-        const volValueRow = createTableRow('Voltage Rating', refVolValue, altVolValue);
-        const lifeValueRow = createTableRow('Life (Hours)', refLifeValue, altLifeValue);
-        const leakValueRow = createTableRow('Leakage Current', refLeakValue, altLeakValue);
-        const heightValueRow = createTableRow('Height', refHeightValue, altHeightValue);
-        const lengthValueRow = createTableRow('Length', refLengthValue, altLengthValue);
-        const priceRow = createTableRow('Price', '$' + refPrice, '$' + altPrice);
-        const buyRow = createBuyRow(alternate);
-
-        table.appendChild(manufacturerRow);
-        table.appendChild(mpnRow);
-        table.appendChild(imageRow);
-        table.appendChild(descRow);
-        table.appendChild(capValueRow);
-        table.appendChild(tolValueRow);
-        table.appendChild(volValueRow);
-        table.appendChild(lifeValueRow);
-        table.appendChild(leakValueRow);
-        table.appendChild(heightValueRow);
-        table.appendChild(lengthValueRow);
-        table.appendChild(priceRow);
-        table.appendChild(buyRow);
-
-        document.body.appendChild(table);
-    } catch (error) {
-        console.error(error.message);
-    }
+    // Append table to the body or any desired container
+    document.body.appendChild(table);
 }
 
 function compareResponses() {
     try {
+        // Display the comparison table
         displayComparisonTable();
     } catch (error) {
         console.error(error.message);
