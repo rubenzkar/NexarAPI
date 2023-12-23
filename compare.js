@@ -32,9 +32,9 @@ async function getPart(parts, type) {
 // Function to get parts
 async function getParts(ref, alt) {
     var query = `
-        query multiSearch ($refInput: String!, $altInput: String!){
+        query multiSearch($refInput: String!, $altInput: String!) {
           supMultiMatch(
-            queries: [{mpn: $refInput, limit: 1}, {mpn: refInput}]
+            queries: [{ mpn: $refInput, limit: 1 }, { mpn: $altInput, limit: 1 }]
           ) {
             parts {
               mpn
@@ -63,7 +63,7 @@ async function getParts(ref, alt) {
     `;
 
     const variables = { refInput: ref, altInput: alt };
-    
+
     try {
         const response = await getGraphQLResponse(query, variables);
         if (!response) {
