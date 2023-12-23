@@ -41,6 +41,7 @@ button {
 #responseTable {
     width: 600px;
     border-collapse: collapse;
+    margin: auto; 
 }
 
 #responseTable th, #responseTable td {
