@@ -135,7 +135,7 @@ function createTableRow(label, refValue, altValue) {
         altValueCell.id = 'altPrice'
         altValueCell.style.backgroundColor = bgColor;
     } else {
-        refValueCell.id = 'alt' + setId(label);
+        altValueCell.id = 'alt' + setId(label);
     }
     row.appendChild(altValueCell);
 
