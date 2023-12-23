@@ -72,12 +72,12 @@ async function getPart(parts, type) {
     try {
         const partIndex = (type === 'ref') ? 0 : 1;
         const part = parts?.[partIndex]?.parts?.[0];
-        
-        if (!part) {
-            throw new Error(`${type === 'ref' ? 'Reference' : 'Alternate'} part not found.`);
+
+        if (partIndex === 0 && !part) {
+            throw new Error('Reference part not found.');
         }
 
-        console.log(`${type === 'ref' ? 'Reference' : 'Alternate'} Part:`, part.mpn);
+        console.log(`${type === 'ref' ? 'Reference' : 'Alternate'} Part:`, part?.mpn);
         return part;
     } catch (error) {
         console.error(error.message);
