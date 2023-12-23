@@ -21,60 +21,50 @@ async function getGraphQLResponse(query, variables) {
 }
 
 // Function to get part values
-async function getPart(parts, type) {
-    if (type == 'ref'){
-        return parts[0];
-    } else {
-        return parts[1];
-    }
-}
-
-// Function to get parts
-async function getParts(ref, alt) {
+async function getPart(type) {
     var query = `
-        query multiSearch ($refInput: String!, $altInput: String!){
-          supMultiMatch(
-            queries: [{mpn: $refInput, limit: 1}, {mpn: refInput}]
-          ) {
-            parts {
-              mpn
-              manufacturer {
-                name
-              }
-              shortDescription
-              bestImage {
-                url
-              }
-              specs {
-                attribute {
-                  name
+        query specAttributes($inputQ: String!) {
+            supSearchMpn(q: $inputQ, limit: 1) {
+                results {
+                    part {
+                        mpn
+                        manufacturer {
+                            name
+                        }
+                        bestImage {
+                            url
+                        }
+                        shortDescription
+                        specs {
+                            attribute {
+                                name
+                            }
+                            displayValue
+                        }
+                        bestDatasheet {
+                            url
+                        }
+                        medianPrice1000{
+                          price
+                        }
+                    }
                 }
-                displayValue
-              }
-              bestDatasheet {
-                url
-              }
-              medianPrice1000 {
-                price
-              }
             }
-          }
         }
     `;
 
-    const variables = { refInput: ref, altInput: alt };
-    
+    const variables = { inputQ: type };
     try {
         const response = await getGraphQLResponse(query, variables);
         if (!response) {
             throw new Error('Error getting GraphQL response.');
         }
-        const parts = response?.data?.supMultiMatch?.parts;
-        if (!parts) {
-            throw new Error('Error retrieving parts from GraphQL response.');
+        const part = response?.data?.supSearchMpn?.results[0]?.part;
+        if (!part) {
+            throw new Error('Error retrieving part values from GraphQL response.');
         }
-        console.log('Parts:', parts);
-        return parts;
+        console.log('Part:', part);
+        return part;
     } catch (error) {
         console.error(error.message);
         throw error;
@@ -163,8 +153,7 @@ async function displayComparisonTable() {
     const table = document.createElement('table');
     table.id = 'responseTable';
     //Get parts
-    const parts = await getParts(reference, alternate);
-    const refPart = await getPart(parts,'alt');
+    const refPart = await getPart(reference);
     const altPart = await getPart(alternate);
     // Get specs
     const refSpecs = getSpecs(refPart);
