@@ -116,6 +116,7 @@ function createTableRow(label, refValue, altValue) {
 
     const labelCell = document.createElement('td');
     labelCell.textContent = label;
+    labelCell.id = 'label' + setId(label);
     row.appendChild(labelCell);
 
     const refValueCell = document.createElement('td');
