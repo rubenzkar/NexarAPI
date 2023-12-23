@@ -217,15 +217,20 @@ function applyCellStyle(cell, label) {
 
 // Function to create a table row with a "Buy Now" button
 function createBuyRow(alternate) {
-    const buyRow = createTableRow('', '', 
-        document.createElement('button', {
-            type: 'button',
-            onclick: () => buyNow(alternate),
-            textContent: 'Buy Now',
-        })
-    );
+    const buyRow = createTableRow('', '', '');
+
+    const buyButtonCell = buyRow.children[2];
+    
+    const buyButton = document.createElement('button');
+    buyButton.type = 'button';
+    buyButton.textContent = 'Buy Now';
+    buyButton.onclick = () => buyNow(alternate);
+
+    buyButtonCell.appendChild(buyButton);
+
     return buyRow;
 }
+
 
 // Function to display the comparison table
 async function displayComparisonTable() {
