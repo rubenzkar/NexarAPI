@@ -190,9 +190,7 @@ async function displayComparisonTable() {
         const parts = await getParts(reference, alternate);
         const refPart = await getPart(parts, 'ref');
         const altPart = await getPart(parts, 'alt');
-
-        // ... (rest of the code remains the same)
-
+        
         // Append rows to the table
         table.appendChild(manufacturerRow);
         table.appendChild(mpnRow);
