@@ -20,64 +20,76 @@ async function getGraphQLResponse(query, variables) {
     }
 }
 
-// Function to get part values
-async function getPart(type) {
+// Function to get the parts
+async function getParts(ref, alt) {
     var query = `
-        query specAttributes($inputQ: String!) {
-            supSearchMpn(q: $inputQ, limit: 1) {
-                results {
-                    part {
-                        mpn
-                        manufacturer {
-                            name
-                        }
-                        bestImage {
-                            url
-                        }
-                        shortDescription
-                        specs {
-                            attribute {
-                                name
-                            }
-                            displayValue
-                        }
-                        bestDatasheet {
-                            url
-                        }
-                        medianPrice1000{
-                          price
-                        }
-                    }
+        query multiSearch($refInput: String!, $altInput: String!) {
+          supMultiMatch(
+            queries: [{ mpn: $refInput, limit: 1 }, { mpn: $altInput, limit: 1 }]
+          ) {
+            parts {
+              mpn
+              manufacturer {
+                name
+              }
+              shortDescription
+              bestImage {
+                url
+              }
+              specs {
+                attribute {
+                  name
                 }
+                displayValue
+              }
+              bestDatasheet {
+                url
+              }
+              medianPrice1000 {
+                price
+              }
             }
+          }
         }
     `;
 
-    const variables = { inputQ: type };
+    const variables = { refInput: ref, altInput: alt };
+
     try {
         const response = await getGraphQLResponse(query, variables);
         if (!response) {
             throw new Error('Error getting GraphQL response.');
         }
-        const part = response?.data?.supSearchMpn?.results[0]?.part;
-        if (!part) {
-            throw new Error('Error retrieving part values from GraphQL response.');
+        const parts = response?.data?.supMultiMatch;
+        if (!parts) {
+            throw new Error('Error retrieving parts from GraphQL response.');
         }
-       //console.log('Part:', part);
-        return part;
+        //console.log('Parts:', parts);
+        return parts;
     } catch (error) {
         console.error(error.message);
         throw error;
     }
 }
 
+// Function to get a part 
+async function getPart(parts, type) {
+    if (type == 'ref'){
+        //console.log('Reference Part:', parts[0]?.parts);
+        return parts[0]?.parts[0];
+    } else {
+        //console.log('Alternate Part:', parts[1]?.parts);
+        return parts[1]?.parts[0];
+    }
+}
+
 // Function to get part specs
 function getSpecs(part) {
-    console.log('Specs:', part?.specs);
-    const specs = part?.specs;
+    const specs = part.specs;
     if (!specs) {
-        throw new Error('Error retrieving specs from part values.');
+        throw new Error('Error retrieving specs from part.');
     }
+    console.log('Specs:', specs);
     return specs;
 }
 
@@ -88,6 +100,8 @@ function getAttribute(specs, specValue) {
         if (!attribute) {
             throw new Error(`Attribute ${specValue} not found.`);
         }
+
+        //console.log(`${specValue} value: ${attribute.displayValue}`);
         return attribute.displayValue;
     } catch (error) {
         console.error(error.message);
@@ -150,8 +164,9 @@ async function displayComparisonTable() {
     const table = document.createElement('table');
     table.id = 'responseTable';
     //Get parts
-    const refPart = await getPart(reference);
-    const altPart = await getPart(alternate);
+    const parts = await getParts(reference, alternate);
+    const refPart = await getPart(parts,'ref');
+    const altPart = await getPart(parts,'alt');
     // Get specs
     const refSpecs = getSpecs(refPart);
     const altSpecs = getSpecs(altPart);
