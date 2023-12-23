@@ -83,10 +83,10 @@ async function getPart(parts, type) {
 
 // Function to get part specs
 function getSpecs(part) {
-    const specs = part?.specs;
+    const specs = part?.parts.specs;
 
     if (!specs) {
-        throw new Error('Error retrieving specs from part values.');
+        throw new Error('Error retrieving specs from part.');
     }
     console.log('Specs:', specs);
     return specs;
