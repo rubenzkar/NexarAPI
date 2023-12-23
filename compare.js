@@ -1,23 +1,57 @@
-const GRAPHQL_ENDPOINT = 'https://api.nexar.com/graphql/';
 const urlParams = new URLSearchParams(window.location.search);
 const reference = urlParams.get('reference');
 const alternate = urlParams.get('alternate');
-const accessToken = credentials.accessToken; 
+const CLIENT_ID = "901f869b-6cb4-4910-9a4f-6ee1738baee6";
+const CLIENT_SECRET = "09KGnzVSXu_wdyCXSEqZksLv01ItpNtcd2SJ";
+const TOKEN_ENDPOINT = "https://identity.nexar.com/connect/token"; 
+const GRAPHQL_ENDPOINT = "https://api.nexar.com/graphql"; 
+
+async function getAccessToken() {
+  try {
+    const response = await fetch(TOKEN_ENDPOINT, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+      body: new URLSearchParams({
+        grant_type: "client_credentials",
+        client_id: CLIENT_ID,
+        client_secret: CLIENT_SECRET,
+      }),
+    });
+
+    const data = await response.json();
+    return data.access_token;
+  } catch (error) {
+    console.error('Access Token Error:', error);
+    throw new Error('Error obtaining access token. Check console for details.');
+  }
+}
 
 // Function to perform GraphQL query and return response
 async function getGraphQLResponse(query, variables) {
-    try {
-        const response = await axios.post(GRAPHQL_ENDPOINT, { query, variables }, {
-            headers: {
-                Authorization: `Bearer ${accessToken}`,
-            },
-        });
-        //console.log('GraphQL Response:', response.data);
-        return response.data;
-    } catch (error) {
-        console.error('GraphQL Request Error:', error);
-        throw new Error('Error making GraphQL request. Check console for details.');
-    }
+  try {
+    const accessToken = await getAccessToken();
+
+    const response = await fetch(GRAPHQL_ENDPOINT, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        query: query,
+        variables: variables,
+      }),
+    });
+
+    const data = await response.json();
+    console.log('GraphQL Response:', data);
+    return data;
+  } catch (error) {
+    console.error('GraphQL Request Error:', error);
+    throw new Error('Error making GraphQL request. Check console for details.');
+  }
 }
 
 // Function to get the parts
