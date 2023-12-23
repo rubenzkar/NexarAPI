@@ -44,6 +44,9 @@ async function getPart(type) {
                         bestDatasheet {
                             url
                         }
+                         medianPrice1000{
+                          price
+                        }
                     }
                 }
             }
@@ -141,6 +144,7 @@ async function displayComparisonTable() {
     var refLeakValue = getAttribute(refSpecs, 'Leakage Current');
     var refHeightValue = getAttribute(refSpecs, 'Height');
     var refLengthValue = getAttribute(refSpecs, 'Length');
+    var refPrice = refPart.medianPrice1000.price;
     //Get values for Alt
     var altManufacturer = altPart.manufacturer.name;
     var altMpn = altPart.mpn;
@@ -153,6 +157,7 @@ async function displayComparisonTable() {
     var altLeakValue = getAttribute(altSpecs, 'Leakage Current');
     var altHeightValue = getAttribute(altSpecs, 'Height');
     var altLengthValue = getAttribute(altSpecs, 'Length');
+    var altPrice = altPart.medianPrice1000.price;
     // Create rows for each part attribute
     const manufacturerRow = createTableRow('Manufacturer', refManufacturer, altManufacturer);
     const mpnRow = createTableRow('MPN', refMpn, altMpn);
@@ -165,9 +170,7 @@ async function displayComparisonTable() {
     const leakValueRow = createTableRow('Leakage Current', refLeakValue, altLeakValue);
     const heightValueRow = createTableRow('Height', refHeightValue, altHeightValue);
     const lengthValueRow = createTableRow('Length', refLengthValue, altLengthValue);
-
-    
-    
+    const priceRow = createTableRow('Price', refPrice, altPrice);
     const buyRow = createTableRow('', '', '<button type="button" onclick="buyNow(' + "'"+ alternate + "'"+ ')">Buy Now</button>');
 
     // Append rows to the table
@@ -182,6 +185,7 @@ async function displayComparisonTable() {
     table.appendChild(leakValueRow);
     table.appendChild(heightValueRow);
     table.appendChild(lengthValueRow);
+    table.appendChild(priceRow);
     table.appendChild(buyRow);
 
     // Append table to the body or any desired container
