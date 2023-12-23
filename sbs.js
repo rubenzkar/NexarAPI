@@ -103,55 +103,95 @@ function createTableRow(label, refValue, altValue) {
     row.appendChild(labelCell);
 
     const refValueCell = document.createElement('td');
-    refValueCell.textContent = refValue;
+    refValueCell.innerHTML = refValue; // Use innerHTML to parse HTML content
     row.appendChild(refValueCell);
 
     const altValueCell = document.createElement('td');
-    altValueCell.textContent = altValue;
+    altValueCell.innerHTML = altValue; // Use innerHTML to parse HTML content
     row.appendChild(altValueCell);
 
     return row;
 }
 
-// Function to display the comparison table
-function displayComparisonTable(refManufacturer, refMpn, refCapValue, altManufacturer, altMpn, altCapValue) {
-    const table = document.createElement('table');
+function buyNow (alternate){
+    var newUrl = 'https://i.zephyr-t.com/' + alternate;
+    console.log(newUrl);
+    window.location.href = newUrl;
+}
 
+// Function to display the comparison table
+async function displayComparisonTable() {
+    const table = document.createElement('table');
+    table.id = 'responseTable';
+    //Get parts
+    const refPart = await getPart(reference);
+    const altPart = await getPart(alternate);
+    // Get specs
+    const refSpecs = getSpecs(refPart);
+    const altSpecs = getSpecs(altPart);
+    //Get values for Ref
+    var refManufacturer = refPart.manufacturer.name;
+    var refMpn = refPart.mpn;
+    var refImage = refPart.bestImage;
+    var refDesc = refPart.shortDescription;
+    var refCapValue = getAttribute(refSpecs, 'Capacitance');
+    var refTolValue = getAttribute(refSpecs, 'Tolerance');
+    var refVolValue = getAttribute(refSpecs, 'Voltage Rating');
+    var refLifeValue = getAttribute(refSpecs, 'Life (Hours)');
+    var refLeakValue = getAttribute(refSpecs, 'Leakage Current');
+    var refHeightValue = getAttribute(refSpecs, 'Height');
+    var refLengthValue = getAttribute(refSpecs, 'Length');
+    //Get values for Alt
+    var altManufacturer = altPart.manufacturer.name;
+    var altMpn = altPart.mpn;
+    var altImage = altPart.bestImage;
+    var altDesc = altPart.shortDescription;
+    var altCapValue = getAttribute(altSpecs, 'Capacitance');
+    var altTolValue = getAttribute(altSpecs, 'Tolerance');
+    var altVolValue = getAttribute(altSpecs, 'Voltage Rating');
+    var altLifeValue = getAttribute(altSpecs, 'Life (Hours)');
+    var altLeakValue = getAttribute(altSpecs, 'Leakage Current');
+    var altHeightValue = getAttribute(altSpecs, 'Height');
+    var altLengthValue = getAttribute(altSpecs, 'Length');
     // Create rows for each part attribute
     const manufacturerRow = createTableRow('Manufacturer', refManufacturer, altManufacturer);
     const mpnRow = createTableRow('MPN', refMpn, altMpn);
+    const imageRow = createTableRow('Image', refImage ? `<img src="${refImage.url}" alt="Product Image" style="max-width: 100px; max-height: 100px;">` : '', altImage ? `<img src="${altImage.url}" alt="Product Image" style="max-width: 100px; max-height: 100px;">` : '');
+    const descRow = createTableRow('Description', refDesc, altDesc);
     const capValueRow = createTableRow('Capacitance', refCapValue, altCapValue);
+    const tolValueRow = createTableRow('Tolerance', refTolValue, altTolValue);
+    const volValueRow = createTableRow('Voltage Rating', refVolValue, altVolValue);
+    const lifeValueRow = createTableRow('Life (Hours)', refLifeValue, altLifeValue);
+    const leakValueRow = createTableRow('Leakage Current', refLeakValue, altLeakValue);
+    const heightValueRow = createTableRow('Height', refHeightValue, altHeightValue);
+    const lengthValueRow = createTableRow('Length', refLengthValue, altLengthValue);
+
+    
+    
+    const buyRow = createTableRow('', '', '<button type="button" onclick="buyNow(' + "'"+ alternate + "'"+ ')">Buy Now</button>');
 
     // Append rows to the table
     table.appendChild(manufacturerRow);
     table.appendChild(mpnRow);
+    table.appendChild(imageRow);
+    table.appendChild(descRow);
     table.appendChild(capValueRow);
+    table.appendChild(tolValueRow);
+    table.appendChild(volValueRow);
+    table.appendChild(lifeValueRow);
+    table.appendChild(leakValueRow);
+    table.appendChild(heightValueRow);
+    table.appendChild(lengthValueRow);
+    table.appendChild(buyRow);
 
     // Append table to the body or any desired container
     document.body.appendChild(table);
 }
 
-async function compareResponses() {
+function compareResponses() {
     try {
-        const refPart = await getPart(reference);
-        const altPart = await getPart(alternate);
-
-        const refSpecs = getSpecs(refPart);
-        const altSpecs = getSpecs(altPart);
-
-        var refMpn = refPart.mpn;
-        var refManufacturer = refPart.manufacturer.name;
-        var refCapValue = getAttribute(refSpecs, 'Capacitance');
-
-        var altMpn = altPart.mpn;
-        var altManufacturer = altPart.manufacturer.name;
-        var altCapValue = getAttribute(altSpecs, 'Capacitance');
-
-        console.log(refManufacturer + "'s " + refMpn + ' cap value: ' + refCapValue);
-        console.log(altManufacturer + "'s " + altMpn + ' cap value: ' + altCapValue);
-
         // Display the comparison table
-        displayComparisonTable(refManufacturer, refMpn, refCapValue, altManufacturer, altMpn, altCapValue);
+        displayComparisonTable();
     } catch (error) {
         console.error(error.message);
     }
