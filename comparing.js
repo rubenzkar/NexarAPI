@@ -96,6 +96,18 @@ function getAttribute(specs, specValue) {
         console.error(error.message);
     }
 }
+function setId(input) {
+    if (input) {
+        // Split the string into words
+        const words = input.split(' ');
+        // Capitalize the first letter of each word
+        const formattedWords = words.map(word => word.charAt(0).toUpperCase() + word.slice(1));
+        // Join the words and return the result
+        return formattedWords.join('');
+    } else {
+        return 'Empty';
+    }
+}
 
 // Function to create a table row with part values
 function createTableRow(label, refValue, altValue) {
@@ -104,6 +116,7 @@ function createTableRow(label, refValue, altValue) {
 
     const labelCell = document.createElement('td');
     labelCell.textContent = label;
+    labelCell.id = 'label' + setId(label);
     row.appendChild(labelCell);
 
     const refValueCell = document.createElement('td');
@@ -111,6 +124,8 @@ function createTableRow(label, refValue, altValue) {
     if (label == 'Price') {
         refValueCell.id = 'refPrice'
         refValueCell.style.backgroundColor = bgColor;
+    } else {
+        refValueCell.id = 'ref' + setId(label);
     }
     row.appendChild(refValueCell);
 
@@ -119,6 +134,8 @@ function createTableRow(label, refValue, altValue) {
     if (label == 'Price') {
         altValueCell.id = 'altPrice'
         altValueCell.style.backgroundColor = bgColor;
+    } else {
+        altValueCell.id = 'alt' + setId(label);
     }
     row.appendChild(altValueCell);
 
