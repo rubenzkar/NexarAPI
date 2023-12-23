@@ -89,7 +89,7 @@ function getSpecs(part) {
     if (!specs) {
         throw new Error('Error retrieving specs from part.');
     }
-    console.log('Specs:', specs);
+    //console.log('Specs:', specs);
     return specs;
 }
 
