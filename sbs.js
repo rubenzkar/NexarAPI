@@ -99,6 +99,7 @@ function getAttribute(specs, specValue) {
 
 // Function to create a table row with part values
 function createTableRow(label, refValue, altValue) {
+    var bgColor = '#FFFF00';
     const row = document.createElement('tr');
 
     const labelCell = document.createElement('td');
@@ -107,10 +108,18 @@ function createTableRow(label, refValue, altValue) {
 
     const refValueCell = document.createElement('td');
     refValueCell.innerHTML = refValue; // Use innerHTML to parse HTML content
+    if (label == 'Price') {
+        refValueCell.id = 'refPrice'
+        refValueCell.style.backgroundColor = bgColor;
+    }
     row.appendChild(refValueCell);
 
     const altValueCell = document.createElement('td');
     altValueCell.innerHTML = altValue; // Use innerHTML to parse HTML content
+    if (label == 'Price') {
+        altValueCell.id = 'altPrice'
+        altValueCell.style.backgroundColor = bgColor;
+    }
     row.appendChild(altValueCell);
 
     return row;
@@ -170,7 +179,7 @@ async function displayComparisonTable() {
     const leakValueRow = createTableRow('Leakage Current', refLeakValue, altLeakValue);
     const heightValueRow = createTableRow('Height', refHeightValue, altHeightValue);
     const lengthValueRow = createTableRow('Length', refLengthValue, altLengthValue);
-    const priceRow = createTableRow('Price', refPrice, altPrice);
+    const priceRow = createTableRow('Price', '$' + refPrice, '$' + altPrice);
     const buyRow = createTableRow('', '', '<button type="button" onclick="buyNow(' + "'"+ alternate + "'"+ ')">Buy Now</button>');
 
     // Append rows to the table
