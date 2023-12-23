@@ -76,10 +76,10 @@ async function getParts(ref, alt) {
 async function getPart(parts, type) {
     if (type == 'ref'){
         //console.log('Reference Part:', parts[0]?.parts);
-        return parts[0]?.parts{0};
+        return parts[0]?.parts[0];
     } else {
         //console.log('Alternate Part:', parts[1]?.parts);
-        return parts[1]?.parts{0};
+        return parts[1]?.parts[0];
     }
 }
 
