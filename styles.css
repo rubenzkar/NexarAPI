@@ -65,3 +65,7 @@ button {
 #refPrice, #altPrice {
     background-color: #FFFF00;
 }
+#labelEmpty, #reflEmpty {
+    border-bottom: none;
+    border-left: none;
+}
