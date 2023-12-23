@@ -56,3 +56,6 @@ button {
 #responseTable td.specs {
     font-weight: bold;
 }
+#refPrice td, #altPrice td {
+    background-color: #FFFF00;
+}
