@@ -32,7 +32,11 @@ button {
     padding: 10px;
     cursor: pointer;
 }
-
+#titleTable {
+    width: 600px;
+    border-collapse: collapse;
+    margin: auto; 
+}
 #responseTableContainer {
     display: none;
     margin-top: 20px;
