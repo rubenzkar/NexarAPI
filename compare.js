@@ -180,17 +180,109 @@ function buyNow(alternate) {
     window.location.href = newUrl;
 }
 
+// Function to create a table row with part values
+function createTableRow(label, refValue, altValue) {
+    const bgColor = '#FFFF00';
+    const row = document.createElement('tr');
+
+    const labelCell = document.createElement('td');
+    labelCell.textContent = label;
+    labelCell.id = 'label' + setId(label);
+    row.appendChild(labelCell);
+
+    const refValueCell = document.createElement('td');
+    refValueCell.appendChild(refValue); // Use appendChild for security
+    applyCellStyle(refValueCell, label);
+    row.appendChild(refValueCell);
+
+    const altValueCell = document.createElement('td');
+    altValueCell.appendChild(altValue); // Use appendChild for security
+    applyCellStyle(altValueCell, label);
+    row.appendChild(altValueCell);
+
+    return row;
+}
+
+// Function to apply cell styling based on label
+function applyCellStyle(cell, label) {
+    if (label === 'Price') {
+        cell.id = `alt${setId(label)}`;
+        cell.style.backgroundColor = '#FFFF00';
+    } else {
+        cell.id = `ref${setId(label)}`;
+    }
+}
+
+// Function to create a table row with a "Buy Now" button
+function createBuyRow(alternate) {
+    const buyRow = createTableRow('', '', 
+        document.createElement('button', {
+            type: 'button',
+            onclick: () => buyNow(alternate),
+            textContent: 'Buy Now',
+        })
+    );
+    return buyRow;
+}
+
 // Function to display the comparison table
 async function displayComparisonTable() {
     const table = document.createElement('table');
     table.id = 'responseTable';
 
     try {
-        //Get parts
+        // Get parts
         const parts = await getParts(reference, alternate);
         const refPart = await getPart(parts, 'ref');
         const altPart = await getPart(parts, 'alt');
-        
+
+        // Get specs
+        const refSpecs = getSpecs(refPart);
+        const altSpecs = getSpecs(altPart);
+
+        // Get values for Ref
+        var refManufacturer = refPart.manufacturer.name;
+        var refMpn = refPart.mpn;
+        var refImage = refPart.bestImage;
+        var refDesc = refPart.shortDescription;
+        var refCapValue = getAttribute(refSpecs, 'Capacitance');
+        var refTolValue = getAttribute(refSpecs, 'Tolerance');
+        var refVolValue = getAttribute(refSpecs, 'Voltage Rating');
+        var refLifeValue = getAttribute(refSpecs, 'Life (Hours)');
+        var refLeakValue = getAttribute(refSpecs, 'Leakage Current');
+        var refHeightValue = getAttribute(refSpecs, 'Height');
+        var refLengthValue = getAttribute(refSpecs, 'Length');
+        var refPrice = refPart.medianPrice1000.price;
+
+        // Get values for Alt
+        var altManufacturer = altPart.manufacturer.name;
+        var altMpn = altPart.mpn;
+        var altImage = altPart.bestImage;
+        var altDesc = altPart.shortDescription;
+        var altCapValue = getAttribute(altSpecs, 'Capacitance');
+        var altTolValue = getAttribute(altSpecs, 'Tolerance');
+        var altVolValue = getAttribute(altSpecs, 'Voltage Rating');
+        var altLifeValue = getAttribute(altSpecs, 'Life (Hours)');
+        var altLeakValue = getAttribute(altSpecs, 'Leakage Current');
+        var altHeightValue = getAttribute(altSpecs, 'Height');
+        var altLengthValue = getAttribute(altSpecs, 'Length');
+        var altPrice = altPart.medianPrice1000.price;
+
+        // Create rows for each part attribute
+        const manufacturerRow = createTableRow('Manufacturer', refManufacturer, altManufacturer);
+        const mpnRow = createTableRow('MPN', refMpn, altMpn);
+        const imageRow = createTableRow('Image', refImage ? createImageElement(refImage.url) : '', altImage ? createImageElement(altImage.url) : '');
+        const descRow = createTableRow('Description', refDesc, altDesc);
+        const capValueRow = createTableRow('Capacitance', refCapValue, altCapValue);
+        const tolValueRow = createTableRow('Tolerance', refTolValue, altTolValue);
+        const volValueRow = createTableRow('Voltage Rating', refVolValue, altVolValue);
+        const lifeValueRow = createTableRow('Life (Hours)', refLifeValue, altLifeValue);
+        const leakValueRow = createTableRow('Leakage Current', refLeakValue, altLeakValue);
+        const heightValueRow = createTableRow('Height', refHeightValue, altHeightValue);
+        const lengthValueRow = createTableRow('Length', refLengthValue, altLengthValue);
+        const priceRow = createTableRow('Price', '$' + refPrice, '$' + altPrice);
+        const buyRow = createBuyRow(alternate);
+
         // Append rows to the table
         table.appendChild(manufacturerRow);
         table.appendChild(mpnRow);
@@ -204,7 +296,7 @@ async function displayComparisonTable() {
         table.appendChild(heightValueRow);
         table.appendChild(lengthValueRow);
         table.appendChild(priceRow);
-        table.appendChild(createBuyRow(alternate));
+        table.appendChild(buyRow);
 
         // Append table to the body or any desired container
         document.body.appendChild(table);
