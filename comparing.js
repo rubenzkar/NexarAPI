@@ -99,7 +99,7 @@ function getAttribute(specs, specValue) {
 
 // Function to create a table row with part values
 function createTableRow(label, refValue, altValue) {
-    var bgColor = 'FFFF00',
+    var bgColor = 'FFFF00';
     const row = document.createElement('tr');
 
     const labelCell = document.createElement('td');
