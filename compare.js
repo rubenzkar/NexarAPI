@@ -75,17 +75,17 @@ async function getParts(ref, alt) {
 // Function to get a part 
 async function getPart(parts, type) {
     if (type == 'ref'){
-        console.log('Reference Part:', parts[0]);
-        return parts[0];
+        console.log('Reference Part:', parts[0]?.parts);
+        return parts[0]?.parts;
     } else {
-        console.log('Alternate Part:', parts[1]);
-        return parts[1];
+        console.log('Alternate Part:', parts[1]?.parts);
+        return parts[1]?.parts;
     }
 }
 
 // Function to get part specs
 function getSpecs(part) {
-    const specs = part?.parts.specs;
+    const specs = part?.specs;
 
     if (!specs) {
         throw new Error('Error retrieving specs from part.');
