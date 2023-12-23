@@ -22,7 +22,7 @@ async function getGraphQLResponse(query, variables) {
 
 // Function to get part values
 async function getPart(type) {
-    const query = `
+    var query = `
         query specAttributes($inputQ: String!) {
             supSearchMpn(q: $inputQ, limit: 1) {
                 results {
@@ -44,7 +44,7 @@ async function getPart(type) {
                         bestDatasheet {
                             url
                         }
-                         medianPrice1000{
+                        medianPrice1000{
                           price
                         }
                     }
