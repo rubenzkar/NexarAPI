@@ -12,8 +12,8 @@ async function getGraphQLResponse(query, variables) {
                 Authorization: `Bearer ${accessToken}`,
             },
         });
-        console.log('GraphQL Response:', response.data.data);
-        return response.data.data;
+        console.log('GraphQL Response:', response.data);
+        return response.data;
     } catch (error) {
         console.error('GraphQL Request Error:', error);
         throw new Error('Error making GraphQL request. Check console for details.');
