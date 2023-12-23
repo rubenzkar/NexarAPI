@@ -2,7 +2,7 @@ const GRAPHQL_ENDPOINT = 'https://api.nexar.com/graphql/';
 const urlParams = new URLSearchParams(window.location.search);
 const reference = urlParams.get('reference');
 const alternate = urlParams.get('alternate');
-const accessToken = credentials.accessToken; 
+const accessToken = credentials.accessToken;
 
 // Function to perform GraphQL query and return response
 async function getGraphQLResponse(query, variables) {
@@ -20,7 +20,103 @@ async function getGraphQLResponse(query, variables) {
     }
 }
 
-// ... (other functions remain the same)
+// Function to get the parts
+async function getParts(ref, alt) {
+    const query = `
+        query multiSearch($refInput: String!, $altInput: String!) {
+          supMultiMatch(
+            queries: [{ mpn: $refInput, limit: 1 }, { mpn: $altInput, limit: 1 }]
+          ) {
+            parts {
+              mpn
+              manufacturer {
+                name
+              }
+              shortDescription
+              bestImage {
+                url
+              }
+              specs {
+                attribute {
+                  name
+                }
+                displayValue
+              }
+              bestDatasheet {
+                url
+              }
+              medianPrice1000 {
+                price
+              }
+            }
+          }
+        }
+    `;
+
+    const variables = { refInput: ref, altInput: alt };
+
+    try {
+        const response = await getGraphQLResponse(query, variables);
+        if (!response) {
+            throw new Error('Error getting GraphQL response.');
+        }
+        const parts = response?.data?.supMultiMatch;
+        if (!parts) {
+            throw new Error('Error retrieving parts from GraphQL response.');
+        }
+        console.log('Parts:', parts);
+        return parts;
+    } catch (error) {
+        console.error(error.message);
+        throw error;
+    }
+}
+
+// Function to get a part
+async function getPart(parts, type) {
+    if (type === 'ref') {
+        console.log('Reference Part:', parts[0]?.parts);
+        return parts[0]?.parts[0];
+    } else {
+        console.log('Alternate Part:', parts[1]?.parts);
+        return parts[1]?.parts[0];
+    }
+}
+
+// Function to get part specs
+function getSpecs(part) {
+    const specs = part.specs;
+    if (!specs) {
+        throw new Error('Error retrieving specs from part.');
+    }
+    console.log('Specs:', specs);
+    return specs;
+}
+
+function getAttribute(specs, specValue) {
+    try {
+        const attribute = specs.find(spec => spec.attribute.name === specValue);
+
+        if (!attribute) {
+            throw new Error(`Attribute ${specValue} not found.`);
+        }
+
+        console.log(`${specValue} value: ${attribute.displayValue}`);
+        return attribute.displayValue;
+    } catch (error) {
+        console.error(error.message);
+    }
+}
+
+function setId(input) {
+    if (input) {
+        const words = input.split(' ');
+        const formattedWords = words.map(word => word.charAt(0).toUpperCase() + word.slice(1));
+        return formattedWords.join('');
+    } else {
+        return 'Empty';
+    }
+}
 
 // Function to create an image element
 function createImageElement(url) {
@@ -65,6 +161,25 @@ function applyCellStyle(cell, label) {
     }
 }
 
+// Function to create a table row with a "Buy Now" button
+function createBuyRow(alternate) {
+    const buyRow = createTableRow('', '', 
+        document.createElement('button', {
+            type: 'button',
+            onclick: () => buyNow(alternate),
+            textContent: 'Buy Now',
+        })
+    );
+    return buyRow;
+}
+
+// Function to navigate to the purchase page
+function buyNow(alternate) {
+    const newUrl = 'https://i.zephyr-t.com/' + alternate;
+    console.log(newUrl);
+    window.location.href = newUrl;
+}
+
 // Function to display the comparison table
 async function displayComparisonTable() {
     const table = document.createElement('table');
@@ -91,7 +206,7 @@ async function displayComparisonTable() {
         table.appendChild(heightValueRow);
         table.appendChild(lengthValueRow);
         table.appendChild(priceRow);
-        table.appendChild(buyRow);
+        table.appendChild(createBuyRow(alternate));
 
         // Append table to the body or any desired container
         document.body.appendChild(table);
