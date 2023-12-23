@@ -13,6 +13,7 @@ async function getGraphQLResponse(query, variables) {
             },
         });
         //console.log('GraphQL Response:', response.data);
+        console.log('GraphQL Response:', response);
         return response.data;
     } catch (error) {
         console.error('GraphQL Request Error:', error);
