@@ -4,7 +4,6 @@ const reference = urlParams.get('reference');
 const alternate = urlParams.get('alternate');
 const accessToken = credentials.accessToken;
 
-// Function to perform GraphQL query and return response
 async function getGraphQLResponse(query, variables) {
     try {
         const response = await axios.post(GRAPHQL_ENDPOINT, { query, variables }, {
@@ -20,7 +19,6 @@ async function getGraphQLResponse(query, variables) {
     }
 }
 
-// Function to get the parts
 async function getParts(ref, alt) {
     const query = `
         query multiSearch($refInput: String!, $altInput: String!) {
@@ -57,13 +55,11 @@ async function getParts(ref, alt) {
 
     try {
         const response = await getGraphQLResponse(query, variables);
-        if (!response) {
-            throw new Error('Error getting GraphQL response.');
+        if (!response || !response.data || !response.data.supMultiMatch) {
+            throw new Error('Error getting or parsing GraphQL response.');
         }
-        const parts = response?.data?.supMultiMatch;
-        if (!parts) {
-            throw new Error('Error retrieving parts from GraphQL response.');
-        }
+
+        const parts = response.data.supMultiMatch.parts;
         console.log('Parts:', parts);
         return parts;
     } catch (error) {
@@ -72,18 +68,12 @@ async function getParts(ref, alt) {
     }
 }
 
-// Function to get a part
 async function getPart(parts, type) {
-    if (type === 'ref') {
-        console.log('Reference Part:', parts[0]?.parts);
-        return parts[0]?.parts[0];
-    } else {
-        console.log('Alternate Part:', parts[1]?.parts);
-        return parts[1]?.parts[0];
-    }
+    const partIndex = (type === 'ref') ? 0 : 1;
+    console.log(`${type === 'ref' ? 'Reference' : 'Alternate'} Part:`, parts[partIndex]?.mpn);
+    return parts[partIndex]?.mpn;
 }
 
-// Function to get part specs
 function getSpecs(part) {
     const specs = part.specs;
     if (!specs) {
@@ -94,18 +84,14 @@ function getSpecs(part) {
 }
 
 function getAttribute(specs, specValue) {
-    try {
-        const attribute = specs.find(spec => spec.attribute.name === specValue);
+    const attribute = specs.find(spec => spec.attribute.name === specValue);
 
-        if (!attribute) {
-            throw new Error(`Attribute ${specValue} not found.`);
-        }
-
-        console.log(`${specValue} value: ${attribute.displayValue}`);
-        return attribute.displayValue;
-    } catch (error) {
-        console.error(error.message);
+    if (!attribute) {
+        throw new Error(`Attribute ${specValue} not found.`);
     }
+
+    console.log(`${specValue} value: ${attribute.displayValue}`);
+    return attribute.displayValue;
 }
 
 function setId(input) {
@@ -118,7 +104,6 @@ function setId(input) {
     }
 }
 
-// Function to create an image element
 function createImageElement(url) {
     const image = document.createElement('img');
     image.src = url;
@@ -128,14 +113,13 @@ function createImageElement(url) {
     return image;
 }
 
-// Function to create a table row with part values
 function createTableRow(label, refValue, altValue) {
     const bgColor = '#FFFF00';
     const row = document.createElement('tr');
 
     const labelCell = document.createElement('td');
     labelCell.textContent = label;
-    labelCell.id = 'label' + setId(label);
+    labelCell.id = `label${setId(label)}`;
     row.appendChild(labelCell);
 
     const refValueCell = document.createElement('td');
@@ -151,103 +135,49 @@ function createTableRow(label, refValue, altValue) {
     return row;
 }
 
-// Function to apply cell styling based on label
 function applyCellStyle(cell, label) {
     if (label === 'Price') {
         cell.id = `alt${setId(label)}`;
-        cell.style.backgroundColor = '#FFFF00';
+        cell.style.backgroundColor = bgColor;
     } else {
         cell.id = `ref${setId(label)}`;
     }
 }
 
-// Function to create a table row with a "Buy Now" button
 function createBuyRow(alternate) {
     const buyRow = createTableRow('', '', '');
+
+    const buyButtonCell = buyRow.children[2];
 
     const buyButton = document.createElement('button');
     buyButton.type = 'button';
     buyButton.textContent = 'Buy Now';
     buyButton.onclick = () => buyNow(alternate);
 
-    buyRow.children[2].appendChild(buyButton);
+    buyButtonCell.appendChild(document.createTextNode(' ')); // Add a space
+    buyButtonCell.appendChild(buyButton);
 
     return buyRow;
 }
 
-// Function to navigate to the purchase page
 function buyNow(alternate) {
     const newUrl = 'https://i.zephyr-t.com/' + alternate;
     console.log(newUrl);
     window.location.href = newUrl;
 }
 
-// Function to create a table row with part values
-function createTableRow(label, refValue, altValue) {
-    const bgColor = '#FFFF00';
-    const row = document.createElement('tr');
-
-    const labelCell = document.createElement('td');
-    labelCell.textContent = label;
-    labelCell.id = 'label' + setId(label);
-    row.appendChild(labelCell);
-
-    const refValueCell = document.createElement('td');
-    refValueCell.appendChild(refValue); // Use appendChild for security
-    applyCellStyle(refValueCell, label);
-    row.appendChild(refValueCell);
-
-    const altValueCell = document.createElement('td');
-    altValueCell.appendChild(altValue); // Use appendChild for security
-    applyCellStyle(altValueCell, label);
-    row.appendChild(altValueCell);
-
-    return row;
-}
-
-// Function to apply cell styling based on label
-function applyCellStyle(cell, label) {
-    if (label === 'Price') {
-        cell.id = `alt${setId(label)}`;
-        cell.style.backgroundColor = '#FFFF00';
-    } else {
-        cell.id = `ref${setId(label)}`;
-    }
-}
-
-// Function to create a table row with a "Buy Now" button
-function createBuyRow(alternate) {
-    const buyRow = createTableRow('', '', '');
-
-    const buyButtonCell = buyRow.children[2];
-    
-    const buyButton = document.createElement('button');
-    buyButton.type = 'button';
-    buyButton.textContent = 'Buy Now';
-    buyButton.onclick = () => buyNow(alternate);
-
-    buyButtonCell.appendChild(buyButton);
-
-    return buyRow;
-}
-
-
-// Function to display the comparison table
 async function displayComparisonTable() {
     const table = document.createElement('table');
     table.id = 'responseTable';
 
     try {
-        // Get parts
         const parts = await getParts(reference, alternate);
         const refPart = await getPart(parts, 'ref');
         const altPart = await getPart(parts, 'alt');
 
-        // Get specs
         const refSpecs = getSpecs(refPart);
         const altSpecs = getSpecs(altPart);
 
-        // Get values for Ref
         var refManufacturer = refPart.manufacturer.name;
         var refMpn = refPart.mpn;
         var refImage = refPart.bestImage;
@@ -261,7 +191,6 @@ async function displayComparisonTable() {
         var refLengthValue = getAttribute(refSpecs, 'Length');
         var refPrice = refPart.medianPrice1000.price;
 
-        // Get values for Alt
         var altManufacturer = altPart.manufacturer.name;
         var altMpn = altPart.mpn;
         var altImage = altPart.bestImage;
@@ -275,7 +204,6 @@ async function displayComparisonTable() {
         var altLengthValue = getAttribute(altSpecs, 'Length');
         var altPrice = altPart.medianPrice1000.price;
 
-        // Create rows for each part attribute
         const manufacturerRow = createTableRow('Manufacturer', refManufacturer, altManufacturer);
         const mpnRow = createTableRow('MPN', refMpn, altMpn);
         const imageRow = createTableRow('Image', refImage ? createImageElement(refImage.url) : '', altImage ? createImageElement(altImage.url) : '');
@@ -290,7 +218,6 @@ async function displayComparisonTable() {
         const priceRow = createTableRow('Price', '$' + refPrice, '$' + altPrice);
         const buyRow = createBuyRow(alternate);
 
-        // Append rows to the table
         table.appendChild(manufacturerRow);
         table.appendChild(mpnRow);
         table.appendChild(imageRow);
@@ -305,7 +232,6 @@ async function displayComparisonTable() {
         table.appendChild(priceRow);
         table.appendChild(buyRow);
 
-        // Append table to the body or any desired container
         document.body.appendChild(table);
     } catch (error) {
         console.error(error.message);
@@ -314,7 +240,6 @@ async function displayComparisonTable() {
 
 function compareResponses() {
     try {
-        // Display the comparison table
         displayComparisonTable();
     } catch (error) {
         console.error(error.message);
