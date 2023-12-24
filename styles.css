@@ -17,17 +17,6 @@ form {
     margin-bottom: 20px;
 }
 
-label {
-    display: block;
-    margin-bottom: 5px;
-}
-
-textarea {
-    width: 100%;
-    padding: 10px;
-    box-sizing: border-box;
-}
-
 button {
     padding: 10px;
     cursor: pointer;
@@ -36,10 +25,6 @@ button {
     width: 600px;
     border-collapse: collapse;
     margin: auto; 
-}
-#responseTableContainer {
-    display: none;
-    margin-top: 20px;
 }
 
 #responseTable {
@@ -55,13 +40,6 @@ button {
     text-align: left;
 }
 
-#responseTable th {
-    background-color: #f2f2f2;
-}
-
-#responseTable td.specs {
-    font-weight: bold;
-}
 #footerContainer {
   background-color: #f8f9fa;
   padding: 20px;
