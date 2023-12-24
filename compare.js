@@ -199,8 +199,7 @@ function buyNow (alternate){
 
 // Function to display the comparison table
 async function displayComparisonTable() {
-    const table = document.createElement('table');
-    table.id = 'responseTable';
+    const table = document.getElementById('responseTable');
     //Get parts
     const parts = await getParts(reference, alternate);
     const refPart = await getPart(parts,'ref');
