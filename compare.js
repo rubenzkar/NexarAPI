@@ -1,32 +1,19 @@
 const urlParams = new URLSearchParams(window.location.search);
 const reference = urlParams.get('reference');
 const alternate = urlParams.get('alternate');
-const credentials = getRandomCredentials();
-const CLIENT_ID = credentials.client;
-const CLIENT_SECRET = credentials.secret;
+const endpoint = "https://dz07ab64te.execute-api.us-west-2.amazonaws.com/";
 const TOKEN_ENDPOINT = "https://identity.nexar.com/connect/token"; 
 const GRAPHQL_ENDPOINT = "https://api.nexar.com/graphql"; 
 
-async function getAccessToken() {
-  try {
-    const response = await fetch(TOKEN_ENDPOINT, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
-      },
-      body: new URLSearchParams({
-        grant_type: "client_credentials",
-        client_id: CLIENT_ID,
-        client_secret: CLIENT_SECRET,
-      }),
+async function getAccessToken() {    
+  fetch(endpoint)
+    .then(response => response.json())
+    .then(data => {
+        document.getElementById('response').innerHTML = 'Access Code: ' + data.accessCode;
+    })
+    .catch(error => {
+        document.getElementById('response').innerHTML = 'Error: ' + error.message;
     });
-
-    const data = await response.json();
-    return data.access_token;
-  } catch (error) {
-    console.error('Access Token Error:', error);
-    throw new Error('Error obtaining access token. Check console for details.');
-  }
 }
 
 // Function to perform GraphQL query and return response
