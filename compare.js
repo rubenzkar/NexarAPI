@@ -159,18 +159,13 @@ function setId(input) {
 function createTableRow(label, refValue, altValue) {
     var bgColor = '#FFFF00';
     const row = document.createElement('tr');
-
-    if (label !== '') {
-        const labelCell = document.createElement('td');
-        labelCell.textContent = label;
-        labelCell.id = 'label' + setId(label);
-        row.appendChild(labelCell);
-    } else {
-        const labelCell = document.createElement('td');
-        labelCell.textContent = label;
-        labelCell.id = 'label' + setId(label);
-        labelCell.colSpan = 2; // Set colspan to 2 if label is empty
-        row.appendChild(labelCell);
+  
+    const labelCell = document.createElement('td');
+    labelCell.textContent = label;
+    labelCell.id = 'label' + setId(label);
+    row.appendChild(labelCell);
+    if (label == '') {
+        labelCell.colSpan = 2; // Set colspan to 2 if label is empty   
     }
 
     if (label !== '') {
@@ -179,13 +174,11 @@ function createTableRow(label, refValue, altValue) {
         if (label == 'Price') {
             refValueCell.id = 'refPrice';
             refValueCell.style.backgroundColor = bgColor;
-        } else {
-            refValueCell.id = 'ref' + setId(label);
         }
         row.appendChild(refValueCell);
     }
-
-    const altValueCell = document.createElement('td');
+    
+   const altValueCell = document.createElement('td');
     altValueCell.innerHTML = altValue; // Use innerHTML to parse HTML content
     if (label == 'Price') {
         altValueCell.id = 'altPrice';
