@@ -1,12 +1,12 @@
 const credentialsArray = [
-    // Szocialis
+    // Szocialis Networks
     { client: '901f869b-6cb4-4910-9a4f-6ee1738baee6', secret: '09KGnzVSXu_wdyCXSEqZksLv01ItpNtcd2SJ' },
-    // Ruben
+    // Ruben Escarzaga
     { client: '6fbf42ca-731d-4434-bd02-9fdd3c0814e6', secret: 'zPsDKpUVW3ihd-n6T_G6mc9VeybDScY9Pi5U' },
     //Zephyr Technologies
     //{ client: '2fbc50ad-4999-47b2-b523-616a509a66d0', secret: 'dek_wdMgzVT9zlKHvwJw1SjvmjYYC18fOiVM' },
-    //Zephyr
-    { client: 'cuatro', secret: '4' }
+    //zkar Communications
+    { client: '054a1a2c-b945-4724-bb00-5fec7ba942b5', secret: '6TdqiOgjdqfZNrZpkmU5Cuw-1_zHPZPcoYEg' }
 ];
 
 function shuffleArray(array) {
