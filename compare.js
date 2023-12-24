@@ -199,8 +199,7 @@ function buyNow (alternate){
 
 // Function to display the comparison table
 async function displayComparisonTable() {
-    var table = document.getElementById('responseTable');
-    table.innerHTML = '';
+    const table = document.getElementById('responseTable');
     //Get parts
     const parts = await getParts(reference, alternate);
     const refPart = await getPart(parts,'ref');
@@ -266,6 +265,12 @@ async function displayComparisonTable() {
 
     // Append table to the body or any desired container
     //document.body.appendChild(table);
+}
+
+function displayError(message) {
+    var errorContainer = document.getElementById('errorContainer');
+    errorContainer.textContent = message;
+    errorContainer.style.display = 'block';
 }
 
 function compareResponses() {
