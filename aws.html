@@ -3,30 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>API Test</title>
+    <title>CORS Test</title>
 </head>
 <body>
+    <h1>CORS Test</h1>
+    <button onclick="testApi()">Test API</button>
+    <div id="result"></div>
 
-<h1>API Test</h1>
-<p>Click the button to make a request to your API.</p>
-
-<button onclick="makeRequest()">Make Request</button>
-
-<script>
-    function makeRequest() {
-        // Replace 'YOUR_API_GATEWAY_ENDPOINT' with the actual URL of your API Gateway endpoint
-        fetch('https://a52lqku2x6.execute-api.us-west-2.amazonaws.com')
-            .then(response => response.json())
-            .then(data => {
-                console.log('API Response:', data);
-                alert('API Response: ' + JSON.stringify(data));
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('Error: ' + error.message);
-            });
-    }
-</script>
-
+    <script>
+        function testApi() {
+            fetch('https://a52lqku2x6.execute-api.us-west-2.amazonaws.com/')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('result').innerText = JSON.stringify(data, null, 2);
+                })
+                .catch(error => {
+                    document.getElementById('result').innerText = 'Error: ' + error.message;
+                });
+        }
+    </script>
 </body>
 </html>
