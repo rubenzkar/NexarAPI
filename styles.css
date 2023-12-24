@@ -62,6 +62,12 @@ button {
 #responseTable td.specs {
     font-weight: bold;
 }
-#refPrice, #altPrice {
-    background-color: #FFFF00;
+#footerContainer {
+  background-color: #f8f9fa;
+  padding: 20px;
+  text-align: center;
+  color: #495057;
+  font-family: Arial, sans-serif;
+  border-top: 1px solid #dee2e6;
+  margin-top: 20px;
 }
