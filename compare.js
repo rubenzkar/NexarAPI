@@ -1,18 +1,19 @@
 const urlParams = new URLSearchParams(window.location.search);
 const reference = urlParams.get('reference');
 const alternate = urlParams.get('alternate');
-const endpoint = "https://dz07ab64te.execute-api.us-west-2.amazonaws.com/";
+const ENDPOINT = "https://dz07ab64te.execute-api.us-west-2.amazonaws.com/";
 const TOKEN_ENDPOINT = "https://identity.nexar.com/connect/token"; 
 const GRAPHQL_ENDPOINT = "https://api.nexar.com/graphql"; 
 
 async function getAccessToken() {    
-  fetch(endpoint)
+  fetch(ENDPOINT)
     .then(response => response.json())
     .then(data => {
-        document.getElementById('response').innerHTML = 'Access Code: ' + data.accessCode;
+        return data.accessCode;
     })
     .catch(error => {
-        document.getElementById('response').innerHTML = 'Error: ' + error.message;
+        console.error(error.message);
+        throw error;
     });
 }
 
