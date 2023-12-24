@@ -26,12 +26,3 @@ function getRandomCredentials() {
     // Return the first pair (now random)
     return shuffledArray[0];
 }
-
-const credentials = getRandomCredentials();
-
-// Accessing user and password values
-const clientId = credentials.client;
-const clientSecret = credentials.secret;
-
-console.log('User:', clientId);
-console.log('Password:', clientSecret);
