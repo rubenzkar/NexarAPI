@@ -164,6 +164,11 @@ function createTableRow(label, refValue, altValue) {
         const labelCell = document.createElement('td');
         labelCell.textContent = label;
         labelCell.id = 'label' + setId(label);
+        row.appendChild(labelCell);
+    } else {
+        const labelCell = document.createElement('td');
+        labelCell.textContent = label;
+        labelCell.id = 'label' + setId(label);
         labelCell.colSpan = 2; // Set colspan to 2 if label is empty
         row.appendChild(labelCell);
     }
