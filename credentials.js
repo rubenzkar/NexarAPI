@@ -2,9 +2,11 @@ const credentialsArray = [
     // Szocialis
     { client: '901f869b-6cb4-4910-9a4f-6ee1738baee6', secret: '09KGnzVSXu_wdyCXSEqZksLv01ItpNtcd2SJ' },
     // Ruben
-    { client: 'dos', secret: 'two' }
+    { client: '6fbf42ca-731d-4434-bd02-9fdd3c0814e6', secret: 'zPsDKpUVW3ihd-n6T_G6mc9VeybDScY9Pi5U' }
+    //Zephyr Technologies
+    //{ client: '2fbc50ad-4999-47b2-b523-616a509a66d0', secret: 'dek_wdMgzVT9zlKHvwJw1SjvmjYYC18fOiVM' }
     //Zephyr
-    { client: 'tres', secret: '3' }
+    { client: 'cuatro', secret: '4' }
 ];
 
 function shuffleArray(array) {
