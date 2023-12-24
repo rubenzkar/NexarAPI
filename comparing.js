@@ -22,7 +22,6 @@ async function getAccessToken() {
     });
 
     const data = await response.json();
-    console.log('Access Token: ', data);
     return data.access_token;
   } catch (error) {
     console.error('Access Token Error:', error);
@@ -34,7 +33,7 @@ async function getAccessToken() {
 async function getGraphQLResponse(query, variables) {
   try {
     const accessToken = await getAccessToken();
-
+    console.log('Access Token: ', accessToken);
     const response = await fetch(GRAPHQL_ENDPOINT, {
       method: "POST",
       headers: {
