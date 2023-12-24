@@ -1,31 +1,20 @@
 const urlParams = new URLSearchParams(window.location.search);
 const reference = urlParams.get('reference');
 const alternate = urlParams.get('alternate');
-const credentials = getRandomCredentials();
-const CLIENT_ID = credentials.client;
-const CLIENT_SECRET = credentials.secret;
+const INVOKE_URL = "https://dz07ab64te.execute-api.us-west-2.amazonaws.com/";
 const TOKEN_ENDPOINT = "https://identity.nexar.com/connect/token"; 
 const GRAPHQL_ENDPOINT = "https://api.nexar.com/graphql"; 
 
 async function getAccessToken() {
   try {
-    const response = await fetch(TOKEN_ENDPOINT, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
-      },
-      body: new URLSearchParams({
-        grant_type: "client_credentials",
-        client_id: CLIENT_ID,
-        client_secret: CLIENT_SECRET,
-      }),
-    });
-
-    const data = await response.json();
-    return data.access_token;
+    const response = await fetch(INVOKE_URL);
+    if (response.ok) {
+      return await response.text();
+    } else {
+      throw new Error(`Error: ${response.status} - ${await response.text()}`);
+    }
   } catch (error) {
-    console.error('Access Token Error:', error);
-    throw new Error('Error obtaining access token. Check console for details.');
+    throw new Error(`Error: ${error.message}`);
   }
 }
 
@@ -33,7 +22,7 @@ async function getAccessToken() {
 async function getGraphQLResponse(query, variables) {
   try {
     const accessToken = await getAccessToken();
-    console.log('Access Token: ', accessToken);
+
     const response = await fetch(GRAPHQL_ENDPOINT, {
       method: "POST",
       headers: {
@@ -97,7 +86,7 @@ async function getParts(ref, alt) {
         }
         const parts = response?.data?.supMultiMatch;
         if (!parts) {
-            throw new Error('Error retrieving parts from GraphQL response.');
+            throw new Error('Error retrieving parts from GraphQL response.', error);
         }
         //console.log('Parts:', parts);
         return parts;
@@ -109,7 +98,7 @@ async function getParts(ref, alt) {
 
 // Function to get a part 
 async function getPart(parts, type) {
-    if (type == 'ref'){
+    if (type === 'ref'){
         //console.log('Reference Part:', parts[0]?.parts);
         return parts[0]?.parts[0];
     } else {
@@ -164,14 +153,14 @@ function createTableRow(label, refValue, altValue) {
     labelCell.textContent = label;
     labelCell.id = 'label' + setId(label);
     row.appendChild(labelCell);
-    if (label == '') {
+    if (label === '') {
         labelCell.colSpan = 2; // Set colspan to 2 if label is empty   
     }
 
     if (label !== '') {
         const refValueCell = document.createElement('td');
         refValueCell.innerHTML = refValue; // Use innerHTML to parse HTML content
-        if (label == 'Price') {
+        if (label === 'Price') {
             refValueCell.id = 'refPrice';
             refValueCell.style.backgroundColor = bgColor;
         }
@@ -180,7 +169,7 @@ function createTableRow(label, refValue, altValue) {
     
    const altValueCell = document.createElement('td');
     altValueCell.innerHTML = altValue; // Use innerHTML to parse HTML content
-    if (label == 'Price') {
+    if (label === 'Price') {
         altValueCell.id = 'altPrice';
         altValueCell.style.backgroundColor = bgColor;
     } else {
@@ -262,9 +251,6 @@ async function displayComparisonTable() {
     table.appendChild(lengthValueRow);
     table.appendChild(priceRow);
     table.appendChild(buyRow);
-
-    // Append table to the body or any desired container
-    //document.body.appendChild(table);
 }
 
 function displayError(message) {
