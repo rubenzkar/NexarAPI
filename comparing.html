@@ -8,18 +8,25 @@
     <!-- Include Axios library -->
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="credentials.js"></script>
-    <script src="comparing.js"></script>
 </head>
 <body>
-    <div id="logo">
-        <img width="300" src="https://rubenzkar.github.io/NexarAPI/images/zephyr-tLogo.png" alt=""></a>
+    <div id="logoContainer">
+        <img width="290" src="https://rubenzkar.github.io/NexarAPI/images/zephyr-tLogo.png" alt=""></a>
     </div>
-    <table id="titleTable">
-        <tr>
-            <td>
-            <h1>Compare Products</h1>
-            </td>
-        </tr>
-    <table>
+    <div>
+        <table id="titleTable">
+            <tr>
+                <td>
+                <h1>Compare Products</h1>
+                </td>
+            </tr>
+        </table>
+        <table id="responseTable"></table>
+    </div>
+    <div id="errorContainer"></div>
+    <div id="footerContainer">
+        <div id="copyright"> Copyright ©2023 Zephyr Technologies. Developed by Ruben Esccarzaga</div>
+    </div>
 </body>
+<script src="compare.js"></script>
 </html>
