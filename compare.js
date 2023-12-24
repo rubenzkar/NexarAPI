@@ -6,15 +6,14 @@ const TOKEN_ENDPOINT = "https://identity.nexar.com/connect/token";
 const GRAPHQL_ENDPOINT = "https://api.nexar.com/graphql"; 
 
 async function getAccessToken() {    
-  fetch(ENDPOINT)
-    .then(response => response.json())
-    .then(data => {
-        return data.accessCode;
-    })
-    .catch(error => {
-        console.error(error.message);
-        throw error;
-    });
+  try {
+    const response = await fetch(ENDPOINT);
+    const data = await response.json();
+    return data.accessCode;
+  } catch (error) {
+    console.error('Access Token Request Error:', error);
+    throw new Error('Error getting access token. Check console for details.');
+  }
 }
 
 // Function to perform GraphQL query and return response
