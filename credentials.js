@@ -1,5 +1,31 @@
-// credentials.js
+const credentialsArray = [
+    { client: 'uno', secret: 'one' },
+    { client: 'dos', secret: 'two' }
+];
 
-var credentials = {
-  accessToken: 'eyJhbGciOiJSUzI1NiIsImtpZCI6IjA5NzI5QTkyRDU0RDlERjIyRDQzMENBMjNDNkI4QjJFIiwidHlwIjoiYXQrand0In0.eyJuYmYiOjE3MDMzNDUyNjcsImV4cCI6MTcwMzQzMTY2NywiaXNzIjoiaHR0cHM6Ly9pZGVudGl0eS5uZXhhci5jb20iLCJjbGllbnRfaWQiOiI5MDFmODY5Yi02Y2I0LTQ5MTAtOWE0Zi02ZWUxNzM4YmFlZTYiLCJzdWIiOiI0MTIxOTA0Ri04RjYwLTQ1ODktOTAwNC05QUJEQTdDQjI5QTUiLCJhdXRoX3RpbWUiOjE3MDMzNDUyMDEsImlkcCI6ImxvY2FsIiwicHJpdmF0ZV9jbGFpbXNfaWQiOiJmODI0ODZkZi04YmJiLTQyMTYtYTU1YS01MjhjNTMwY2NkZGUiLCJwcml2YXRlX2NsYWltc19zZWNyZXQiOiJWUjZqUjhvWHpxQVhmck5OT1d3TjFiaFhIVW5PV3hMQlFXV1N4WVFrVHA4PSIsImp0aSI6IjZENkU1NzZFMzZCOTRCM0NBMTc2RkE2RTQ0NDU5MzdDIiwic2lkIjoiRkUzQ0Q5RjUxMkEzQUQ0RDgyOEM0NEQ3M0VGRUE3MjAiLCJpYXQiOjE3MDMzNDUyNjcsInNjb3BlIjpbIm9wZW5pZCIsInVzZXIuYWNjZXNzIiwicHJvZmlsZSIsImVtYWlsIiwidXNlci5kZXRhaWxzIiwiZGVzaWduLmRvbWFpbiIsInN1cHBseS5kb21haW4iXSwiYW1yIjpbInB3ZCJdfQ.abaTumeuv1HND6nVMOuIFfuREUwanaJWLc4MGbid9FTRZlahHO5P8-86xtQhrDQtjyZzySO1T1Re2ggIKft12eFYHf3k-Bdb1xbelYqkepzHbuDwoCb69gsfmpiMXEvYk275php4eRTxHfH6VhihN1PEJhJeGTTL2ampsT2slpoke2Q0r8bqdYB-9kZFO_PRkjDsyKRMbRGNenPaLpJoH0i1oSUeo1l7gva4ySp1wF_pGkfJa_nFg5DcyfH8N2yX8kq12555t-VuDrIk5mJHccPyUjFGuhOSGJ2-VOiRDoX9KfsPH3vhi7F6Udsk0WaeTjvYwjbSBM8QqdAPEZBbhw',
-};
+function shuffleArray(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+}
+
+function getRandomCredentials() {
+    // Make a copy to avoid modifying the original constant array
+    const shuffledArray = [...credentialsArray];
+    
+    // Shuffle the array
+    shuffleArray(shuffledArray);
+
+    // Return the first pair (now random)
+    return shuffledArray[0];
+}
+
+const credentials = getRandomCredentials();
+
+// Accessing user and password values
+const clientId = credentials.client;
+const clientSecret = credentials.secret;
+
+console.log('User:', clientId);
+console.log('Password:', clientSecret);
