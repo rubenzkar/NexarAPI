@@ -1,6 +1,10 @@
 const credentialsArray = [
-    { client: 'uno', secret: 'one' },
+    // Szocialis
+    { client: '901f869b-6cb4-4910-9a4f-6ee1738baee6', secret: '09KGnzVSXu_wdyCXSEqZksLv01ItpNtcd2SJ' },
+    // Ruben
     { client: 'dos', secret: 'two' }
+    //Zephyr
+    { client: 'tres', secret: '3' }
 ];
 
 function shuffleArray(array) {
