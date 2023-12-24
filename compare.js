@@ -8,6 +8,7 @@ const GRAPHQL_ENDPOINT = "https://api.nexar.com/graphql";
 async function getAccessToken() {    
   try {
     const response = await fetch(ENDPOINT);
+    console.log('Access Token: ', response);
     return response;
   } catch (error) {
     console.error('Access Token Request Error:', error);
