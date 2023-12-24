@@ -84,7 +84,7 @@ async function getParts(ref, alt) {
         }
         const parts = response?.data?.supMultiMatch;
         if (!parts) {
-            throw new Error('Error retrieving parts from GraphQL response.');
+            throw new Error('Error retrieving parts from GraphQL response.', error);
         }
         //console.log('Parts:', parts);
         return parts;
@@ -96,7 +96,7 @@ async function getParts(ref, alt) {
 
 // Function to get a part 
 async function getPart(parts, type) {
-    if (type == 'ref'){
+    if (type === 'ref'){
         //console.log('Reference Part:', parts[0]?.parts);
         return parts[0]?.parts[0];
     } else {
@@ -151,14 +151,14 @@ function createTableRow(label, refValue, altValue) {
     labelCell.textContent = label;
     labelCell.id = 'label' + setId(label);
     row.appendChild(labelCell);
-    if (label == '') {
+    if (label === '') {
         labelCell.colSpan = 2; // Set colspan to 2 if label is empty   
     }
 
     if (label !== '') {
         const refValueCell = document.createElement('td');
         refValueCell.innerHTML = refValue; // Use innerHTML to parse HTML content
-        if (label == 'Price') {
+        if (label === 'Price') {
             refValueCell.id = 'refPrice';
             refValueCell.style.backgroundColor = bgColor;
         }
@@ -167,7 +167,7 @@ function createTableRow(label, refValue, altValue) {
     
    const altValueCell = document.createElement('td');
     altValueCell.innerHTML = altValue; // Use innerHTML to parse HTML content
-    if (label == 'Price') {
+    if (label === 'Price') {
         altValueCell.id = 'altPrice';
         altValueCell.style.backgroundColor = bgColor;
     } else {
