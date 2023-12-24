@@ -1,18 +1,26 @@
 const urlParams = new URLSearchParams(window.location.search);
 const reference = urlParams.get('reference');
 const alternate = urlParams.get('alternate');
-const ENDPOINT = "https://dz07ab64te.execute-api.us-west-2.amazonaws.com/";
+const INVOKE_URL = "https://dz07ab64te.execute-api.us-west-2.amazonaws.com/";
 const TOKEN_ENDPOINT = "https://identity.nexar.com/connect/token"; 
 const GRAPHQL_ENDPOINT = "https://api.nexar.com/graphql"; 
 
-async function getAccessToken() {    
+async function getAccessToken() {
   try {
-    const response = await fetch(ENDPOINT);
-    console.log('Access Token: ', response);
-    return response;
+    // Make a GET request to the API
+    const response = await fetch(INVOKE_URL);
+
+    // Check if the request was successful (status code 200)
+    if (response.ok) {
+      // Return the response text (assuming it's a string)
+      return await response.text();
+    } else {
+      // Throw an error if the request was not successful
+      throw new Error(`Error: ${response.status} - ${await response.text()}`);
+    }
   } catch (error) {
-    console.error('Access Token Request Error:', error);
-    throw new Error('Error getting access token. Check console for details.');
+    // Throw an error if any exceptions occur during the request
+    throw new Error(`Error: ${error.message}`);
   }
 }
 
