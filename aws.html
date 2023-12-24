@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Test</title>
+</head>
+<body>
+
+<h1>API Test</h1>
+<p>Click the button to make a request to your API.</p>
+
+<button onclick="makeRequest()">Make Request</button>
+
+<script>
+    function makeRequest() {
+        // Replace 'YOUR_API_GATEWAY_ENDPOINT' with the actual URL of your API Gateway endpoint
+        fetch('https://kc0sqceqeb.execute-api.us-west-2.amazonaws.com')
+            .then(response => response.json())
+            .then(data => {
+                console.log('API Response:', data);
+                alert('API Response: ' + JSON.stringify(data));
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Error: ' + error.message);
+            });
+    }
+</script>
+
+</body>
+</html>
