@@ -36,7 +36,7 @@ async function getGraphQLResponse(query, variables) {
     });
 
     const data = await response.json();
-    console.log('GraphQL Response:', data);
+    //console.log('GraphQL Response:', data);
     return data;
   } catch (error) {
     console.error('GraphQL Request Error:', error);
