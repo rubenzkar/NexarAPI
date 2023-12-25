@@ -13,6 +13,10 @@ body {
     background-color: #fff;
 }
 
+#comparingContainer {
+    height: 650px;
+}
+
 form {
     margin-bottom: 20px;
 }
