@@ -191,7 +191,7 @@ function buyNow (alternate){
 // Function to display the comparison table
 async function displayComparisonTable() {
     // Display loading bar
-    var loadingBar = document.getElementById('loadingBar')
+    var loadingBar = document.getElementById('loadingBar');
     loadingBar.style.display = 'block';
     loadingBar.ldBar.set(50);
   
