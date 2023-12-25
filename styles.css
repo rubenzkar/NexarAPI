@@ -17,6 +17,10 @@ body {
     height: 650px;
 }
 
+#loadingMessage {
+    display: none;
+}
+
 form {
     margin-bottom: 20px;
 }
