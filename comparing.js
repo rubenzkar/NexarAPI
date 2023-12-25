@@ -190,6 +190,9 @@ function buyNow (alternate){
 
 // Function to display the comparison table
 async function displayComparisonTable() {
+    // Display loading message
+    document.getElementById('loadingMessage').style.display = 'block';
+  
     const table = document.getElementById('responseTable');
     //Get parts
     const parts = await getParts(reference, alternate);
@@ -253,6 +256,9 @@ async function displayComparisonTable() {
     table.appendChild(lengthValueRow);
     table.appendChild(priceRow);
     table.appendChild(buyRow);
+
+  // Hide loading message once the table is loaded
+    document.getElementById('loadingMessage').style.display = 'none';
 }
 
 function displayError(message) {
