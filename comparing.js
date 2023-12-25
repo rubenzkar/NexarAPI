@@ -191,9 +191,12 @@ function buyNow (alternate){
 // Function to display the comparison table
 async function displayComparisonTable() {
     // Display loading bar
-    var loadingBar = document.getElementById('loadingBar');
-    loadingBar.style.display = 'block';
-    loadingBar.ldBar.set(50);
+    var loadingBar = new ldBar(".ldBar", {
+     "stroke": '#f00',
+     "stroke-width": 10,
+     "preset": "fan",
+     "value": 50
+    });
   
     const table = document.getElementById('responseTable');
     //Get parts
