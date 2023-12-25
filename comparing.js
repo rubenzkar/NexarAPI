@@ -197,6 +197,8 @@ async function displayComparisonTable() {
      "preset": "fan",
      "value": 50
     });
+    loadingBar.style.display = 'block';
+
   
     const table = document.getElementById('responseTable');
     //Get parts
