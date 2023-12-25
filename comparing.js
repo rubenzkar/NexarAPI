@@ -196,7 +196,7 @@ async function displayComparisonTable() {
     "stroke": 'orange',
     "stroke-width": 10,
     "preset": "circle",
-    "value": 50
+    "value": 0
   });
   loadingBar.style.display = 'block';
   
@@ -205,46 +205,46 @@ async function displayComparisonTable() {
   //Get parts
   const parts = await getParts(reference, alternate);
   const refPart = await getPart(parts,'ref');
-  const altPart = await getPart(parts,'alt');
+  const altPart = await getPart(parts,'alt'); loadingBar.ldBar.set(10);
   // Get specs
   const refSpecs = getSpecs(refPart);
   const altSpecs = getSpecs(altPart);
   //Get values for Ref
   var refManufacturer = refPart.manufacturer.name;
   var refMpn = refPart.mpn;
-  var refImage = refPart.bestImage;
+  var refImage = refPart.bestImage; loadingBar.ldBar.set(20);
   var refDesc = refPart.shortDescription;
   var refCapValue = getAttribute(refSpecs, 'Capacitance');
   var refTolValue = getAttribute(refSpecs, 'Tolerance');
-  var refVolValue = getAttribute(refSpecs, 'Voltage Rating');
+  var refVolValue = getAttribute(refSpecs, 'Voltage Rating'); loadingBar.ldBar.set(30);
   var refLifeValue = getAttribute(refSpecs, 'Life (Hours)');
   var refLeakValue = getAttribute(refSpecs, 'Leakage Current');
   var refHeightValue = getAttribute(refSpecs, 'Height');
-  var refLengthValue = getAttribute(refSpecs, 'Length');
+  var refLengthValue = getAttribute(refSpecs, 'Length'); loadingBar.ldBar.set(40);
   var refPrice = refPart.medianPrice1000.price;
   //Get values for Alt
   var altManufacturer = altPart.manufacturer.name;
   var altMpn = altPart.mpn;
   var altImage = altPart.bestImage;
-  var altDesc = altPart.shortDescription;
+  var altDesc = altPart.shortDescription; loadingBar.ldBar.set(50);
   var altCapValue = getAttribute(altSpecs, 'Capacitance');
   var altTolValue = getAttribute(altSpecs, 'Tolerance');
   var altVolValue = getAttribute(altSpecs, 'Voltage Rating');
-  var altLifeValue = getAttribute(altSpecs, 'Life (Hours)');
+  var altLifeValue = getAttribute(altSpecs, 'Life (Hours)'); loadingBar.ldBar.set(61);
   var altLeakValue = getAttribute(altSpecs, 'Leakage Current');
   var altHeightValue = getAttribute(altSpecs, 'Height');
   var altLengthValue = getAttribute(altSpecs, 'Length');
-  var altPrice = altPart.medianPrice1000.price;
+  var altPrice = altPart.medianPrice1000.price; loadingBar.ldBar.set(70);
   // Create rows for each part attribute
   const manufacturerRow = createTableRow('Manufacturer', refManufacturer, altManufacturer);
   const mpnRow = createTableRow('MPN', refMpn, altMpn);
   const imageRow = createTableRow('Image', refImage ? `<img src="${refImage.url}" alt="Product Image" style="max-width: 100px; max-height: 100px;">` : '', altImage ? `<img src="${altImage.url}" alt="Product Image" style="max-width: 100px; max-height: 100px;">` : '');
-  const descRow = createTableRow('Description', refDesc, altDesc);
+  const descRow = createTableRow('Description', refDesc, altDesc); loadingBar.ldBar.set(80);
   const capValueRow = createTableRow('Capacitance', refCapValue, altCapValue);
   const tolValueRow = createTableRow('Tolerance', refTolValue, altTolValue);
   const volValueRow = createTableRow('Voltage Rating', refVolValue, altVolValue);
   const lifeValueRow = createTableRow('Life (Hours)', refLifeValue, altLifeValue);
-  const leakValueRow = createTableRow('Leakage Current', refLeakValue, altLeakValue);
+  const leakValueRow = createTableRow('Leakage Current', refLeakValue, altLeakValue); loadingBar.ldBar.set(90);
   const heightValueRow = createTableRow('Height', refHeightValue, altHeightValue);
   const lengthValueRow = createTableRow('Length', refLengthValue, altLengthValue);
   const priceRow = createTableRow('Price', '$' + refPrice, '$' + altPrice);
