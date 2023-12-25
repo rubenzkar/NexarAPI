@@ -18,7 +18,10 @@ body {
 }
 
 #loadingMessage {
+    max-width: 600px;
     display: none;
+    cursor: wait;
+    margin: auto; 
 }
 
 form {
