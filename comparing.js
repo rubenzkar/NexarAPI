@@ -219,7 +219,7 @@ async function displayComparisonTable() {
   var altManufacturer = altPart.manufacturer.name;
   var altMpn = altPart.mpn;
   var altImage = altPart.bestImage;
-  var altDesc = altPart.shortDescription; loadingMessage.ldBar.set(50);
+  var altDesc = altPart.shortDescription;
   var altCapValue = getAttribute(altSpecs, 'Capacitance');
   var altTolValue = getAttribute(altSpecs, 'Tolerance');
   var altVolValue = getAttribute(altSpecs, 'Voltage Rating');
