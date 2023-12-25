@@ -1,6 +1,6 @@
 body {
     font-family: 'Arial', sans-serif;
-    font-size; 13px;
+    font-size: 13px;
     margin: 0;
     padding: 0;
     background-color: #f4f4f4;
@@ -47,7 +47,7 @@ button {
     text-align: center;
     color: #495057;
     font-family: Arial, sans-serif;
-    font-size; 10px;
+    font-size: 10px;
     border-top: 1px solid #dee2e6;
     margin-top: 20px;
 }
