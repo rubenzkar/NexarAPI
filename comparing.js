@@ -163,7 +163,9 @@ function createTableRow(label, refValue, altValue) {
         if (label === 'Price') {
             refValueCell.id = 'refPrice';
             refValueCell.style.backgroundColor = bgColor;
-        }
+        } else {
+        refValueCell.id = 'ref' + setId(label);
+    }
         row.appendChild(refValueCell);
     }
     
