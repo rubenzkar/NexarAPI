@@ -42,6 +42,13 @@ button {
     text-align: left;
 }
 
+#refManufacturer, altManufacturer {
+    width: 245px;
+}
+
+#altDescription {
+    vertical-align: top;
+}
 #footerContainer {
     background-color: #f8f9fa;
     padding: 20px;
@@ -52,3 +59,4 @@ button {
     border-top: 1px solid #dee2e6;
     margin-top: 20px;
 }
+
