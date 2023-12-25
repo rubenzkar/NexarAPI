@@ -200,7 +200,6 @@ async function displayComparisonTable() {
   });
   loadingBar.style.display = 'block';
   
-  
   const table = document.getElementById('responseTable');
   //Get parts
   const parts = await getParts(reference, alternate);
