@@ -194,7 +194,7 @@ async function displayComparisonTable() {
   var loadingBar = document.getElementById('loadingBar');
   var bar = new ldBar(".ldBar", {
     "stroke": '#f00',
-    "stroke-width": 150,
+    "stroke-width": 50,
     "preset": "line",
     "value": 50
   });
