@@ -43,7 +43,11 @@ button {
     text-align: left;
 }
 
-#refManufacturer, altManufacturer {
+#labelManufacturer{
+    width: 90px;
+}
+
+#refManufacturer, #altManufacturer {
     width: 245px;
 }
 
