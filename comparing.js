@@ -190,8 +190,10 @@ function buyNow (alternate){
 
 // Function to display the comparison table
 async function displayComparisonTable() {
-    // Display loading message
-    document.getElementById('loadingMessage').style.display = 'block';
+    // Display loading bar
+    var loadingBar = document.getElementById('loadingBar')
+    loadingBar.style.display = 'block';
+    loadingBar.ldBar.set(50);
   
     const table = document.getElementById('responseTable');
     //Get parts
@@ -257,8 +259,9 @@ async function displayComparisonTable() {
     table.appendChild(priceRow);
     table.appendChild(buyRow);
 
-  // Hide loading message once the table is loaded
-    document.getElementById('loadingMessage').style.display = 'none';
+  // Hide loading bar once the table is loaded
+    loadingBar.ldBar.set(100);
+    loadingBar.style.display = 'none';
 }
 
 function displayError(message) {
