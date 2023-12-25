@@ -17,7 +17,7 @@ body {
     height: 650px;
 }
 
-#loadingBar {
+#loadingMessage {
     max-width: 600px;
     display: none;
     cursor: wait;
