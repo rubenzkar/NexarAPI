@@ -4,8 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" type="text/css" href="loading-bar.css"/>
+     <script type="text/javascript" src="loading-bar.js"></script>
     <title>Compare Products | Zephyr</title>
-    <!-- Include Axios library -->
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 </head>
 <body>
@@ -20,7 +21,10 @@
                 </td>
             </tr>
         </table>
-        <div id="loadingMessage">Loading...</div>
+        <div id="loadingMessage" class="ldBar"
+  style="width:100%;height:60px",
+  data-stroke="data:ldbar/res,gradient(0,1,#9df,#9fd,#df9,#fd9)",
+  data-path="M10 20Q20 15 30 20Q40 25 50 20Q60 15 70 20Q80 25 90 20"></div>
         <table id="responseTable"></table>
     </div>
     <div id="errorContainer"></div>
