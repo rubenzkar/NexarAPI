@@ -29,6 +29,7 @@ button {
 
 #responseTable {
     width: 600px;
+    table-layout: fixed; /* This ensures that the column widths are fixed */
     max-width: 600px;
     border-collapse: collapse;
     margin: auto;
