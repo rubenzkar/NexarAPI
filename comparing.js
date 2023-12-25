@@ -195,6 +195,7 @@ async function displayComparisonTable() {
   var bar = new ldBar(".ldBar", {
     "stroke": '#f00',
     "stroke-width": 50,
+    "stroke-trail-width": 100,
     "preset": "line",
     "value": 50
   });
