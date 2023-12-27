@@ -9,16 +9,17 @@ function jsonToHtmlTable(jsonData) {
     // Create header row
     var headerRow = table.insertRow(0);
     for (var key in firstElement) {
-        var headerCell = headerRow.insertCell(-1);
-        headerCell.innerHTML = key;
-    }
-
-    // Create additional header cells for 'specs' attributes
-    if (firstElement.hasOwnProperty('specs')) {
-        firstElement.specs.forEach(spec => {
-            var specHeaderCell = headerRow.insertCell(-1);
-            specHeaderCell.innerHTML = spec.attribute.name;
-        });
+        if (key === 'specs') {
+            // Handling the 'specs' attribute which is an array of objects
+            var specsArray = firstElement[key];
+            specsArray.forEach(spec => {
+                var specHeaderCell = headerRow.insertCell(-1);
+                specHeaderCell.innerHTML = spec.attribute.name;
+            });
+        } else {
+            var headerCell = headerRow.insertCell(-1);
+            headerCell.innerHTML = key;
+        }
     }
 
     // Populate data rows
