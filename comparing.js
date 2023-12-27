@@ -117,15 +117,13 @@ function getSpecs(part) {
 
 function getAttribute(specs, specValue) {
     try {
-        const attribute = specs.find(spec => spec.attribute.name === specValue);
+      const attribute = specs.find(spec => spec.attribute.name === specValue);
 
-        if (!attribute) {
-            attribute.displayValue = "";
-            throw new Error(`Attribute ${specValue} not found.`);
-        }
-
-        //console.log(`${specValue} value: ${attribute.displayValue}`);
-        return attribute.displayValue;
+      if attribute) {
+          return attribute.displayValue;
+      } else {
+        return 'undefined';
+      }        
     } catch (error) {
         throw new Error(`Error: ${error.message}`);
     }
