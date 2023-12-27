@@ -39,8 +39,7 @@ async function getGraphQLResponse(query, variables) {
     //console.log('GraphQL Response:', data);
     return data;
   } catch (error) {
-    console.error('GraphQL Request Error:', error);
-    throw new Error('Error making GraphQL request. Check console for details.');
+    throw new Error(`Error: ${error.message}`);
   }
 }
 
@@ -91,8 +90,7 @@ async function getParts(ref, alt) {
         //console.log('Parts:', parts);
         return parts;
     } catch (error) {
-        console.error(error.message);
-        throw error;
+        throw new Error(`Error: ${error.message}`);
     }
 }
 
@@ -128,7 +126,7 @@ function getAttribute(specs, specValue) {
         //console.log(`${specValue} value: ${attribute.displayValue}`);
         return attribute.displayValue;
     } catch (error) {
-        console.error(error.message);
+        throw new Error(`Error: ${error.message}`);
     }
 }
 function setId(input) {
@@ -272,7 +270,7 @@ async function displayComparisonTable() {
       // Display the comparison table
       displayComparisonTable();
   } catch (error) {
-      console.error(error.message);
+     throw new Error(`Error: ${error.message}`);
   }
 }
 
