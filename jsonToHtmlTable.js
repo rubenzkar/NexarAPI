@@ -69,9 +69,14 @@ function jsonToHtmlTable(jsonData) {
 }
 
 function formatSpecs(specs) {
-    // Format the 'specs' attribute as a string
+    // Format the 'specs' attribute as a string, handling nested objects recursively
     var formattedSpecs = specs.map(function (spec) {
-        return `"${spec.attribute}":"${spec.displayValue}"`;
+        if (typeof spec.displayValue === 'object') {
+            // Recursively format nested objects
+            return `"${spec.attribute}":${formatSpecs([spec.displayValue])}`;
+        } else {
+            return `"${spec.attribute}":"${spec.displayValue}"`;
+        }
     }).join(',');
 
     return `{${formattedSpecs}}`;
