@@ -219,6 +219,10 @@ async function displayComparisonTable() {
   var altImage = altPart.bestImage;
   var altDesc = altPart.shortDescription;
   var altCapValue = getAttribute(altSpecs, 'Capacitance');
+  //Temporal fix
+  if (altDesc === "Aluminum Electrolytic Capacitors - SMD 100uF 35V" && altCapValue === "470 µF"){
+    altDesc = "Aluminum Electrolytic Capacitors - SMD 470uF 16V";
+  }
   var altTolValue = getAttribute(altSpecs, 'Tolerance');
   var altVolValue = getAttribute(altSpecs, 'Voltage Rating');
   var altLifeValue = getAttribute(altSpecs, 'Life (Hours)');
