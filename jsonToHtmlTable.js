@@ -44,7 +44,6 @@ function jsonToHtmlTable(jsonData) {
             } else if (key === 'manufacturer') {
                 cell.innerHTML = part[key].name || part[key];
             } else if (key === 'bestDatasheet') {
-                // Handling the 'bestDatasheet' attribute which is an object
                 cell.innerHTML = `<a href="${part[key].url}" target="_blank">${part[key].url}</a>`;
             } else if (key === 'specs') {
                 // Handling the 'specs' attribute
@@ -56,7 +55,7 @@ function jsonToHtmlTable(jsonData) {
     }
 
     // Create a blob from the HTML table
-    var blob = new Blob([table.outerHTML], { type: 'text/html' });
+    var blob = new Blob([table.outerHTML], {type: 'text/html'});
 
     // Create a download link for the user to click on
     var downloadLink = document.createElement('a');
@@ -69,14 +68,9 @@ function jsonToHtmlTable(jsonData) {
 }
 
 function formatSpecs(specs) {
-    // Format the 'specs' attribute as a string, handling nested objects recursively
+    // Format the 'specs' attribute as a string
     var formattedSpecs = specs.map(function (spec) {
-        if (typeof spec.displayValue === 'object') {
-            // Recursively format nested objects
-            return `"${spec.attribute}":${formatSpecs([spec.displayValue])}`;
-        } else {
-            return `"${spec.attribute}":"${spec.displayValue}"`;
-        }
+        return `"${spec.attribute}":"${spec.displayValue}"`;
     }).join(',');
 
     return `{${formattedSpecs}}`;
