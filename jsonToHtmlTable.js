@@ -54,16 +54,6 @@ function jsonToHtmlTable(jsonData) {
         }
     }
 
-    // Create a blob from the HTML table
-    var blob = new Blob([table.outerHTML], {type: 'text/html'});
-
-    // Create a download link for the user to click on
-    var downloadLink = document.createElement('a');
-    downloadLink.href = URL.createObjectURL(blob);
-    downloadLink.setAttribute('download', 'data.csv');
-    downloadLink.innerHTML = 'Download CSV';
-    document.body.appendChild(downloadLink);
-
     return table.outerHTML;
 }
 
