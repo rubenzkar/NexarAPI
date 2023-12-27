@@ -25,16 +25,21 @@ function jsonToHtmlTable(jsonData) {
         var part = jsonData[i].part;
 
         for (var key in firstElement) {
-            var cell = dataRow.insertCell(-1);
-
-            if (key === 'manufacturer') {
-                cell.innerHTML = part[key].name || part[key];
-            } else if (key === 'bestDatasheet') {
-                // Handling the 'bestDatasheet' attribute which is an object
-                var datasheetCell = dataRow.insertCell(-1);
-                datasheetCell.innerHTML = `<a href="${part[key].url}" target="_blank">Datasheet Link</a>`;
+            if (key === 'shortDescription') {
+                // Handling the 'shortDescription' attribute
+                var shortDescCell = dataRow.insertCell(-1);
+                shortDescCell.innerHTML = part[key];
             } else {
-                cell.innerHTML = part[key];
+                var cell = dataRow.insertCell(-1);
+
+                if (key === 'manufacturer') {
+                    cell.innerHTML = part[key].name || part[key];
+                } else if (key === 'bestDatasheet') {
+                    // Handling the 'bestDatasheet' attribute which is an object
+                    cell.innerHTML = `<a href="${part[key].url}" target="_blank">Datasheet Link</a>`;
+                } else {
+                    cell.innerHTML = part[key];
+                }
             }
         }
     }
