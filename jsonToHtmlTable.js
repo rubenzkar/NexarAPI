@@ -13,6 +13,14 @@ function jsonToHtmlTable(jsonData) {
         headerCell.innerHTML = key;
     }
 
+    // Create additional header cells for 'specs' attributes
+    if (firstElement.hasOwnProperty('specs')) {
+        firstElement.specs.forEach(spec => {
+            var specHeaderCell = headerRow.insertCell(-1);
+            specHeaderCell.innerHTML = spec.attribute.name;
+        });
+    }
+
     // Populate data rows
     for (var i = 0; i < jsonData.length; i++) {
         var dataRow = table.insertRow(-1);
@@ -26,8 +34,10 @@ function jsonToHtmlTable(jsonData) {
             } else if (key === 'specs') {
                 // Handling the 'specs' attribute which is an array of objects
                 var specsArray = part[key];
-                var specsString = specsArray.map(spec => spec.attribute.name + ": " + spec.displayValue).join(", ");
-                cell.innerHTML = specsString;
+                specsArray.forEach(spec => {
+                    var specCell = dataRow.insertCell(-1);
+                    specCell.innerHTML = spec.displayValue;
+                });
             } else {
                 cell.innerHTML = part[key];
             }
