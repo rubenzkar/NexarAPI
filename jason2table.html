@@ -13,9 +13,7 @@
 
             try {
                 var jsonData = JSON.parse(jsonDataString);
-
-                // Assuming your JSON structure is nested under "data.supSearchMpn.results"
-                var results = jsonData.data.supSearchMpn.results;
+                var results = jsonData.data.supSearch.results;
                 var htmlTable = jsonToHtmlTable(results);
                 document.getElementById('outputTable').innerHTML = htmlTable;
             } catch (error) {
