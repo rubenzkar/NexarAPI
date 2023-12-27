@@ -36,7 +36,7 @@ function jsonToHtmlTable(jsonData) {
                     cell.innerHTML = part[key].name || part[key];
                 } else if (key === 'bestDatasheet') {
                     // Handling the 'bestDatasheet' attribute which is an object
-                    cell.innerHTML = `<a href="${part[key].url}" target="_blank">Datasheet Link</a>`;
+                    cell.innerHTML = `<a href="${part[key].url}" target="_blank">Link</a>`;
                 } else {
                     cell.innerHTML = part[key];
                 }
