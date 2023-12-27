@@ -2,6 +2,7 @@
 
 function jsonToHtmlTable(jsonData) {
     var table = document.createElement('table');
+    table.id = 'exportTable';
 
     // Extracting the first element to gather header information
     var results = jsonData[0].part;
@@ -72,3 +73,39 @@ function formatSpecs(specs) {
 
     return `{${formattedSpecs}}`;
 }
+
+// Function to download the CSV file
+function downloadCSVFile(csv_data) {
+  const csvFile = new Blob([csv_data], { type: "text/csv" });
+  const downloadLink = document.createElement("a");
+  downloadLink.download = "table_data.csv";
+  downloadLink.href = window.URL.createObjectURL(csvFile);
+  downloadLink.style.display = "none";
+  document.body.appendChild(downloadLink);
+  downloadLink.click();
+}
+
+// Function to export the HTML table data to a CSV file
+function exportTableToCSV(tableId) {
+  const rows = document.querySelectorAll(tableId + " tr");
+  const csv_data = [];
+
+  // Iterate through rows and columns, extract text data from each cell, and convert it to a comma-separated value
+  rows.forEach((row) => {
+    const cols = row.querySelectorAll("td, th");
+    const csvRow = [];
+    cols.forEach((col) => {
+      const textData = col.innerText;
+      csvRow.push(textData);
+    });
+    csv_data.push(csvRow.join(","));
+  });
+
+  // Combine each row data with a new line character
+  csv_data = csv_data.join("\n");
+
+  // Call the downloadCSVFile function to download the CSV file
+  downloadCSVFile(csv_data);
+}
+
+exportTableToCSV("exportTable");
