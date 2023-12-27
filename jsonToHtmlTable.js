@@ -8,7 +8,9 @@ function convertJson() {
         var htmlTable = jsonToHtmlTable(results);
         document.getElementById('outputTable').innerHTML = htmlTable;
     } catch (error) {
-        alert('Invalid JSON format. Please check your input.');
+        throw new Error(`Error: ${error.message}`);
+        console.log('JSON:', jsonData);
+        alert('Error parsing JSON. Please check your input.');
     }
 }
 
