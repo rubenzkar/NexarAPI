@@ -13,7 +13,10 @@ function jsonToHtmlTable(jsonData) {
 
         if (key === 'bestDatasheet') {
             // Handling the 'bestDatasheet' attribute which is an object
-            headerCell.innerHTML = 'Datasheet Link';
+            headerCell.innerHTML = 'datasheet';
+        } else if (key === 'shortDescription') {
+            // Handling the 'bestDatasheet' attribute which is an object
+            headerCell.innerHTML = 'description';
         } else {
             headerCell.innerHTML = key;
         }
