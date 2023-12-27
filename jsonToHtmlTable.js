@@ -1,18 +1,4 @@
 // jsonToHtmlTable.js
-function convertJson() {
-    var jsonDataString = document.getElementById('jsonInput').value;
-    console.log('JSON:', jsonDataString);
-    try {
-        var jsonData = JSON.parse(jsonDataString);
-        var results = jsonData.data.supSearch.results;
-        var htmlTable = jsonToHtmlTable(results);
-        document.getElementById('outputTable').innerHTML = htmlTable;
-    } catch (error) {
-        throw new Error(`Error: ${error.message}`);
-        alert('Error parsing JSON. Please check your input.');
-    }
-}
-
 function jsonToHtmlTable(jsonData) {
     var table = document.createElement('table');
     table.id = 'exportTable';
