@@ -59,5 +59,5 @@ function formatSpecs(specs) {
         return `{"${spec.attribute.name}":"${spec.displayValue}"}`;
     }).join(',');
 
-    return `[${formattedSpecs}]`;
+    return formattedSpecs;
 }
