@@ -57,6 +57,7 @@ function jsonToHtmlTable(jsonData) {
     }
 
     return table.outerHTML;
+    exportTableToCSV("exportTable");
 }
 
 function formatSpecs(specs) {
@@ -115,5 +116,3 @@ function exportTableToCSV(tableId) {
   // Call the downloadCSVFile function to download the CSV file
   downloadCSVFile(csv_data);
 }
-
-exportTableToCSV("exportTable");
