@@ -42,7 +42,11 @@ function jsonToHtmlTable(jsonData) {
             } else if (key === 'manufacturer') {
                 cell.innerHTML = part[key].name || part[key];
             } else if (key === 'bestDatasheet') {
-                cell.innerHTML = `<a href="${part[key].url}" target="_blank">${part[key].url}</a>`;
+                if (part[key] && part[key].url) {
+                    cell.innerHTML = `<a href="${part[key].url}" target="_blank">${part[key].url}</a>`;
+                } else {
+                    cell.innerHTML = 'N/A';
+                }
             } else if (key === 'specs') {
                 cell.innerHTML = formatSpecs(part[key]);
             } else if (key === 'category') {
@@ -54,7 +58,20 @@ function jsonToHtmlTable(jsonData) {
     }
 
     return table.outerHTML;
-    exportTableToCSV("exportTable");
+}
+
+function convertJson() {
+    var jsonInput = document.getElementById('jsonInput').value;
+    console.log('JSON:', jsonInput);
+    try {
+        var jsonData = JSON.parse(jsonInput);
+        var results = jsonData.data.supSearch.results;
+        var htmlTable = jsonToHtmlTable(results);
+        document.getElementById('outputTable').innerHTML = htmlTable;
+    } catch (error) {
+        throw new Error(`Error: ${error.message}`);
+        alert('Error parsing JSON. Please check your input.');
+    }
 }
 
 function formatSpecs(specs) {
