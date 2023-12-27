@@ -119,7 +119,7 @@ function getAttribute(specs, specValue) {
     try {
       const attribute = specs.find(spec => spec.attribute.name === specValue);
 
-      if attribute) {
+      if (attribute) {
           return attribute.displayValue;
       } else {
         return 'undefined';
