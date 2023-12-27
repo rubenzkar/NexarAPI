@@ -45,7 +45,7 @@ function jsonToHtmlTable(jsonData) {
                 cell.innerHTML = part[key].name || part[key];
             } else if (key === 'bestDatasheet') {
                 // Handling the 'bestDatasheet' attribute which is an object
-                cell.innerHTML = `<a href="${part[key].url}" target="_blank">Link</a>`;
+                cell.innerHTML = `<a href="${part[key].url}" target="_blank">${part[key].url}</a>`;
             } else if (key === 'specs') {
                 // Handling the 'specs' attribute
                 cell.innerHTML = formatSpecs(part[key]);
@@ -56,7 +56,7 @@ function jsonToHtmlTable(jsonData) {
     }
 
     // Create a blob from the HTML table
-    var blob = new Blob([table.outerHTML], {type: 'text/html'});
+    var blob = new Blob([table.outerHTML], { type: 'text/html' });
 
     // Create a download link for the user to click on
     var downloadLink = document.createElement('a');
