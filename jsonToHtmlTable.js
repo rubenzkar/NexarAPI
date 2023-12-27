@@ -13,10 +13,13 @@ function jsonToHtmlTable(jsonData) {
 
         if (key === 'bestDatasheet') {
             // Handling the 'bestDatasheet' attribute which is an object
-            headerCell.innerHTML = 'datasheet';
+            headerCell.innerHTML = 'Datasheet';
         } else if (key === 'shortDescription') {
-            // Handling the 'bestDatasheet' attribute which is an object
-            headerCell.innerHTML = 'description';
+            // Handling the 'shortDescription' attribute
+            headerCell.innerHTML = 'Description';
+        } else if (key === 'specs') {
+            // Handling the 'specs' attribute
+            headerCell.innerHTML = 'Specs';
         } else {
             headerCell.innerHTML = key;
         }
@@ -28,24 +31,33 @@ function jsonToHtmlTable(jsonData) {
         var part = jsonData[i].part;
 
         for (var key in firstElement) {
+            var cell = dataRow.insertCell(-1);
+
             if (key === 'shortDescription') {
                 // Handling the 'shortDescription' attribute
-                var shortDescCell = dataRow.insertCell(-1);
-                shortDescCell.innerHTML = part[key];
+                cell.innerHTML = part[key];
+            } else if (key === 'manufacturer') {
+                cell.innerHTML = part[key].name || part[key];
+            } else if (key === 'bestDatasheet') {
+                // Handling the 'bestDatasheet' attribute which is an object
+                cell.innerHTML = `<a href="${part[key].url}" target="_blank">Link</a>`;
+            } else if (key === 'specs') {
+                // Handling the 'specs' attribute
+                cell.innerHTML = formatSpecs(part[key]);
             } else {
-                var cell = dataRow.insertCell(-1);
-
-                if (key === 'manufacturer') {
-                    cell.innerHTML = part[key].name || part[key];
-                } else if (key === 'bestDatasheet') {
-                    // Handling the 'bestDatasheet' attribute which is an object
-                    cell.innerHTML = `<a href="${part[key].url}" target="_blank">Link</a>`;
-                } else {
-                    cell.innerHTML = part[key];
-                }
+                cell.innerHTML = part[key];
             }
         }
     }
 
     return table.outerHTML;
+}
+
+function formatSpecs(specs) {
+    // Format the 'specs' attribute as a string
+    var formattedSpecs = specs.map(function (spec) {
+        return `{"${spec.attribute.name}":"${spec.displayValue}"}`;
+    }).join(',');
+
+    return `[${formattedSpecs}]`;
 }
