@@ -74,32 +74,24 @@ function formatSpecs(specs) {
     return `{${formattedSpecs}}`;
 }
 
-// Function to download a CSV file
+// Function to download the CSV file
 function downloadCSVFile(csv_data) {
   const csvFile = new Blob([csv_data], { type: "text/csv" });
   const downloadLink = document.createElement("a");
   downloadLink.download = "table_data.csv";
   downloadLink.href = window.URL.createObjectURL(csvFile);
 
-  // Check if body exists before appending the link
-  if (document.body) {
-    document.body.appendChild(downloadLink);
+  // Append the link to the document body if available; otherwise, append it to the document head
+  const parentElement = document.body || document.head;
+
+  if (parentElement) {
+    parentElement.appendChild(downloadLink);
     downloadLink.click();
-    document.body.removeChild(downloadLink); // Cleanup after click
+    parentElement.removeChild(downloadLink); // Cleanup after click
   } else {
-    // If body doesn't exist, you may need to append the link to another existing element
-    // Replace 'yourParentElement' with the ID or class of the parent element you want to append to
-    const parentElement = document.getElementById('yourParentElement');
-    if (parentElement) {
-      parentElement.appendChild(downloadLink);
-      downloadLink.click();
-      parentElement.removeChild(downloadLink); // Cleanup after click
-    } else {
-      console.error("Unable to find a valid parent element to append the download link.");
-    }
+    console.error("Unable to find a valid parent element to append the download link.");
   }
 }
-
 
 // Function to export the HTML table data to a CSV file
 function exportTableToCSV(tableId) {
