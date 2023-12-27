@@ -4,11 +4,11 @@ function jsonToHtmlTable(jsonData) {
     var table = document.createElement('table');
 
     // Extracting the first element to gather header information
-    var firstElement = jsonData[0].part;
+    var results = jsonData[0].part;
 
     // Create header row
     var headerRow = table.insertRow(0);
-    for (var key in firstElement) {
+    for (var key in results) {
         var headerCell = headerRow.insertCell(-1);
 
         if (key === 'manufacturer') {
@@ -34,7 +34,7 @@ function jsonToHtmlTable(jsonData) {
         var dataRow = table.insertRow(-1);
         var part = jsonData[i].part;
 
-        for (var key in firstElement) {
+        for (var key in results) {
             var cell = dataRow.insertCell(-1);
 
             if (key === 'shortDescription') {
