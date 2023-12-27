@@ -11,7 +11,11 @@ function jsonToHtmlTable(jsonData) {
     for (var key in firstElement) {
         var headerCell = headerRow.insertCell(-1);
 
-        if (key === 'bestDatasheet') {
+        if (key === 'manufacturer') {
+            headerCell.innerHTML = 'Manufacturer';
+        } else if (key === 'mpn') {
+            headerCell.innerHTML = 'MPN';
+        } else if (key === 'bestDatasheet') {
             // Handling the 'bestDatasheet' attribute which is an object
             headerCell.innerHTML = 'Datasheet';
         } else if (key === 'shortDescription') {
