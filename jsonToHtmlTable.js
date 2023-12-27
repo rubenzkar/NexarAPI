@@ -9,13 +9,10 @@ function jsonToHtmlTable(jsonData) {
     // Create header row
     var headerRow = table.insertRow(0);
     for (var key in firstElement) {
-        if (key === 'specs') {
-            // Handling the 'specs' attribute which is an array of objects
-            var specsArray = firstElement[key];
-            specsArray.forEach(spec => {
-                var specHeaderCell = headerRow.insertCell(-1);
-                specHeaderCell.innerHTML = spec.attribute.name;
-            });
+        if (key === 'bestDatasheet') {
+            // Handling the 'bestDatasheet' attribute which is an object
+            var datasheetHeaderCell = headerRow.insertCell(-1);
+            datasheetHeaderCell.innerHTML = key;
         } else {
             var headerCell = headerRow.insertCell(-1);
             headerCell.innerHTML = key;
@@ -32,13 +29,11 @@ function jsonToHtmlTable(jsonData) {
 
             if (key === 'manufacturer') {
                 cell.innerHTML = part[key].name || part[key];
-            } else if (key === 'specs') {
-                // Handling the 'specs' attribute which is an array of objects
-                var specsArray = part[key];
-                specsArray.forEach(spec => {
-                    var specCell = dataRow.insertCell(-1);
-                    specCell.innerHTML = spec.displayValue;
-                });
+            } else if (key === 'bestDatasheet') {
+                // Handling the 'bestDatasheet' attribute which is an object
+                var datasheet = part[key];
+                var datasheetCell = dataRow.insertCell(-1);
+                datasheetCell.innerHTML = `<a href="${datasheet.url}" target="_blank">Datasheet Link</a>`;
             } else {
                 cell.innerHTML = part[key];
             }
