@@ -120,6 +120,7 @@ function getAttribute(specs, specValue) {
         const attribute = specs.find(spec => spec.attribute.name === specValue);
 
         if (!attribute) {
+            attribute.displayValue = "";
             throw new Error(`Attribute ${specValue} not found.`);
         }
 
@@ -129,6 +130,7 @@ function getAttribute(specs, specValue) {
         throw new Error(`Error: ${error.message}`);
     }
 }
+
 function setId(input) {
     if (input) {
         // Split the string into words
