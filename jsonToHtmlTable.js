@@ -78,8 +78,7 @@ function formatSpecs(specs) {
 }
 
 function downloadCSV(jsonData, headers) {
-    var csvContent = "data:text/csv;charset=utf-8,";
-    csvContent += headers.join(',') + '\n';
+    var csvContent = headers.join(',') + '\n';
 
     jsonData.forEach(function (row) {
         var values = headers.map(function (header) {
@@ -96,7 +95,7 @@ function downloadCSV(jsonData, headers) {
         csvContent += values.join(',') + '\n';
     });
 
-    var encodedUri = encodeURI(csvContent);
+    var encodedUri = encodeURI('data:text/csv;charset=utf-8,' + csvContent);
     var link = document.createElement("a");
     link.setAttribute("href", encodedUri);
     link.setAttribute("download", "data.csv");
