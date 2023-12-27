@@ -220,7 +220,7 @@ async function displayComparisonTable() {
   var altDesc = altPart.shortDescription;
   var altCapValue = getAttribute(altSpecs, 'Capacitance');
   //Temporal fix
-  if (altDesc === "Aluminum Electrolytic Capacitors - SMD 100uF 35V" && altCapValue === "470 µF"){
+  if (altDesc === 'Aluminum Electrolytic Capacitors - SMD 100uF 35V' && altCapValue === '470 µF'){
     altDesc = "Aluminum Electrolytic Capacitors - SMD 470uF 16V";
   }
   var altTolValue = getAttribute(altSpecs, 'Tolerance');
