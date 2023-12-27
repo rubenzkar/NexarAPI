@@ -1,4 +1,16 @@
 // jsonToHtmlTable.js
+function convertJson() {
+    var jsonDataString = document.getElementById('jsonInput').value;
+    
+    try {
+        var jsonData = JSON.parse(jsonDataString);
+        var results = jsonData.data.supSearch.results;
+        var htmlTable = jsonToHtmlTable(results);
+        document.getElementById('outputTable').innerHTML = htmlTable;
+    } catch (error) {
+        alert('Invalid JSON format. Please check your input.');
+    }
+}
 
 function jsonToHtmlTable(jsonData) {
     var table = document.createElement('table');
