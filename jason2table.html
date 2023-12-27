@@ -5,31 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>JSON to HTML Table Converter</title>
     <script src="jsonToHtmlTable.js"></script>
-    <script>
-        function convertJson() {
-            var jsonDataString = document.getElementById('jsonInput').value;
-
-            try {
-                var jsonData = JSON.parse(jsonDataString);
-                var htmlTable = jsonToHtmlTable(jsonData);
-                document.getElementById('outputTable').innerHTML = htmlTable;
-            } catch (error) {
-                alert('Invalid JSON format. Please check your input.');
-            }
-        }
-    </script>
 </head>
 <body>
     <h2>JSON to HTML Table Converter</h2>
-    
-    <label for="jsonInput">Enter JSON Data:</label>
-    <textarea id="jsonInput" rows="4" cols="50"></textarea>
 
-    <br>
-    <button onclick="convertJson()">Convert to HTML Table</button>
-
-    <br>
-    <h3>Converted HTML Table:</h3>
     <div id="outputTable"></div>
+
+    <script>
+        var jsonData = [
+            { Name: 'John', Age: 30, City: 'New York' },
+            { Name: 'Jane', Age: 25, City: 'San Francisco' },
+            // Add more data as needed
+        ];
+
+        var htmlTable = jsonToHtmlTable(jsonData);
+        document.getElementById('outputTable').innerHTML = htmlTable;
+    </script>
 </body>
 </html>
