@@ -71,10 +71,10 @@ function jsonToHtmlTable(jsonData) {
 function formatSpecs(specs) {
     // Format the 'specs' attribute as a string
     var formattedSpecs = specs.map(function (spec) {
-        return `{"${spec.attribute.name}":"${spec.displayValue}"}`;
+        return `"${spec.attribute}":"${spec.displayValue}"`;
     }).join(',');
 
-    return formattedSpecs;
+    return `{${formattedSpecs}}`;
 }
 
 function downloadCSV(jsonData, headers) {
