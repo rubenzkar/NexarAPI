@@ -88,7 +88,7 @@ function downloadCSVFile(csv_data) {
 // Function to export the HTML table data to a CSV file
 function exportTableToCSV(tableId) {
   const rows = document.querySelectorAll(tableId + " tr");
-  const csv_data = [];
+  let csv_data = []; // Change from const to let
 
   // Iterate through rows and columns, extract text data from each cell, and convert it to a comma-separated value
   rows.forEach((row) => {
@@ -96,7 +96,7 @@ function exportTableToCSV(tableId) {
     const csvRow = [];
     cols.forEach((col) => {
       const textData = col.innerText;
-      csvRow.push(textData);
+      csvRow.push(`"${textData}"`); // Wrap each value in double quotes
     });
     csv_data.push(csvRow.join(","));
   });
