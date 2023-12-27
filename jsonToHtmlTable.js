@@ -45,7 +45,7 @@ function jsonToHtmlTable(jsonData) {
                 if (part[key] && part[key].url) {
                     cell.innerHTML = `<a href="${part[key].url}" target="_blank">${part[key].url}</a>`;
                 } else {
-                    cell.innerHTML = 'N/A';
+                    cell.innerHTML = 'Not available';
                 }
             } else if (key === 'specs') {
                 cell.innerHTML = formatSpecs(part[key]);
