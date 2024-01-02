@@ -6,12 +6,12 @@ const TOKEN_ENDPOINT = "https://identity.nexar.com/connect/token";
 const GRAPHQL_ENDPOINT = "https://api.nexar.com/graphql"; 
 
 const priceArray = [
-        { item: 'GVM1H337M1010CNVC', price: '0.2142' },
-        { item: 'GVL1H227M1010CMVC', price: '0.1714' },
-        { item: 'FZ1J227M1213CNVC', price: '0.3857' },
-        { item: 'GVZ1C477M0810CNVC', price: '0.08' },
-        { item: 'GVM1E107M0606CNVC5', price: '0.0757' },
-        { item: 'GVT1V107M0608CNVC', price: '0.0571' }
+        { mpn: 'GVM1H337M1010CNVC', price: '0.2142' },
+        { mpn: 'GVL1H227M1010CMVC', price: '0.1714' },
+        { mpn: 'FZ1J227M1213CNVC', price: '0.3857' },
+        { mpn: 'GVZ1C477M0810CNVC', price: '0.08' },
+        { mpn: 'GVM1E107M0606CNVC5', price: '0.0757' },
+        { mpn: 'GVT1V107M0608CNVC', price: '0.0571' }
     ];
 
 async function getAccessToken() {
@@ -225,7 +225,7 @@ async function displayComparisonTable() {
   var altCapValue = getAttribute(altSpecs, 'Capacitance');
   //Temporal fix
   if (altDesc === 'Aluminum Electrolytic Capacitors - SMD 100uF 35V' && altCapValue === '470 µF'){
-    altDesc = "Aluminum Electrolytic Capacitors - SMD 470uF 16V";
+          altDesc = "Aluminum Electrolytic Capacitors - SMD 470uF 16V";
   }
   var altTolValue = getAttribute(altSpecs, 'Tolerance');
   var altVolValue = getAttribute(altSpecs, 'Voltage Rating');
@@ -234,6 +234,10 @@ async function displayComparisonTable() {
   var altHeightValue = getAttribute(altSpecs, 'Height');
   var altLengthValue = getAttribute(altSpecs, 'Length');
   var altPrice = altPart?.medianPrice1000?.price;
+  if (altPrice === 'undefined') {
+      altPriceArray = priceArray.find(item => item.mpn === altMpn);
+      altPrice = altPriceArray.price;
+  }
   // Create rows for each part attribute
   const manufacturerRow = createTableRow('Manufacturer', refManufacturer, altManufacturer);
   const mpnRow = createTableRow('MPN', refMpn, altMpn);
@@ -246,10 +250,6 @@ async function displayComparisonTable() {
   const leakValueRow = createTableRow('Leakage Current', refLeakValue, altLeakValue);
   const heightValueRow = createTableRow('Height', refHeightValue, altHeightValue);
   const lengthValueRow = createTableRow('Length', refLengthValue, altLengthValue);
-  if (altPrice === 'undefined') {
-          altPriceArray = priceArray.find(item => item.alt === altMpn);
-          altPrice = altPriceArray.price;
-  }
   const priceRow = createTableRow('Price', '$' + refPrice, '$' + altPrice);
   const buyRow = createTableRow('', '', '<button type="button" onclick="buyNow(' + "'"+ alternate + "'"+ ')">Buy Now</button>');
   
