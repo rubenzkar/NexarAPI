@@ -5,15 +5,6 @@ const INVOKE_URL = "https://dz07ab64te.execute-api.us-west-2.amazonaws.com/";
 const TOKEN_ENDPOINT = "https://identity.nexar.com/connect/token"; 
 const GRAPHQL_ENDPOINT = "https://api.nexar.com/graphql"; 
 
-const priceArray = [
-        { mpn: 'GVM1H337M1010CNVC', price: '0.2142' },
-        { mpn: 'GVL1H227M1010CMVC', price: '0.1714' },
-        { mpn: 'FZ1J227M1213CNVC', price: '0.3857' },
-        { mpn: 'GVZ1C477M0810CNVC', price: '0.08' },
-        { mpn: 'GVM1E107M0606CNVC5', price: '0.0757' },
-        { mpn: 'GVT1V107M0608CNVC', price: '0.0571' }
-    ];
-
 async function getAccessToken() {
   try {
     const response = await fetch(INVOKE_URL);
@@ -235,6 +226,14 @@ async function displayComparisonTable() {
   var altLengthValue = getAttribute(altSpecs, 'Length');
   var altPrice = altPart?.medianPrice1000?.price;
   if (altPrice === 'undefined') {
+    const priceArray = [
+        { mpn: 'GVM1H337M1010CNVC', price: '0.2142' },
+        { mpn: 'GVL1H227M1010CMVC', price: '0.1714' },
+        { mpn: 'FZ1J227M1213CNVC', price: '0.3857' },
+        { mpn: 'GVZ1C477M0810CNVC', price: '0.08' },
+        { mpn: 'GVM1E107M0606CNVC5', price: '0.0757' },
+        { mpn: 'GVT1V107M0608CNVC', price: '0.0571' }
+    ];
       altPriceArray = priceArray.find(item => item.mpn === altMpn);
       altPrice = altPriceArray.price;
   }
