@@ -5,6 +5,15 @@ const INVOKE_URL = "https://dz07ab64te.execute-api.us-west-2.amazonaws.com/";
 const TOKEN_ENDPOINT = "https://identity.nexar.com/connect/token"; 
 const GRAPHQL_ENDPOINT = "https://api.nexar.com/graphql"; 
 
+const altPriceArray = [
+        { alt: 'GVM1H337M1010CNVC', price: '0.2142' },
+        { alt: 'GVL1H227M1010CMVC', price: '0.1714' },
+        { alt: 'FZ1J227M1213CNVC', price: '0.3857' },
+        { alt: 'GVZ1C477M0810CNVC', price: '0.08' },
+        { alt: 'GVM1E107M0606CNVC5', price: '0.0757' },
+        { alt: 'GVT1V107M0608CNVC', price: '0.0571' }
+    ];
+
 async function getAccessToken() {
   try {
     const response = await fetch(INVOKE_URL);
@@ -114,25 +123,10 @@ function getSpecs(part) {
     //console.log('Specs:', specs);
     return specs;
 }
-/*
-function getAttribute(specs, specValue) {
-    try {
-      const attribute = specs.find(spec => spec.attribute.name === specValue);
 
-      if (attribute) {
-          return attribute.displayValue;
-      } else {
-        return 'undefined';
-      }        
-    } catch (error) {
-        throw new Error(`Error: ${error.message}`);
-    }
-}
-*/
 function getAttribute(specs, specValue) {
     try {
         const attribute = specs.find(spec => spec.attribute.name === specValue);
-
         return attribute?.displayValue ?? 'undefined';
     } catch (error) {
         throw new Error(`Error: ${error.message}`);
@@ -252,6 +246,9 @@ async function displayComparisonTable() {
   const leakValueRow = createTableRow('Leakage Current', refLeakValue, altLeakValue);
   const heightValueRow = createTableRow('Height', refHeightValue, altHeightValue);
   const lengthValueRow = createTableRow('Length', refLengthValue, altLengthValue);
+  if (altPrice === 'undefined') {
+    altPrice = altPriceArray.find(item => item.alt === altMpn);
+  }
   const priceRow = createTableRow('Price', '$' + refPrice, '$' + altPrice);
   const buyRow = createTableRow('', '', '<button type="button" onclick="buyNow(' + "'"+ alternate + "'"+ ')">Buy Now</button>');
   
