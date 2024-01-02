@@ -114,7 +114,7 @@ function getSpecs(part) {
     //console.log('Specs:', specs);
     return specs;
 }
-
+/*
 function getAttribute(specs, specValue) {
     try {
       const attribute = specs.find(spec => spec.attribute.name === specValue);
@@ -124,6 +124,16 @@ function getAttribute(specs, specValue) {
       } else {
         return 'undefined';
       }        
+    } catch (error) {
+        throw new Error(`Error: ${error.message}`);
+    }
+}
+*/
+function getAttribute(specs, specValue) {
+    try {
+        const attribute = specs.find(spec => spec.attribute.name === specValue);
+
+        return attribute?.displayValue ?? 'undefined';
     } catch (error) {
         throw new Error(`Error: ${error.message}`);
     }
