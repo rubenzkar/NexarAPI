@@ -229,7 +229,7 @@ async function displayComparisonTable() {
   var altLeakValue = getAttribute(altSpecs, 'Leakage Current');
   var altHeightValue = getAttribute(altSpecs, 'Height');
   var altLengthValue = getAttribute(altSpecs, 'Length');
-  var altPrice = altPart.medianPrice1000.price;
+  //var altPrice = altPart.medianPrice1000.price;
   // Create rows for each part attribute
   const manufacturerRow = createTableRow('Manufacturer', refManufacturer, altManufacturer);
   const mpnRow = createTableRow('MPN', refMpn, altMpn);
