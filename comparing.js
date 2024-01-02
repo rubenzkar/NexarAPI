@@ -139,9 +139,7 @@ function setId(input) {
 
 // Function to create a table row with part values
 function createTableRow(label, refValue, altValue) {
-    var bgColor = '#FFFF00';
     const row = document.createElement('tr');
-  
     const labelCell = document.createElement('td');
     labelCell.textContent = label;
     labelCell.id = 'label' + setId(label);
@@ -149,13 +147,13 @@ function createTableRow(label, refValue, altValue) {
     if (label === '') {
         labelCell.colSpan = 2; // Set colspan to 2 if label is empty   
     }
-
     if (label !== '') {
         const refValueCell = document.createElement('td');
         refValueCell.innerHTML = refValue; // Use innerHTML to parse HTML content
         if (label === 'Price') {
-            refValueCell.id = 'refPrice';
+            var bgColor = '#FFFF00';
             refValueCell.style.backgroundColor = bgColor;
+            refValueCell.id = 'refPrice';
         } else {
         refValueCell.id = 'ref' + setId(label);
     }
