@@ -232,7 +232,7 @@ async function displayComparisonTable() {
   //Temporal fix
   //var altPrice = altPart.medianPrice1000.price;
   var altPrice = '$Click to confirm';
-  if (!altPart.medianPrice1000.price) {
+  if (altPart.medianPrice1000.price) {
     altPrice = altPart.medianPrice1000.price
   }
   // Create rows for each part attribute
