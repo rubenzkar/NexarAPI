@@ -5,13 +5,13 @@ const INVOKE_URL = "https://dz07ab64te.execute-api.us-west-2.amazonaws.com/";
 const TOKEN_ENDPOINT = "https://identity.nexar.com/connect/token"; 
 const GRAPHQL_ENDPOINT = "https://api.nexar.com/graphql"; 
 
-const altPriceArray = [
-        { alt: 'GVM1H337M1010CNVC', price: '0.2142' },
-        { alt: 'GVL1H227M1010CMVC', price: '0.1714' },
-        { alt: 'FZ1J227M1213CNVC', price: '0.3857' },
-        { alt: 'GVZ1C477M0810CNVC', price: '0.08' },
-        { alt: 'GVM1E107M0606CNVC5', price: '0.0757' },
-        { alt: 'GVT1V107M0608CNVC', price: '0.0571' }
+const priceArray = [
+        { item: 'GVM1H337M1010CNVC', price: '0.2142' },
+        { item: 'GVL1H227M1010CMVC', price: '0.1714' },
+        { item: 'FZ1J227M1213CNVC', price: '0.3857' },
+        { item: 'GVZ1C477M0810CNVC', price: '0.08' },
+        { item: 'GVM1E107M0606CNVC5', price: '0.0757' },
+        { item: 'GVT1V107M0608CNVC', price: '0.0571' }
     ];
 
 async function getAccessToken() {
@@ -247,7 +247,8 @@ async function displayComparisonTable() {
   const heightValueRow = createTableRow('Height', refHeightValue, altHeightValue);
   const lengthValueRow = createTableRow('Length', refLengthValue, altLengthValue);
   if (altPrice === 'undefined') {
-    altPrice = altPriceArray.find(item => item.alt === altMpn);
+          altPriceArray = priceArray.find(item => item.alt === altMpn);
+          altPrice = altPriceArray.price;
   }
   const priceRow = createTableRow('Price', '$' + refPrice, '$' + altPrice);
   const buyRow = createTableRow('', '', '<button type="button" onclick="buyNow(' + "'"+ alternate + "'"+ ')">Buy Now</button>');
