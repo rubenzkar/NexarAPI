@@ -229,7 +229,12 @@ async function displayComparisonTable() {
   var altLeakValue = getAttribute(altSpecs, 'Leakage Current');
   var altHeightValue = getAttribute(altSpecs, 'Height');
   var altLengthValue = getAttribute(altSpecs, 'Length');
+  //Temporal fix
   //var altPrice = altPart.medianPrice1000.price;
+  var altPrice = '$Click to confirm';
+  if (!altPart.medianPrice1000.price) {
+    altPrice = altPart.medianPrice1000.price
+  }
   // Create rows for each part attribute
   const manufacturerRow = createTableRow('Manufacturer', refManufacturer, altManufacturer);
   const mpnRow = createTableRow('MPN', refMpn, altMpn);
@@ -242,8 +247,7 @@ async function displayComparisonTable() {
   const leakValueRow = createTableRow('Leakage Current', refLeakValue, altLeakValue);
   const heightValueRow = createTableRow('Height', refHeightValue, altHeightValue);
   const lengthValueRow = createTableRow('Length', refLengthValue, altLengthValue);
-//  const priceRow = createTableRow('Price', '$' + refPrice, '$' + altPrice);
-  const priceRow = createTableRow('Price', '$' + refPrice, '$0.001');
+  const priceRow = createTableRow('Price', '$' + refPrice, '$' + altPrice);
   const buyRow = createTableRow('', '', '<button type="button" onclick="buyNow(' + "'"+ alternate + "'"+ ')">Buy Now</button>');
   
   // Append rows to the table
