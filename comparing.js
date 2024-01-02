@@ -247,7 +247,7 @@ async function displayComparisonTable() {
   const leakValueRow = createTableRow('Leakage Current', refLeakValue, altLeakValue);
   const heightValueRow = createTableRow('Height', refHeightValue, altHeightValue);
   const lengthValueRow = createTableRow('Length', refLengthValue, altLengthValue);
-  const priceRow = createTableRow('Price', '$' + parseFloat(refPrice).toFixed(4), '$' + parseFloat(altPrice).toFixed(4));
+  const priceRow = createTableRow('Price', formatCurrency(refPrice,4), formatCurrency(altPrice,4));
   const buyRow = createTableRow('', '', '<button type="button" onclick="buyNow(' + "'"+ alternate + "'"+ ')">Buy Now</button>');
   
   // Append rows to the table
@@ -281,6 +281,21 @@ async function displayComparisonTable() {
   } catch (error) {
      throw new Error(`Error: ${error.message}`);
   }
+}
+
+function formatCurrency(amount, decimal) {
+    let numericValue = parseFloat(amount);
+
+    if (isNaN(numericValue)) {
+        console.error('Invalid input. Please provide a valid number.');
+        return null;
+    }
+
+    return new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'USD',
+        minimumFractionDigits: decimal
+    }).format(numericValue);
 }
 
 compareResponses();
