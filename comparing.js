@@ -225,7 +225,7 @@ async function displayComparisonTable() {
   var altHeightValue = getAttribute(altSpecs, 'Height');
   var altLengthValue = getAttribute(altSpecs, 'Length');
   var altPrice = altPart?.medianPrice1000?.price;
-  if (altPrice === 'undefined') {
+  if (altPrice === undefined) {
     const priceArray = [
         { mpn: 'GVM1H337M1010CNVC', price: '0.2142' },
         { mpn: 'GVL1H227M1010CMVC', price: '0.1714' },
