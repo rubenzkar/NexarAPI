@@ -219,7 +219,7 @@ async function displayComparisonTable() {
         { mpn: 'GVL1H227M1010CMVC', desc: 'Aluminum Electrolytic Capacitors - SMD 220uF 50V' },
         { mpn: 'FZ1J227M1213CNVC', desc: 'Aluminum Electrolytic Capacitors - SMD 220uF 63V' },
         { mpn: 'GVZ1C477M0810CNVC', desc: 'Aluminum Electrolytic Capacitors - SMD 470uF 16V' },
-        { mpn: 'GVM1E107M0606CNVC5', desc: 'Aluminum Electrolytic Capacitors - SMD 100uF 25V' },
+        { mpn: 'GVM1E107M0606CNVC', desc: 'Aluminum Electrolytic Capacitors - SMD 100uF 25V' },
         { mpn: 'GVT1V107M0608CNVC', desc: 'Aluminum Electrolytic Capacitors - SMD 100uF 35V' }
     ];
       altDescArray = descArray.find(item => item.mpn === altMpn);
@@ -239,7 +239,7 @@ async function displayComparisonTable() {
         { mpn: 'GVL1H227M1010CMVC', price: '0.1714' },
         { mpn: 'FZ1J227M1213CNVC', price: '0.3857' },
         { mpn: 'GVZ1C477M0810CNVC', price: '0.08' },
-        { mpn: 'GVM1E107M0606CNVC5', price: '0.0757' },
+        { mpn: 'GVM1E107M0606CNVC', price: '0.0757' },
         { mpn: 'GVT1V107M0608CNVC', price: '0.0571' }
     ];
       altPriceArray = priceArray.find(item => item.mpn === altMpn);
