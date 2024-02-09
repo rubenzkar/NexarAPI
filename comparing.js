@@ -212,8 +212,8 @@ async function displayComparisonTable() {
   var altImage = altPart.bestImage;
   var altDesc = altPart.shortDescription;
   var altCapValue = getAttribute(altSpecs, 'Capacitance');
-  //Temporal fix
-  if (altDesc === 'Aluminum Electrolytic Capacitors - SMD 100uF 35V' && altCapValue === '470 µF'){
+  //Temporary fix
+  if (altDesc === '' && altCapValue === '470 µF'){
           altDesc = "Aluminum Electrolytic Capacitors - SMD 470uF 16V";
   }
   var altTolValue = getAttribute(altSpecs, 'Tolerance');
@@ -223,6 +223,7 @@ async function displayComparisonTable() {
   var altHeightValue = getAttribute(altSpecs, 'Height');
   var altLengthValue = getAttribute(altSpecs, 'Length');
   var altPrice = altPart?.medianPrice1000?.price;
+  //Temporary fix
   if (altPrice === undefined) {
     const priceArray = [
         { mpn: 'GVM1H337M1010CNVC', price: '0.2142' },
