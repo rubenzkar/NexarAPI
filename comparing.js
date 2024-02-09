@@ -219,7 +219,7 @@ async function displayComparisonTable() {
         { mpn: 'GVL1H227M1010CMVC', desc: 'Aluminum Electrolytic Capacitors - SMD 220uF 50V' },
         { mpn: 'FZ1J227M1213CNVC', desc: 'Aluminum Electrolytic Capacitors - SMD 220uF 63V' },
         { mpn: 'GVZ1C477M0810CNVC', desc: 'Aluminum Electrolytic Capacitors - SMD 470uF 16V' },
-        { mpn: 'GVM1E107M0606CNVC5', desc: 'Aluminum Electrolytic Capacitors - SMD 470uF 16V' },
+        { mpn: 'GVM1E107M0606CNVC5', desc: 'Aluminum Electrolytic Capacitors - SMD 100uF 25V' },
         { mpn: 'GVT1V107M0608CNVC', desc: 'Aluminum Electrolytic Capacitors - SMD 100uF 35V' }
     ];
       altDescArray = descArray.find(item => item.mpn === altMpn);
